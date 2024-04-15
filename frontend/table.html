@@ -31,11 +31,17 @@
         </ul>
     </nav>
 
-    <div class="searchbox-input">
-        <input type="text" class="input js-input" id="searchInput js-searchInput" placeholder="Buscar en Twitter">
-    </div>
+    <!-- Campo de búsqueda -->
+
 
     <div class="content-wrapper">
+        <div class="search-wrapper">
+            <form id="searchForm">
+                <input type="search" required placeholder="Buscar">
+                <button class="fa fa-search" type="submit"></button>
+            </form>
+        </div>
+
         <div class="content" id="searchResults"></div>
     </div>
 
