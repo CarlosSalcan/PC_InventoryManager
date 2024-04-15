@@ -1,0 +1,104 @@
+/*****************
+ *    Login
+ ****************/
+body {
+    background-color: #b3b3b3;
+}
+
+.main-content {
+    width: 50%;
+    border-radius: 20px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .4);
+    margin: 5em auto;
+    display: flex;
+}
+
+.rowCenter {
+    display: flex;
+    justify-content: center;
+    padding: 11rem 15rem;
+}
+
+.col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    width: 200px;
+    border-radius: 20px 0 0 20px;
+    background-color: #008080;
+    color: white;
+    font-size: 22px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.company_logo span {
+    font-size: 80px;
+    color: white;
+}
+
+form {
+    padding: 0 2em;
+}
+
+.row>h2 {
+    text-align: center;
+    color: #008080;
+    font-size: 30px;
+}
+
+.colform {
+    width: 31rem;
+    border-radius: 0 20px 20px 0;
+    background-color: #fff;
+    box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.form__input {
+    width: 90%;
+    border: 0px solid transparent;
+    border-radius: 30px;
+    border-bottom: 2.5px solid #aaaaaa;
+    padding: 1em .5em .5em;
+    padding-left: 2em;
+    outline: none;
+    margin: 1.5em auto;
+    transition: all .5s ease;
+}
+
+.form__input:focus {
+    border-bottom-color: #008080;
+    box-shadow: 0 0 5px rgba(0, 80, 80, .4);
+    border-radius: 30px;
+}
+
+.btn,
+.row {
+    text-align: center;
+}
+
+.btn button {
+    width: 70%;
+    height: 37px;
+    border-radius: 30px;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    background-color: #fff;
+    border: 1.5px solid #008080;
+    color: #008080;
+    font-size: 20px;
+}
+
+.btn button:hover,
+.btn:focus {
+    background-color: #008080;
+    color: #fff;
+}
+
+/*transition: all .5s ease;
+    color: #008080;
+    font-weight: 60px;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+*/
