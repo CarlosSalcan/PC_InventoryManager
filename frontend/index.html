@@ -5,63 +5,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Link -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="./js/tableStyles.js" defer></script>
+    <script src="./js/styles.js" defer></script>
 </head>
 
 <body>
-    <nav>
-        <div class="sidebar-header">
-            <a class="logo-wrapper">
-                <img src="./assets/logo.svg" alt="Logo">
-                <h2 class="hidden">LOGO</h2>
-            </a>
-            <button class="toggle-btn">
-                <img src="./assets/expand.svg" alt="expand button">
-            </button>
+    <div class="sidebar close">
+        <div class="logo-details">
+            <i class='bx bxl-kickstarter bx-tada' style='color:#080808'></i>
+            <span class="logo_name" style='color:#080808'>Sistemas</span>
         </div>
-
-
-        <div class="sidebar-links">
-            <a class="link active">
-                <img src="./assets/home.svg" alt="">
-                <span class="hidden">Home</span>
-            </a>
-            <a class="link">
-                <img src="./assets/projects.svg" alt="">
-                <span class="hidden">Projects</span>
-            </a>
-            <a class="link">
-                <img src="./assets/dashboard.svg" alt="">
-                <span class="hidden">Dashboard</span>
-            </a>
-            </li>
-            <a class="link">
-                <img src="./assets/tasks.svg" alt="">
-                <span class="hidden">Tasks</span>
-            </a>
-        </div>
-
-
-        <div class="sidebar-bottom">
-            <div class="sidebar-links">
-                <a class="link">
-                    <img src="./assets/settings.svg" alt="">
-                    <span class="hidden">Settings</span>
+        <ul class="nav-links">
+            <li>
+                <a href="#">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="link_name">Panel</span>
                 </a>
-            </div>
-
-            <div class="user-profile">
-                <div class="user-avatar">
-                    <img src="./assets/profile-pic.jpg" alt="">
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Panel</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <i class='bx bx-collection'></i>
+                        <span class="link_name">Categoría</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
                 </div>
-                <div class="user-details hidden">
-                    <p class="username">Jane Doe</p>
-                    <p class="user-email">janedoe@gmail.com</p>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Categoría</a></li>
+                    <li><a href="#">Sub Menú 1</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <i class='bx bx-book-alt'></i>
+                        <span class="link_name">Productos</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
                 </div>
-            </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Productos</a></li>
+                    <li><a href="#">Sub Menú 1</a></li>
+                    <li><a href="#">Sub Menú 2</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-pie-chart-alt-2'></i>
+                    <span class="link_name">Reportes</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Reportes</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <i class='bx bxs-user-voice'></i>
+                        <span class="link_name">Clientes</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Clientes</a></li>
+                    <li><a href="#">Sub Menú 1</a></li>
+                    <li><a href="#">Sub Menú 2</a></li>
+                    <li><a href="#">Sub Menú 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-contact'></i>
+                    <span class="link_name">Contactos</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Contactos</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-edit-location'></i>
+                    <span class="link_name">Sedes</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Sedes</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-cog'></i>
+                    <span class="link_name">Configuración</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Configuración</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="profile-details">
+                    <div class="profile-content">
+                        <img src="image/profile.jpg" alt="">
+                    </div>
+                    <div class="name-job">
+                        <div class="profile_name">Administrador</div>
+                        <div class="job">Web Desginer</div>
+                    </div>
+                    <i class='bx bx-log-out'></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text" id="searchResults">Barra lateral desplegable</span>
         </div>
-    </nav>
+    </section>
 </body>
 
 </html>

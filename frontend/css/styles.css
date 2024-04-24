@@ -1,173 +1,320 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
-body {
-    background-color: aquamarine;
-}
-
-*,
-*::before,
-*::after {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI';
 }
 
-
-button,
-a {
-    all: unset;
-    font: inherit;
-    cursor: pointer;
-}
-
-nav {
-    position: fixed;
-    width: 5rem;
-    height: calc(100vh - 0.75rem);
-    background-color: #ffffff;
-    padding: 1rem 0.75rem;
-    border-radius: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    transition: width 500ms ease;
-}
-
-body.active nav {
-    width: 15rem;
-}
-
-.sidebar-header,
-.sidebar-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
     overflow: hidden;
 }
 
-.sidebar-header {
-    margin-bottom: 1.5rem;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px;
+    background: #efeff3;
+    z-index: 100;
+    transition: all 0.5s ease;
 }
 
-.logo-wrapper {
+
+.sidebar.close {
+    width: 78px;
+}
+
+.sidebar .logo-details {
+    height: 60px;
+    width: 100%;
     display: flex;
-    justify-content: start;
     align-items: center;
-    gap: 1.25rem;
 }
 
-.logo-wrapper>img {
-    width: 3.25rem;
-    height: 3.25rem;
-    background-color: #f4f4f6;
-    padding: 0.4rem;
-    border-radius: 0.5rem;
+.sidebar .logo-details i {
+    font-size: 30px;
+    color: #fff;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
 }
 
-.sidebar-links {
-    flex-direction: column;
-    margin-bottom: auto;
-    gap: 0.6rem;
-    padding-top: 1.5rem;
+.sidebar .logo-details .logo_name {
+    font-size: 22px;
+    color: #f1eded;
+    font-weight: 600;
+    transition: 0.3s ease;
+    transition-delay: 0.1s;
 }
 
-nav>.sidebar-links {
-    border-top: 1px solid rgb(211, 211, 211);
+.sidebar.close .logo-details .logo_name {
+    transition-delay: 0s;
+    opacity: 0;
+    pointer-events: none;
 }
 
-body.active .sidebar-links,
-body.active .sidebar-header,
-body.active .user-profile {
-    justify-content: start;
-    align-items: stretch;
+.sidebar .nav-links {
+    height: 100%;
+    padding: 30px 0 150px 0;
+    overflow: auto;
 }
 
-.link {
-    display: flex;
-    padding: 0.6rem;
-    border-radius: 0.5rem;
-    gap: 1.5rem;
+.sidebar.close .nav-links {
+    overflow: visible;
 }
 
-.hidden {
+.sidebar .nav-links::-webkit-scrollbar {
     display: none;
 }
 
-body.active .hidden {
-    display: inline;
+.sidebar .nav-links li {
+    position: relative;
+    list-style: none;
+    transition: all 0.4s ease;
 }
 
-.link:hover,
-.link.active:hover {
-    background-color: #e4e4e8;
+.sidebar .nav-links li:hover {
+    background: #a5a1a1;
 }
 
-.link.active {
-    background-color: #f4f4f6;
-}
-
-.link>img {
-    width: 24px;
-    height: 24px;
-}
-
-.sidebar-bottom .sidebar-links {
-    padding-bottom: 1.5rem;
-}
-
-.toggle-btn {
-    position: absolute;
-    top: 10px;
-    right: -50px;
-    padding: 0.5rem;
-    background-color: #fff;
-    border-radius: 50%;
+.sidebar .nav-links li .iocn-link {
     display: flex;
-    justify-content: center;
     align-items: center;
-    transition: transform 0.25s ease;
+    justify-content: space-between;
 }
 
-body.active .toggle-btn {
-    transform: rotate(180deg);
+.sidebar.close .nav-links li .iocn-link {
+    display: block
 }
 
-.user-profile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgb(211, 211, 211);
-}
-
-.user-avatar {
-    width: 48px;
-    height: 48px;
+.sidebar .nav-links li i {
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+    color: #000000;
+    font-size: 20px;
     cursor: pointer;
-    transition: scale 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-.user-avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+.sidebar .nav-links li.showMenu i.arrow {
+    transform: rotate(-180deg);
+}
+
+.sidebar.close .nav-links i.arrow {
+    display: none;
+}
+
+.sidebar .nav-links li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.sidebar .nav-links li a .link_name {
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000;
+    transition: all 0.4s ease;
+}
+
+.sidebar.close .nav-links li a .link_name {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar .nav-links li .sub-menu {
+    padding: 6px 6px 14px 80px;
+    margin-top: -10px;
+    background: #a5a1a1;
+    display: none;
+}
+
+.sidebar .nav-links li.showMenu .sub-menu {
+    display: block;
+}
+
+.sidebar .nav-links li .sub-menu a {
+    color: #ffffff;
+    font-size: 16px;
+    padding: 6px 0;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.sidebar .nav-links li .sub-menu a:hover {
+    opacity: 8;
+    color: rgb(0, 0, 0);
+}
+
+.sidebar.close .nav-links li .sub-menu {
+    position: absolute;
+    left: 100%;
+    top: -10px;
+    margin-top: 0;
+    padding: 10px 20px;
+    border-radius: 0 6px 6px 0;
+    opacity: 0;
+    display: block;
+    pointer-events: none;
+    transition: 0s;
+}
+
+.sidebar.close .nav-links li:hover .sub-menu {
+    top: 0;
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s ease;
+}
+
+.sidebar .nav-links li .sub-menu .link_name {
+    display: none;
+}
+
+.sidebar.close .nav-links li .sub-menu .link_name {
+    font-size: 18px;
+    opacity: 1;
+    display: block;
+}
+
+.sidebar .nav-links li .sub-menu.blank {
+    opacity: 1;
+    pointer-events: auto;
+    padding: 3px 20px 6px 16px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar .nav-links li:hover .sub-menu.blank {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sidebar .profile-details {
+    position: fixed;
+    bottom: 0;
+    width: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #020202;
+    padding: 12px 0;
+    transition: all 0.5s ease;
+}
+
+.sidebar.close .profile-details {
+    background: none;
+}
+
+.sidebar.close .profile-details {
+    width: 78px;
+}
+
+.sidebar .profile-details .profile-content {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .profile-details img {
+    height: 52px;
+    width: 52px;
     object-fit: cover;
+    border-radius: 16px;
+    margin: 0 14px 0 12px;
+    background: #000000;
+    transition: all 0.5s ease;
 }
 
-.user-avatar:hover {
-    scale: 1.1;
+.sidebar.close .profile-details img {
+    padding: 10px;
 }
 
-.user-details {
-    align-self: center;
-    overflow: hidden;
+.sidebar .profile-details .profile_name,
+.sidebar .profile-details .job {
+    color: #faf8f8;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-.user-details .username {
-    font-size: 0.85rem;
+.sidebar.close .profile-details i,
+.sidebar.close .profile-details .profile_name,
+.sidebar.close .profile-details .job {
+    display: none;
+}
+
+.sidebar .profile-details .job {
+    font-size: 12px;
+}
+
+.home-section {
+    position: relative;
+    background: #e0e0e0;
+    height: 100vh;
+    left: 260px;
+    width: calc(100% - 260px);
+    transition: all 0.5s ease;
+    padding: 12px;
+}
+
+.sidebar.close~.home-section {
+    left: 78px;
+    width: calc(100% - 78px);
+}
+
+.home-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.home-section .home-content .bx-menu,
+.home-section .home-content .text {
+    color: #0e0d0d;
+    font-size: 35px;
+}
+
+.home-section .home-content .bx-menu {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.home-section .home-content .text {
+    font-size: 26px;
     font-weight: 600;
 }
 
-.user-details .user-email {
-    font-size: 0.8rem;
+@media screen and (max-width: 400px) {
+    .sidebar {
+        width: 240px;
+    }
+
+    .sidebar.close {
+        width: 78px;
+    }
+
+    .sidebar .profile-details {
+        width: 240px;
+    }
+
+    .sidebar.close .profile-details {
+        background: none;
+    }
+
+    .sidebar.close .profile-details {
+        width: 78px;
+    }
+
+    .home-section {
+        left: 240px;
+        width: calc(100% - 240px);
+    }
+
+    .sidebar.close~.home-section {
+        left: 78px;
+        width: calc(100% - 78px);
+    }
 }
