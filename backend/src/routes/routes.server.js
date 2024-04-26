@@ -6,4 +6,6 @@ const equipo=require('../controllers/equipo.controller.js');
 
 router.get('/equipos',equipo.getEquipos)
 
+router.put('/editar/:id',equipo.editarEquipo)
+
 module.exports = router;
