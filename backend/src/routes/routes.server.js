@@ -5,7 +5,8 @@ const router=express.Router();
 const equipo=require('../controllers/equipo.controller.js');
 
 router.get('/equipos',equipo.getEquipos)
+router.get('/equipo/:id',equipo.getEquipoById)
 
-router.put('/editar/:id',equipo.editarEquipo)
+router.put('/enviar/:id',equipo.enviarEquipo)
 
 module.exports = router;

@@ -107,7 +107,7 @@
                     <li><a class="link_name" href="#">Configuración</a></li>
                 </ul>
             </li>
-            <li>
+            <!-- <li>
                 <div class="profile-details">
                     <div class="profile-content">
                         <img src="" alt="">
@@ -118,17 +118,43 @@
                     </div>
                     <i class='bx bx-log-out'></i>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
+
     <section class="home-section">
         <div class="home-content">
             <i class='bx bx-menu'></i>
+            <!-- <span class="text">Barra Lateral</span> -->
         </div>
-        <div id="searchResults"></div>
+        <div id="tableContainer">
+            <table id="equiposTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Fecha</th>
+                        <th>Cod Almacen</th>
+                        <th>Tipo</th>
+                        <th>Ubicacion</th>
+                        <th>Departamento</th>
+                        <th>Titular</th>
+                        <th>Tecnico</th>
+                        <th>Editar</th>
+                        <th>Bodega</th>
+                    </tr>
+                </thead>
+                <tbody id="searchResults"><!-- Aquí se insertarán los resultados -->
+                </tbody>
+            </table>
     </section>
 
-    
+    <!-- Ventana emergente
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarVentanaEmergente()">&times;</span>
+            <h2>Ventana Emergente</h2>
+        </div>
+    </div> -->
 
     <script src="./js/equipo.js"></script>
 </body>

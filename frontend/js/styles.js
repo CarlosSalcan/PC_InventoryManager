@@ -12,3 +12,15 @@ console.log(sidebarBtn);
 sidebarBtn.addEventListener("click", () => {
   sidebar.classList.toggle("close");
 });
+
+// Mostrar Ventana Emergente
+function mostrarVentanaEmergente() {
+  var modal = document.getElementById("modal");
+  modal.style.display = "block";
+}
+
+// Cerrar Ventana Emergente
+function cerrarVentanaEmergente() {
+  var modal = document.getElementById("modal");
+  modal.style.display = "none";
+}
