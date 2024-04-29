@@ -1,0 +1,50 @@
+SELECT 
+    cod_equipo,
+    fec_reg,
+    SUBSTRING(cod_almacen, 9) AS cod_almacen,
+    REPLACE(REPLACE(tip_equipo, 'Computador de ', ''), 'Computador ', '') AS tip_equipo,
+    piso_ubic,
+    serv_depar,
+    nom_custodio,
+    nom_custodio,
+    nom_usua
+FROM 
+    equipo
+WHERE 
+   nom_custodio <> "libre"
+   
+UPDATE equipo SET nom_usua = "Xavier Valencia" WHERE nom_usua = "XAVIER VALENCIA"
+
+
+
+SELECT * FROM equipo WHERE cod_almacen LIKE '%0055%'
+SELECT * FROM equipo WHERE piso_ubic = "SUBSUELO"
+SELECT * FROM param_piso, param_antivirus, param_memoria
+
+
+
+SELECT * FROM param_office
+            UNION ALL
+            SELECT * FROM param_antivirus
+            UNION ALL
+            SELECT * FROM param_memoria
+            
+            
+            
+SELECT *, 'param_antivirus' AS tabla_origen FROM param_antivirus
+UNION ALL
+SELECT *, 'param_memoria' AS tabla_origen FROM param_memoria
+ORDER BY tabla_origen;
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,7 +16,7 @@ const equipoController = {
                 equipo
             WHERE 
                 nom_custodio <> "libre"
-        `, (error, results) => {
+            `, (error, results) => {
             if (error) {
                 console.error('Error al obtener equipos:', error);
                 res.status(500).json({ success: false, message: 'Error al obtener los equipos de BDD' });
@@ -38,27 +38,28 @@ const equipoController = {
                 res.status(500).json({ success: false, message: 'Error interno del servidor' });
                 return;
             }
-    
+
             if (results.length === 0) {
                 res.status(404).json({ success: false, message: 'Equipo no encontrado' });
                 return;
             }
-    
+
             const equipo = results[0]; // Tomamos el primer resultado ya que esperamos solo un equipo con un ID específico
             res.json({ success: true, equipo });
         });
     },
     enviarEquipo: async (req, res) => {
-        const { id}=req.params;
-        const {piso_ubic, serv_depar,nom_custodio  } = req.body;
-        console.log(id,nom_custodio, serv_depar, piso_ubic)
+        const { id } = req.params;
+        const { piso_ubic, serv_depar, nom_custodio } = req.body;
+        console.log(id, nom_custodio, serv_depar, piso_ubic)
 
         //console.log(fecha, tipo_activo,codigo_activo,piso,servicio,custodio,usuario)
-        connection.query('UPDATE equipo SET piso_ubic = ?, serv_depar = ?, nom_custodio = ?  WHERE cod_equipo = ?', [piso_ubic,serv_depar,nom_custodio,id], (error, results, fields) => {
+        connection.query('UPDATE equipo SET piso_ubic = ?, serv_depar = ?, nom_custodio = ?  WHERE cod_equipo = ?', [piso_ubic, serv_depar, nom_custodio, id], (error, results, fields) => {
             if (error) throw error;
-            res.json({success: true,message: 'Equipo modificado' });
+            res.json({ success: true, message: 'Equipo modificado' });
         });
     }
+
 };
 
 module.exports = equipoController;

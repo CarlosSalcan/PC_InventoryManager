@@ -118,37 +118,14 @@ function mostrarMensaje(mensaje, duracion) {
     }, duracion);
 }
 
+function setearFechaActual() {
+    const inputFecha = document.getElementById('fechaActual');
+    const fechaActual = new Date().toISOString().split('T')[0];
+    inputFecha.value = fechaActual;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     await mostrarContenidoTabla();
+    setearFechaActual();
 });
-
-
-/*async function enviarBodega(codEquipo) {
-    try {
-        const response = await fetch(`http://localhost:3000/tics/editar/${codEquipo}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                piso_ubic: 'SUBSUELO',
-                serv_depar: 'BODEGA / ACTIVOS FIJOS',
-                nom_custodio: 'LIBRE'
-            })
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            console.log('Equipo editado correctamente');
-            // Actualizar la tabla después de la edición
-            mostrarContenidoTabla();
-        } else {
-            console.error('Error al editar equipo:', data.message);
-        }
-    } catch (error) {
-        console.error('Error al editar equipooo:', error);
-    }
-} */
-
-
 

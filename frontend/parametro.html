@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Equipos</title>
+    <title>Parametros</title>
     <!-- Link -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" type="image/png" href="assets/tics.ico">
@@ -141,31 +140,15 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Fecha</th>
-                        <th>Cod Almacen</th>
-                        <th>Tipo</th>
-                        <th>Ubicacion</th>
-                        <th>Departamento</th>
-                        <th>Titular</th>
-                        <th>Tecnico</th>
-                        <th>Editar</th>
-                        <th>Bodega</th>
+                        <th>Parametro</th>
                     </tr>
                 </thead>
-                <tbody id="searchResults"><!-- Aquí se insertarán los resultados -->
+                <tbody id="searchParam"> 
                 </tbody>
             </table>
     </section>
 
-    <!-- Ventana emergente -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarVentanaEmergente()">&times;</span>
-            <h2>Ventana Emergente</h2>
-        </div>
-    </div>
-
-    <script src="./js/equipo.js"></script>
+    <script src="./js/parametro.js"></script>
 </body>
 
 </html>
