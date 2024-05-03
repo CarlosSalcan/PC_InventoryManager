@@ -252,11 +252,11 @@ body {
 
 .home-section {
     position: relative;
-    height: 100vh;
+    /* height: 100vh; */
     left: 260px;
-    width: calc(100% - 260px);
+    /* width: calc(100% - 250px); */
     transition: all 0.5s ease;
-    padding: 12px;
+    /* padding: 12px; */
 }
 
 .sidebar.close~.home-section {
@@ -264,26 +264,21 @@ body {
     width: calc(100% - 78px);
 }
 
-.home-content {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-}
 
-.home-section .home-content .bx-menu,
-.home-section .home-content {
+
+/* .home-section*/ .home-content .bx-menu, 
+/* .home-section*/ .home-content { 
     color: #0e0d0d;
     font-size: 30px;
 }
 
-.home-section .home-content .bx-menu {
+/* .home-section*/ .home-content .bx-menu { 
     cursor: pointer;
     margin-right: 10px;
 }
 
-.home-section .home-content {
+/* .home-section*/ .home-content { 
     font-size: 26px;
-    font-weight: 600;
 }
 
 @media screen and (max-width: 400px) {
@@ -337,53 +332,87 @@ body {
     --custom-blue: #056bfa27;
 }
 
-#tableContainer {
+.tableContainer {
     overflow-x: auto;
 }
 
-#equiposTable {
+.equiposTable {
     width: 100%;
     border-collapse: collapse;
 }
 
-#equiposTable th,
-#equiposTable td {
+.equiposTable th,
+.equiposTable td {
     padding: 8px;
     border-bottom: 1px solid var(--waikawa-gray-300);
 }
 
-#equiposTable th {
+.equiposTable th {
     background-color: var(--waikawa-gray-500);
     color: white;
 }
 
 /* Mostrar borde derecho de 1ra 7ma 8va columna */
-#equiposTable td:first-child,
-#equiposTable th:first-child,
-#equiposTable td:nth-child(5),
-#equiposTable th:nth-child(5),
-#equiposTable td:nth-child(8),
-#equiposTable th:nth-child(8),
-#equiposTable td:last-child,
-#equiposTable th:last-child {
+.equiposTable td:first-child,
+.equiposTable th:first-child,
+.equiposTable td:nth-child(5),
+.equiposTable th:nth-child(5),
+.equiposTable td:nth-child(6),
+.equiposTable th:nth-child(6),
+.equiposTable td:nth-child(8),
+.equiposTable th:nth-child(8),
+.equiposTable td:last-child,
+.equiposTable th:last-child {
     border-left: 1px solid var(--waikawa-gray-300);
     border-right: 1px solid var(--waikawa-gray-300);
 }
 
-#equiposTable tbody tr:nth-child(even) {
+.equiposTable tbody tr:nth-child(even) {
     background-color: var(--waikawa-gray-100);
 }
 
-#equiposTable tbody td:nth-child(2) {
+.equiposTable tbody td:nth-child(2) {
     width: 75px;
 }
 
 /* Centrar datos de las columnas 3 y 5 */
-#equiposTable td:nth-child(3),
-#equiposTable th:nth-child(3),
-#equiposTable td:nth-child(5),
-#equiposTable th:nth-child(5) {
+.equiposTable td:nth-child(3),
+.equiposTable th:nth-child(3),
+.equiposTable td:nth-child(5),
+.equiposTable th:nth-child(5) {
     text-align: center;
+}
+
+/******************/
+.tableParamContainer {
+    text-align: center;
+}
+
+.parametrosTable {
+    border-collapse: collapse;
+}
+
+.parametrosTable th,
+.parametrosTable td {
+    padding: 8px;
+    border: 1px solid #999;
+}
+
+/* Colores de fondo alternados para filas */
+.parametrosTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+    /* Color de fondo para filas pares */
+}
+
+.parametrosTable tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+    /* Color de fondo para filas impares */
+}
+
+/* Estilo para resaltado al pasar el ratón */
+.parametrosTable tbody tr:hover {
+    background-color: #ddd;
+    /* Color de fondo gris más oscuro al pasar el ratón */
 }
 
 /******************
@@ -403,36 +432,12 @@ body {
     cursor: pointer;
 }
 
-.lable {
-    line-height: 22px;
-    font-family: sans-serif;
-    letter-spacing: 1px;
-}
-
 .button:hover {
-    background: var(--waikawa-gray-400);
+    background: var(--waikawa-gray-600);
 }
 
 .button:hover .svg-icon {
     animation: lr 1s linear infinite;
-}
-
-@keyframes lr {
-    0% {
-        transform: translateX(0);
-    }
-
-    25% {
-        transform: translateX(-1px);
-    }
-
-    75% {
-        transform: translateX(1px);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
 }
 
 /*************************
@@ -484,46 +489,50 @@ body {
     height: 40px;
     width: 45px;
     border: none;
-    background: rgba(255, 3, 3, 0.301);
+    background: rgb(255, 95, 95);
     border-radius: 10px;
     cursor: pointer;
 }
 
-.lable {
-    margin-top: 1px;
-    /* font-size: 19px; */
-    line-height: 35px;
-    /* color: var(--custom-blue); */
-    font-family: sans-serif;
-    letter-spacing: 1px;
-}
-
 .buttons:hover {
-    background: rgb(250, 127, 127);
+    background: rgb(252, 40, 40);
 }
 
 .buttons:hover .svg-icon {
     animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+/********************
+    BTN ELIMINAR
+********************/
+.bin-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgb(255, 95, 95);
+    /* cursor: pointer; */
+    border: none;
+    transition-duration: 0.3s;
+}
 
-    25% {
-        transform: rotate(-8deg);
-    }
+.bin-bottom {
+    width: 15px;
+}
 
-    50% {
-        transform: rotate(0deg);
-    }
+.bin-top {
+    width: 17px;
+    transform-origin: right;
+    transition-duration: 0.3s;
+}
 
-    75% {
-        transform: rotate(8deg);
-    }
+.bin-button:hover .bin-top {
+    transform: rotate(45deg);
+}
 
-    100% {
-        transform: rotate(0deg);
-    }
+.bin-button:hover {
+    background-color: rgb(255, 0, 0);
 }

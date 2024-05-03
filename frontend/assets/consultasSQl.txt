@@ -37,6 +37,9 @@ SELECT *, 'param_memoria' AS tabla_origen FROM param_memoria
 ORDER BY tabla_origen;
 
 
+ async/await
+
+
 
 
 

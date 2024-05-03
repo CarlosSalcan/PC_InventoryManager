@@ -17,27 +17,24 @@ async function mostrarContenidoTabla() {
                             <td>${equipo.serv_depar}</td>
                             <td>${equipo.nom_custodio}</td>
                             <td>${equipo.nom_usua}</td>
-                            <td><button class="button" id="openModalBtn" onclick="mostrarVentanaEmergente()">
-                                    <svg class="svg-icon" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                                        <g stroke="#a649da" stroke-linecap="round" stroke-width="2">
-                                            <path d="m20 20h-16"></path>
-                                            <path clip-rule="evenodd"
-                                                d="m14.5858 4.41422c.781-.78105 2.0474-.78105 2.8284 0 .7811.78105.7811 2.04738 0 2.82843l-8.28322 8.28325-3.03046.202.20203-3.0304z"
-                                                fill-rule="evenodd"></path>
-                                        </g>
+                            <td><button class="button" id="openModalBtn" onclick="mostrarVentanaEmergente('modal1')">
+                                    <svg height="1em" viewBox="0 0 512 512">
+                                        <path
+                                        d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"
+                                        ></path>
                                     </svg>
-                                    <span class="lable"></span>
-                                </button>
+                                </button>                       
                             </td>
                             <td><button class="buttons" onclick="enviarBodega(${equipo.cod_equipo})">
-                                    <svg class="svg-icon" width="24" viewBox="0 0 24 24" height="24" fill="none">
-                                        <g stroke-width="2" stroke-linecap="round" stroke="#056dfa" fill-rule="evenodd" clip-rule="evenodd">
-                                            <path d="m3 7h17c.5523 0 1 .44772 1 1v11c0 .5523-.4477 1-1 1h-16c-.55228 0-1-.4477-1-1z"></path>
-                                            <path d="m3 4.5c0-.27614.22386-.5.5-.5h6.29289c.13261 0 .25981.05268.35351.14645l2.8536 2.85355h-10z">
+                                    <div class="svgWrapper">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 42" class="svgIcon" width="20" height="20">
+                                            <path stroke-width="5" stroke="#fff"
+                                                d="M9.14073 2.5H32.8593C33.3608 2.5 33.8291 2.75065 34.1073 3.16795L39.0801 10.6271C39.3539 11.0378 39.5 11.5203 39.5 12.0139V21V37C39.5 38.3807 38.3807 39.5 37 39.5H5C3.61929 39.5 2.5 38.3807 2.5 37V21V12.0139C2.5 11.5203 2.6461 11.0378 2.91987 10.6271L7.89266 3.16795C8.17086 2.75065 8.63921 2.5 9.14073 2.5Z">
                                             </path>
-                                        </g>
-                                    </svg>
-                                    <span class="lable"></span>
+                                            <rect stroke-width="3" stroke="#fff" rx="2" height="4" width="311" y="18.5" x="15.5"></rect>
+                                            <path stroke-width="5" stroke="#fff" d="M1 12L41 12"></path>
+                                        </svg>
+                                    </div>
                                 </button>
                             </td>
                         </tr>`;
@@ -118,14 +115,13 @@ function mostrarMensaje(mensaje, duracion) {
     }, duracion);
 }
 
-function setearFechaActual() {
-    const inputFecha = document.getElementById('fechaActual');
-    const fechaActual = new Date().toISOString().split('T')[0];
-    inputFecha.value = fechaActual;
-}
+// function setearFechaActual() {
+//     const inputFecha = document.getElementById('fechaActual');
+//     const fechaActual = new Date().toISOString().split('T')[0];
+//     inputFecha.value = fechaActual;
+// }
 
 document.addEventListener('DOMContentLoaded', async () => {
     await mostrarContenidoTabla();
-    setearFechaActual();
 });
 
