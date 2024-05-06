@@ -4,167 +4,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TICS - Equipos</title>
-    <!-- Link -->
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <title>Tics - Equipos</title>
+
     <link rel="icon" type="image/png" href="assets/tics.ico">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="./js/styles.js" defer></script>
 </head>
 
 <body>
-    <div class="sidebar close">
-        <div class="logo-details">
-            <i class='bx bxl-kickstarter bx-tada' style='color:#080808'></i>
-            <span class="logo_name" style='color:#080808'>Sistemas</span>
-        </div>
-        <ul class="nav-links">
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-grid-alt'></i>
-                        <span class="link_name">Parametros</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name" href="parametro.html">Parametros</a></li>
-                    <li><a href="#">Antivirus</a></li>
-                    <li><a href="#">Marcas</a></li>
-                    <li><a href="#">Memoria</a></li>
-                    <li><a href="#">Office</a></li>
-                    <li><a href="#">Procesador</a></li>
-                    <li><a href="#">Sistema Operativo</a></li>
-                    <li><a href="#">Almacenamiento</a></li>
-                    <li><a href="#">Monitor</a></li>
-                    <li><a href="#">Teclado</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-collection'></i>
-                    <span class="link_name">Equipos</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="index.html">Equipos</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-book-alt'></i>
-                        <span class="link_name">Productos</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name" href="#">Productos</a></li>
-                    <li><a href="#">Sub Menú 1</a></li>
-                    <li><a href="#">Sub Menú 2</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-pie-chart-alt-2'></i>
-                    <span class="link_name">Reportes</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Reportes</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bxs-user-voice'></i>
-                        <span class="link_name">Clientes</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name" href="#">Clientes</a></li>
-                    <li><a href="#">Sub Menú 1</a></li>
-                    <li><a href="#">Sub Menú 2</a></li>
-                    <li><a href="#">Sub Menú 3</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-contact'></i>
-                    <span class="link_name">Contactos</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Contactos</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-edit-location'></i>
-                    <span class="link_name">Sedes</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Sedes</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-cog'></i>
-                    <span class="link_name">Configuración</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Configuración</a></li>
-                </ul>
-            </li>
-            <!-- <li>
-                <div class="profile-details">
-                    <div class="profile-content">
-                        <img src="" alt="">
-                    </div>
-                    <div class="name-job">
-                        <div class="profile_name">Administrador</div>
-                        <div class="job">Web Desginer</div>
-                    </div>
-                    <i class='bx bx-log-out'></i>
-                </div>
-            </li> -->
-        </ul>
+    <div class="menu">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-icon name="close-outline"></ion-icon>
     </div>
 
-    <section class="home-section">
-        <div class="home-content">
-            <i class='bx bx-menu'></i>
-            <!-- <span class="text">Barra Lateral</span> -->
+    <div class="barra-lateral">
+        <div>
+            <div class="nombre-pagina">
+                <ion-icon id="cloud" name="cloud-outline"></ion-icon>
+                <span>Tics</span>
+            </div>
+            <button class="boton">
+                <ion-icon name="add-outline"></ion-icon>
+                <span>Nuevo</span>
+            </button>
         </div>
-        <div class="tableContainer">
-            <table class="equiposTable">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Fecha</th>
-                        <th>Cod Almacen</th>
-                        <th>Tipo</th>
-                        <th>Ubicacion</th>
-                        <th>Departamento</th>
-                        <th>Titular</th>
-                        <th>Tecnico</th>
-                        <th>Editar</th>
-                        <th>Bodega</th>
-                    </tr>
-                </thead>
-                <tbody id="searchResults"><!-- Aquí se insertarán los resultados -->
-                </tbody>
-            </table>
+
+        <nav class="navegacion">
+            <ul>
+                <li>
+                    <a id="inbox" href="#">
+                        <ion-icon name="desktop-outline"></ion-icon>
+                        <span>Equipos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="cube"></ion-icon>
+                        <span>Parametros</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Reportes</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <ion-icon name="archive"></ion-icon>
+                        <span>Eq. en Bodega</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div>
+            <div class="linea"></div>
+            <div class="modo-oscuro">
+                <div class="info">
+                    <ion-icon name="moon-outline"></ion-icon>
+                    <span>Drak Mode</span>
+                </div>
+                <div class="switch">
+                    <div class="base">
+                        <div class="circulo">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="usuario">
+                <img src="./assets/profile-pic.jpg" alt="">
+                <div class="info-usuario">
+                    <div class="nombre-email">
+                        <span class="nombre">Usuario</span>
+                        <span class="email">usuer03@gmail.com</span>
+                    </div>
+                    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                </div>
+            </div>
         </div>
-    </section>
+
+    </div>
+
+    <main>
+        <h1>Contenido</h1>
+        <table class="equiposTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Cod. Almacen</th>
+                    <th>Tipo eq.</th>
+                    <th>Ubicacion</th>
+                    <th>Departamento</th>
+                    <th>Titular</th>
+                    <th>Tecnico</th>
+                    <th>Editar</th>
+                    <th>Bodega</th>
+                </tr>
+            </thead>
+            <tbody id="searchResults"><!-- Aquí se insertarán los resultados -->
+            </tbody>
+        </table>
+    </main>
 
     <!-- Ventana emergente -->
     <div id="modal1" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarVentanaEmergente('modal1')">&times;</span>
-            <h2>Ventana Emergente 1</h2>
+            <h2>Ventana Emergente 11</h2>
+            <form id="editarEquipo">
+                <label for="cod">Cóod. Equipo:</label>
+                <span id="cod" name="cod"></span>
+
+                <label for="fecha">F. Entrega:</label>
+                <span id="fecha" name="fecha"></span>
+
+                <label for="codAlmacen">Cod. Almacen:</label>
+                <input type="text"  id="codAlmacen" name="codAlmacen">
+
+                <label for="tipoEquipo">Tipo eq.:</label>
+                <select id="tipoEquipo"></select>
+
+                <label for="pisos">Piso:</label>
+                <select id="pisos"></select>
+
+                <label for="departamentos">Departamento:</label>
+                <select id="departamentos"></select>
+
+                <label for="titularEq">Titular:</label>
+                <input type="text" id="titularEq" name="titularEq">
+
+                <label for="tecnico">Tecnico:</label>
+                <span id="tecnico" name="tecnico"></span>
+            </form>
         </div>
     </div>
 
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="./js/equipo.js"></script>
 </body>
 

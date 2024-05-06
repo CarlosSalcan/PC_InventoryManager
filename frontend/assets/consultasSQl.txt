@@ -37,7 +37,41 @@ SELECT *, 'param_memoria' AS tabla_origen FROM param_memoria
 ORDER BY tabla_origen;
 
 
- async/await
+async/await
+
+----------- CONSULTAS NECESARIAS -----------
+UPDATE equipo
+SET tip_equipo = 'Escritorio'
+WHERE tip_equipo = 'Computador de Escritorio';
+
+UPDATE equipo
+SET tip_equipo = 'Portatil'
+WHERE tip_equipo = 'Computador Portatil';
+
+UPDATE param_tipo_equipo
+SET nom_te = 'Escritorio'
+WHERE nom_te = 'Computador de Escritorio';
+
+UPDATE param_servicio
+SET nom_servicio = 'DIRECCION ZONAL DE GOBERNANZA DE LA SALUD'
+WHERE nom_servicio = 'DIRECCION  ZONAL DE GOBERNANZA DE LA SALUD';
+
+UPDATE equipo
+SET serv_depar = 'DIRECCION ZONAL DE GOBERNANZA DE LA SALUD'
+WHERE serv_depar = 'DIRECCION  ZONAL DE GOBERNANZA DE LA SALUD';
+
+UPDATE equipo
+SET serv_depar = 'S1 BODEGA / ACTIVOS FIJOS'
+WHERE serv_depar = 'BODEGA / ACTIVOS FIJOS';
+
+UPDATE equipo
+SET serv_depar = 'PB SECRETARIA ZONAL'
+WHERE serv_depar = 'SECRETARIA ZONAL';
+
+UPDATE equipo
+SET serv_depar = 'PB DISPENSARIO'
+WHERE serv_depar = 'DISPENSARIO';
+
 
 
 

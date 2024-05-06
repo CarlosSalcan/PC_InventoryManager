@@ -1,31 +1,58 @@
-let arrow = document.querySelectorAll(".arrow");
-for (var i = 0; i < arrow.length; i++) {
-  arrow[i].addEventListener("click", (e) => {
-    let arrowParent = e.target.parentElement.parentElement;
-    arrowParent.classList.toggle("showMenu");
-  });
-}
+//-------------------------------> Menu Sidebar
+const cloud = document.getElementById("cloud");
+const barraLateral = document.querySelector(".barra-lateral");
+const spans = document.querySelectorAll("span");
+const palanca = document.querySelector(".switch");
+const circulo = document.querySelector(".circulo");
+const menu = document.querySelector(".menu");
+const main = document.querySelector("main");
 
-let sidebar = document.querySelector(".sidebar");
-let sidebarBtn = document.querySelector(".bx-menu");
-console.log(sidebarBtn);
-sidebarBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("close");
+menu.addEventListener("click",()=>{
+    barraLateral.classList.toggle("max-barra-lateral");
+    if(barraLateral.classList.contains("max-barra-lateral")){
+        menu.children[0].style.display = "none";
+        menu.children[1].style.display = "block";
+    }
+    else{
+        menu.children[0].style.display = "block";
+        menu.children[1].style.display = "none";
+    }
+    if(window.innerWidth<=320){
+        barraLateral.classList.add("mini-barra-lateral");
+        main.classList.add("min-main");
+        spans.forEach((span)=>{
+            span.classList.add("oculto");
+        })
+    }
 });
 
-// Mostrar Ventana Emergente
+palanca.addEventListener("click",()=>{
+    let body = document.body;
+    body.classList.toggle("dark-mode");
+    body.classList.toggle("");
+    circulo.classList.toggle("prendido");
+});
+
+cloud.addEventListener("click",()=>{
+    barraLateral.classList.toggle("mini-barra-lateral");
+    main.classList.toggle("min-main");
+    spans.forEach((span)=>{
+        span.classList.toggle("oculto");
+    });
+});
+
+//-------------------------------> Ventana Emergente
 function mostrarVentanaEmergente(idModal) {
   var modal = document.getElementById(idModal);
   modal.style.display = "block";
 }
 
-// Cerrar Ventana Emergente
 function cerrarVentanaEmergente(idModal) {
   var modal = document.getElementById(idModal);
   modal.style.display = "none";
 }
 
-// MOSTRA MENSAJE DURANTE Nseg
+//-------------------------------> Mensaje durante nseg
 function mostrarMensaje(mensaje, duracion) {
   const div = document.createElement('div');
   div.textContent = mensaje;
@@ -41,7 +68,7 @@ function mostrarMensaje(mensaje, duracion) {
   document.body.appendChild(div);
 
   setTimeout(() => {
-      div.remove();
-      window.location.reload()
+    div.remove();
+    window.location.reload()
   }, duracion);
 }
