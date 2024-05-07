@@ -9,6 +9,7 @@ const parametro=require('../controllers/parametro.controller.js');
 router.get('/equipos', equipo.getEquipos);
 router.get('/parametros/:tabla', parametro.getParametros);
 router.get('/options/:tabla/:campo', equipo.obtenerOpciones);
+router.get('/cpu/:codEquipo', equipo.obtenerDatosCPU);
 
 //--------------------------> Enviar a Bodega
 router.get('/equipo/:id',equipo.getEquipoById)

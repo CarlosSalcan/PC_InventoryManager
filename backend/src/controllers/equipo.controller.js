@@ -95,7 +95,33 @@ const equipoController = {
             if (error) throw error;
             res.json({ success: true, message: 'Equipo modificado' });
         });
+    },
+
+    obtenerDatosCPU: async (req, res) => {
+        try {
+            const { codEquipo } = req.params;
+    
+            const query = `SELECT * FROM cpu_equipo WHERE cod_equipo = ?`;
+            connection.query(query, [codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al obtener datos del CPU:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+    
+                if (results.length === 0) {
+                    res.status(404).json({ success: false, message: 'No se encontraron datos del CPU para el equipo especificado' });
+                    return;
+                }
+    
+                res.json({ success: true, cpu: results[0] });
+            });
+        } catch (error) {
+            console.error('Error al obtener datos del CPU:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     }
+    
 };
 
 module.exports = equipoController;

@@ -17,7 +17,7 @@ async function mostrarContenidoTabla() {
                             <td>${equipo.serv_depar}</td>
                             <td>${equipo.nom_custodio}</td>
                             <td>${equipo.nom_usua}</td>
-                            <td><button class="copy" id="openModalBtn" onclick="llenarCampos('${equipo.cod_equipo}', '${fecha}', '${equipo.cod_almacen}', '${equipo.tip_equipo}', '${equipo.piso_ubic}', '${equipo.serv_depar}', '${equipo.nom_custodio}', '${equipo.nom_usua}'),mostrarVentanaEmergente('modal1')">
+                            <td><button class="copy" id="openModalBtn" onclick="llenarCampos('${equipo.cod_equipo}', '${fecha}', '${equipo.cod_almacen}', '${equipo.tip_equipo}', '${equipo.piso_ubic}', '${equipo.serv_depar}', '${equipo.nom_custodio}', '${equipo.nom_usua}'),mostrarVentanaEmergente('modal1'), datosCPU('${equipo.cod_equipo}')">
                                     <span data-text-end="Editando!" data-text-initial="Editar" class="tooltip"></span>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" class="edit">
@@ -125,6 +125,29 @@ async function getOptionsFrom(tabla, campo, selectId) {
         console.error('Error al obtener opciones:', error);
     }
 }
+
+async function datosCPU(codEquipo) {
+    try {
+        const response = await fetch(`http://localhost:3000/tics/cpu/${codEquipo}`);
+        const data = await response.json();
+
+        if (data.success) {
+            const cpu = data.cpu;
+            document.getElementById('codCPU').textContent = cpu.cod_cpu;
+            document.getElementById('marcaCPU').textContent = cpu.mar_cpu;
+            document.getElementById('serieCPU').textContent = cpu.ser_cpu;
+            // Llenar el select de TarjetaMadre con opciones relacionadas con el CPU, si es necesario
+            // document.getElementById('TarjetaMadre').innerHTML = ...
+        } else {
+            // Manejar caso de error
+            console.error('Error al obtener los datos del CPU:', data.message);
+        }
+    } catch (error) {
+        // Manejar errores de red u otros errores
+        console.error('Error al obtener los datos del CPU:', error);
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     await mostrarContenidoTabla();

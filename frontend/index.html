@@ -116,30 +116,72 @@
         <div class="modal-content">
             <span class="close" onclick="cerrarVentanaEmergente('modal1')">&times;</span>
             <h2>Ventana Emergente 11</h2>
-            <form id="editarEquipo">
-                <label for="cod">Cóod. Equipo:</label>
-                <span id="cod" name="cod"></span>
+            <form id="editarEquipo" class="formulario">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="cod">Código de Equipo:</label>
+                        <span id="cod" name="cod"></span>
+                    </div>
 
-                <label for="fecha">F. Entrega:</label>
-                <span id="fecha" name="fecha"></span>
+                    <div class="form-group">
+                        <label for="fecha">Fecha de Entrega:</label>
+                        <span id="fecha" name="fecha"></span>
+                    </div>
 
-                <label for="codAlmacen">Cod. Almacen:</label>
-                <input type="text"  id="codAlmacen" name="codAlmacen">
+                    <div class="form-group">
+                        <label for="codAlmacen">Código de Almacén:</label>
+                        <input type="text" id="codAlmacen" name="codAlmacen">
+                    </div>
 
-                <label for="tipoEquipo">Tipo eq.:</label>
-                <select id="tipoEquipo"></select>
+                    <div class="form-group">
+                        <label for="tipoEquipo">Tipo de Equipo:</label>
+                        <select id="tipoEquipo"></select>
+                    </div>
+                </div>
 
-                <label for="pisos">Piso:</label>
-                <select id="pisos"></select>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="pisos">Piso:</label>
+                        <select id="pisos"></select>
+                    </div>
 
-                <label for="departamentos">Departamento:</label>
-                <select id="departamentos"></select>
+                    <div class="form-group">
+                        <label for="departamentos">Departamento:</label>
+                        <select id="departamentos"></select>
+                    </div>
 
-                <label for="titularEq">Titular:</label>
-                <input type="text" id="titularEq" name="titularEq">
+                    <div class="form-group">
+                        <label for="titularEq">Titular del Equipo:</label>
+                        <input type="text" id="titularEq" name="titularEq">
+                    </div>
 
-                <label for="tecnico">Tecnico:</label>
-                <span id="tecnico" name="tecnico"></span>
+                    <div class="form-group">
+                        <label for="tecnico">Técnico:</label>
+                        <span id="tecnico" name="tecnico"></span>
+                    </div>
+                </div>
+            </form>
+
+            <form id="equipoCPU">
+                <div class="form-group">
+                    <label for="codCPU">Código de CPU:</label>
+                    <span id="codCPU" name="codCPU"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="marcaCPU">Marca CPU:</label>
+                    <span id="marcaCPU" name="marcaCPU"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="TarjetaMadre">TarjetaMadre:</label>
+                    <select id="TarjetaMadre"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="serieCPU">Num Serie de CPU:</label>
+                    <span id="serieCPU" name="serieCPU"></span>
+                </div>
             </form>
         </div>
     </div>
