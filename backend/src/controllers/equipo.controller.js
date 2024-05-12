@@ -4,33 +4,12 @@ const equipoController = {
     getEquipos: async (req, res) => {
         try {
             const equipos = await new Promise((resolve, reject) => {
-                connection.query(`
-                    SELECT 
-                        cod_equipo,
-                        fec_reg,
-                        SUBSTRING(cod_almacen, 8) AS cod_almacen,
-                        tip_equipo,
-                        piso_ubic,
-                        serv_depar,
-                        nom_custodio,
-                        nom_usua
-                    FROM 
-                        equipo
-                    WHERE 
-                        nom_custodio <> "libre"
-                    `, (error, results) => {
+                connection.query(`SELECT * FROM equipo`, (error, results) => {
                     if (error) {
                         reject(error);
                         return;
                     }
-
-                    // Mapear los resultados para ajustar el formato de cod_almacen
-                    const equipos = results.map(equipo => {
-                        equipo.cod_almacen = equipo.cod_almacen.replace(/^[^-]*-/g, ''); // Eliminar la parte inicial hasta el primer guión
-                        return equipo;
-                    });
-
-                    resolve(equipos);
+                    resolve(results);
                 });
             });
 
@@ -41,11 +20,11 @@ const equipoController = {
         }
     },
 
-    obtenerOpciones: async (req, res) => {
+    obtenerOpcSelect: async (req, res) => {
         try {
             const { tabla, campo } = req.params;
 
-            const query = `SELECT ${campo} FROM ${tabla} WHERE ${campo} IS NOT NULL`;
+            const query = `SELECT ${campo} FROM ${tabla}`;
 
             const results = await new Promise((resolve, reject) => {
                 connection.query(query, (error, results, fields) => {
@@ -65,63 +44,113 @@ const equipoController = {
         }
     },
 
-    //--------------------------> Obtener ID Enviar Bodega
+    modificarEquipo: async (req, res) => {
+        try {
+            const { codEquipo, nuevoCodAlmacen, nuevoTipoEquipo, nuevoPiso, nuevoDepartamento, nuevoTitular } = req.body;
+            const query = `
+                UPDATE equipo
+                SET 
+                    cod_almacen =?, 
+                    tip_equipo =?, 
+                    piso_ubic =?, 
+                    serv_depar =?, 
+                    nom_custodio =? 
+                WHERE cod_equipo = ?`;
+
+            await new Promise((resolve, reject) => {
+                connection.query(query, [nuevoCodAlmacen, nuevoTipoEquipo, nuevoPiso, nuevoDepartamento, nuevoTitular, codEquipo], (error, results, fields) => {
+                    if (error) {
+                        console.error('Error al guardar cambios en el equipo:', error);
+                        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                        return;
+                    }
+                    res.json({ success: true, message: 'Cambios guardados correctamente' });
+                });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el equipo:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
     getEquipoById: async (req, res) => {
-        const { id } = req.params;
-        connection.query('SELECT cod_equipo, piso_ubic, serv_depar, nom_custodio FROM equipo WHERE cod_equipo = ?', [id], (error, results, fields) => {
-            if (error) {
-                console.error('Error al obtener equipo por ID:', error);
-                res.status(500).json({ success: false, message: 'Error interno del servidor' });
-                return;
-            }
+        try {
+            const { id } = req.params;
+            const results = await new Promise((resolve, reject) => {
+                connection.query('SELECT cod_equipo, piso_ubic, serv_depar, nom_custodio FROM equipo WHERE cod_equipo = ?', [id], (error, results, fields) => {
+                    if (error) {
+                        console.error('Error al obtener equipo por ID:', error);
+                        reject(error);
+                        return;
+                    }
 
-            if (results.length === 0) {
-                res.status(404).json({ success: false, message: 'Equipo no encontrado' });
-                return;
-            }
+                    if (results.length === 0) {
+                        res.status(404).json({ success: false, message: 'Equipo no encontrado' });
+                        return;
+                    }
+                    resolve(results[0]);
+                });
+            });
 
-            const equipo = results[0]; // Tomamos el primer resultado ya que esperamos solo un equipo con un ID específico
-            res.json({ success: true, equipo });
-        });
+            res.json({ success: true, equipo: results });
+        } catch (error) {
+            console.error('Error al obtener equipo por ID:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     },
 
     enviarBodegaEquipo: async (req, res) => {
-        const { id } = req.params;
-        const { piso_ubic, serv_depar, nom_custodio } = req.body;
-        console.log(id, nom_custodio, serv_depar, piso_ubic)
+        try {
+            const { id } = req.params;
+            const { piso_ubic, serv_depar, nom_custodio } = req.body;
+            console.log(id, nom_custodio, serv_depar, piso_ubic)
 
-        //console.log(fecha, tipo_activo,codigo_activo,piso,servicio,custodio,usuario)
-        connection.query('UPDATE equipo SET piso_ubic = ?, serv_depar = ?, nom_custodio = ?  WHERE cod_equipo = ?', [piso_ubic, serv_depar, nom_custodio, id], (error, results, fields) => {
-            if (error) throw error;
+            await new Promise((resolve, reject) => {
+                connection.query('UPDATE equipo SET piso_ubic = ?, serv_depar = ?, nom_custodio = ?  WHERE cod_equipo = ?', [piso_ubic, serv_depar, nom_custodio, id], (error, results, fields) => {
+                    if (error) {
+                        console.error('Error al enviar equipo a bodega:', error);
+                        reject(error);
+                        return;
+                    }
+                    resolve();
+                });
+            });
+
             res.json({ success: true, message: 'Equipo modificado' });
-        });
+        } catch (error) {
+            console.error('Error al enviar equipo a bodega:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     },
 
     obtenerDatosCPU: async (req, res) => {
         try {
             const { codEquipo } = req.params;
-    
+
             const query = `SELECT * FROM cpu_equipo WHERE cod_equipo = ?`;
-            connection.query(query, [codEquipo], (error, results, fields) => {
-                if (error) {
-                    console.error('Error al obtener datos del CPU:', error);
-                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
-                    return;
-                }
-    
-                if (results.length === 0) {
-                    res.status(404).json({ success: false, message: 'No se encontraron datos del CPU para el equipo especificado' });
-                    return;
-                }
-    
-                res.json({ success: true, cpu: results[0] });
+            const results = await new Promise((resolve, reject) => {
+                connection.query(query, [codEquipo], (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+
+                    resolve(results);
+                });
             });
+
+            if (results.length === 0) {
+                res.status(404).json({ success: false, message: 'No se encontraron datos del CPU para el equipo especificado' });
+                return;
+            }
+
+            res.json({ success: true, cpu: results[0] });
         } catch (error) {
             console.error('Error al obtener datos del CPU:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
     }
-    
+
 };
 
 module.exports = equipoController;

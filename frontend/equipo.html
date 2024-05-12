@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tics</title>
+    <title>Tics - Equipos</title>
     <!--=============== ICON ===============-->
     <link rel="icon" type="image/png" href="assets/tics.ico">
     <!--=============== CSS ===============-->
@@ -32,33 +32,31 @@
             <!--=============== NAV MENU ===============-->
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                    <!-- <li><a href="#" class="nav__link">Registro</a></li> -->
-
-                    <li><a href="equipo.html" class="nav__link">Equipos</a></li>
+                    <li><a href="index.html" class="nav__link">Registro</a></li>
 
                     <!--=============== DROPDOWN 1 ===============-->
-                    <li class="dropdown__item">
+                    <!-- <li class="dropdown__item">
                         <div class="nav__link">
                             Parametros <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                         </div>
 
                         <ul class="dropdown__menu">
                             <li>
-                                <a href="#" class="dropdown__link">
-                                    <i class="ri-pie-chart-line"></i> Overview
+                                <a href="paramAntivirus.html" class="dropdown__link">
+                                    <i class="ri-pie-chart-line"></i> Antivirus
                                 </a>
                             </li>
 
                             <li>
-                                <a href="#" class="dropdown__link">
-                                    <i class="ri-arrow-up-down-line"></i> Transactions
+                                <a href="paramMarcas.html" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i> Marcas
                                 </a>
                             </li>
 
-                            <!--=============== DROPDOWN SUBMENU ===============-->
+                            <!--=============== DROPDOWN SUBMENU ===============--
                             <li class="dropdown__subitem">
                                 <div class="dropdown__link">
-                                    <i class="ri-bar-chart-line"></i> Reportes <i class="ri-add-line dropdown__add"></i>
+                                    <i class="ri-bar-chart-line"></i> MAS <i class="ri-add-line dropdown__add"></i>
                                 </div>
 
                                 <ul class="dropdown__submenu">
@@ -82,7 +80,9 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
+
+                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
 
                     <li><a href="#" class="nav__link">Reportes</a></li>
 
@@ -118,8 +118,87 @@
     </header>
 
     <main>
-        <h1>NUEVOS EQUIPOS Y PARAMETROS</h1>
+        <table class="equipos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Cod. Almacén</th>
+                    <th>Tipo Eq.</th>
+                    <th>Piso Ubic.</th>
+                    <th>Dep. / Serv.</th>
+                    <th>Titular</th>
+                    <th>Técnico</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody id="results">
+            </tbody>
+        </table>
     </main>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <form id="editarEquipo" class="formulario">
+                <h2>Edición de Equipo</h2>
+                <span class="close" onclick="cerrarVentanaEmergente('modal1')">&times;</span>
+
+                <div class="horizontal-container">
+                    <div>
+                        <label for="fecha">Fch. Entrega:</label>
+                        <span id="fecha"></span>
+                    </div>
+                    <div>
+                        <label for="tecnico">Técnico:</label>
+                        <span id="tecnico"></span>
+                    </div>
+                    <div>
+                        <label for="cod">ID Equipo:</label>
+                        <span id="cod"></span>
+                    </div>
+                </div>
+
+                <!-- <h3>Información del Equipo:</h3> -->
+                <div class="horizontal-container">
+                    <div>
+                        <label for="tipoEquipo">Tipo de Equipo</label>
+                        <select id="tipoEquipo" class="options"></select>
+                    </div>
+                    <div>
+                        <label for="codAlmacen">Código Almacén</label>
+                        <input type="text" id="codAlmacen" name="codAlmacen" class="newData">
+                    </div>
+                </div>
+
+                <!-- <h3>Usuario y Ubicación:</h3> -->
+                <div class="horizontal-container">
+                    <div>
+                        <label for="titularEq">Titular</label>
+                        <input type="text" id="titularEq" name="titularEq" class="newData">
+                    </div>
+                    <div>
+                        <label for="pisos">Piso Ubicado</label>
+                        <select id="pisos" class="options"></select>
+                    </div>
+                    <div>
+                        <label for="departamentos">Dep./Serv.</label>
+                        <select id="departamentos" class="options"></select>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Cambios</button>
+                    <button type="button" class="orange-button" onclick="enviarBodega()">Enviar a Bodega</button>
+                    <button type="button" class="red-button" onclick="">Eliminar Equipo</button>
+                </div>
+
+            </form>
+
+            <div class="componentes"></div>
+        </div>
+    </div>
+
+    <script src="./js/equipo.js"></script>
 </body>
 
 </html>

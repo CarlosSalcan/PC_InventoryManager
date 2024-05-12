@@ -1,50 +1,28 @@
-//-------------------------------> Menu Sidebar
-const cloud = document.getElementById("cloud");
-const barraLateral = document.querySelector(".barra-lateral");
-const spans = document.querySelectorAll("span");
-const palanca = document.querySelector(".switch");
-const circulo = document.querySelector(".circulo");
-const menu = document.querySelector(".menu");
-const main = document.querySelector("main");
+//-------------------------------> MENU RESPONSIVE
+const showMenu = (toggleId, navId) => {
+  const toggle = document.getElementById(toggleId),
+    nav = document.getElementById(navId)
 
-menu.addEventListener("click",()=>{
-    barraLateral.classList.toggle("max-barra-lateral");
-    if(barraLateral.classList.contains("max-barra-lateral")){
-        menu.children[0].style.display = "none";
-        menu.children[1].style.display = "block";
-    }
-    else{
-        menu.children[0].style.display = "block";
-        menu.children[1].style.display = "none";
-    }
-    if(window.innerWidth<=320){
-        barraLateral.classList.add("mini-barra-lateral");
-        main.classList.add("min-main");
-        spans.forEach((span)=>{
-            span.classList.add("oculto");
-        })
-    }
-});
+  toggle.addEventListener('click', () => {
+    // Add show-menu class to nav menu
+    nav.classList.toggle('show-menu')
 
-palanca.addEventListener("click",()=>{
-    let body = document.body;
-    body.classList.toggle("dark-mode");
-    body.classList.toggle("");
-    circulo.classList.toggle("prendido");
-});
+    // Add show-icon to show and hide the menu icon
+    toggle.classList.toggle('show-icon')
+  })
+}
 
-cloud.addEventListener("click",()=>{
-    barraLateral.classList.toggle("mini-barra-lateral");
-    main.classList.toggle("min-main");
-    spans.forEach((span)=>{
-        span.classList.toggle("oculto");
-    });
-});
-
-//-------------------------------> Ventana Emergente
+//-------------------------------> VENTANA EMERGENTE
 function mostrarVentanaEmergente(idModal) {
   var modal = document.getElementById(idModal);
   modal.style.display = "block";
+
+  // Cerrar con click afuera de la ventana
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 }
 
 function cerrarVentanaEmergente(idModal) {
@@ -52,7 +30,7 @@ function cerrarVentanaEmergente(idModal) {
   modal.style.display = "none";
 }
 
-//-------------------------------> Mensaje durante nseg
+//-------------------------------> MENSAJE DURANTE Nseg
 function mostrarMensaje(mensaje, duracion) {
   const div = document.createElement('div');
   div.textContent = mensaje;

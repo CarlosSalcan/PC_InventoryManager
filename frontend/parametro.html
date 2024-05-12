@@ -12,101 +12,75 @@
 </head>
 
 <body>
-    <div class="menu">
-        <ion-icon name="menu-outline"></ion-icon>
-        <ion-icon name="close-outline"></ion-icon>
-    </div>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__data">
+                <a href="#" class="nav__logo">
+                    <i class="ri-planet-line"></i> TICS
+                </a>
 
-    <div class="barra-lateral">
-        <div>
-            <div class="nombre-pagina">
-                <ion-icon id="cloud" name="cloud-outline"></ion-icon>
-                <span>Tics</span>
-            </div>
-            <button class="boton">
-                <ion-icon name="add-outline"></ion-icon>
-                <span>Nuevo</span>
-            </button>
-        </div>
-
-        <nav class="navegacion">
-            <ul>
-                <li>
-                    <a id="inbox" href="#">
-                        <ion-icon name="desktop-outline"></ion-icon>
-                        <span>Equipos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <ion-icon name="cube"></ion-icon>
-                        <span>Parametros</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <ion-icon name="document-text-outline"></ion-icon>
-                        <span>Reportes</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <ion-icon name="archive"></ion-icon>
-                        <span>Eq. en Bodega</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div>
-            <div class="linea"></div>
-            <div class="modo-oscuro">
-                <div class="info">
-                    <ion-icon name="moon-outline"></ion-icon>
-                    <span>Drak Mode</span>
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-menu-line nav__burger"></i>
+                    <i class="ri-close-line nav__close"></i>
                 </div>
-                <div class="switch">
-                    <div class="base">
-                        <div class="circulo">
+            </div>
 
+            <!--=============== NAV MENU ===============-->
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">Registro</a></li>
+
+                    <!--=============== DROPDOWN 1 ===============-->
+                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
+
+                    <li><a href="#" class="nav__link">Reportes</a></li>
+
+                    <!--=============== DROPDOWN 2 ===============-->
+                    <li class="dropdown__item">
+                        <div class="nav__link">
+                            Users <i class="ri-arrow-down-s-line dropdown__arrow"></i>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="usuario">
-                <img src="./assets/profile-pic.jpg" alt="">
-                <div class="info-usuario">
-                    <div class="nombre-email">
-                        <span class="nombre">Usuario</span>
-                        <span class="email">usuer03@gmail.com</span>
-                    </div>
-                    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                </div>
-            </div>
-        </div>
+                        <ul class="dropdown__menu">
+                            <li>
+                                <a href="#" class="dropdown__link">
+                                    <i class="ri-user-line"></i> Profiles
+                                </a>
+                            </li>
 
-    </div>
+                            <li>
+                                <a href="#" class="dropdown__link">
+                                    <i class="ri-lock-line"></i> Accounts
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="dropdown__link">
+                                    <i class="ri-message-3-line"></i> Messages
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
     <main>
-        <h1>Contenido</h1>
-        <table class="parametrosTable">
+         <table class="parametros">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>ID</th>
                     <th>Parametro</th>
-                    <th>Editar</th>
-                    <th>Borrar</th>
+                    <th>Editar Param.</th>
+                    <th>Eliminar Param.</th>
                 </tr>
             </thead>
-            <tbody id="searchMarcas"><!-- Aquí se insertarán los resultados -->
+            <tbody id="">
             </tbody>
         </table>
     </main>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="./js/parametro.js"></script>
 </body>
 
