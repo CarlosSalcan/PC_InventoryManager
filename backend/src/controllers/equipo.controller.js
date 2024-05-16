@@ -123,35 +123,32 @@ const equipoController = {
         }
     },
 
-    obtenerDatosCPU: async (req, res) => {
+    obtenerDatosComponentes: async (req, res) => {
         try {
-            const { codEquipo } = req.params;
-
-            const query = `SELECT * FROM cpu_equipo WHERE cod_equipo = ?`;
+            const { tabla, codEquipo } = req.params;
+            const query = `SELECT * FROM ${tabla} WHERE cod_equipo = ?`;
             const results = await new Promise((resolve, reject) => {
                 connection.query(query, [codEquipo], (error, results, fields) => {
                     if (error) {
                         reject(error);
                         return;
                     }
-
                     resolve(results);
+                    //console.log("SERVIDOR: ",results)
                 });
             });
-
+    
             if (results.length === 0) {
-                res.status(404).json({ success: false, message: 'No se encontraron datos del CPU para el equipo especificado' });
+                res.status(404).json({ success: false, message: `No se encontraron datos para ${tabla} del equipo especificado` });
                 return;
             }
-
-            res.json({ success: true, cpu: results[0] });
+    
+            res.json({ success: true, [tabla]: results[0] });
         } catch (error) {
-            console.error('Error al obtener datos del CPU:', error);
+            console.error(`Error al obtener datos de ${tabla}:`, error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
     }
-
 };
 
 module.exports = equipoController;
-

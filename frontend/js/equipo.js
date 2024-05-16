@@ -26,7 +26,10 @@ async function mostrarContenidoTabla() {
                                                                                 '${equipo.serv_depar}', 
                                                                                 '${equipo.nom_custodio}', 
                                                                                 '${equipo.nom_usua}'), 
-                                                                    mostrarVentanaEmergente('modal1')">Editar Equipo</button></td>
+                                                                    mostrarVentanaEmergente('modal1')">Editar Equipo</button>
+                            </td>
+                            <td><button id="openModalBtn" onclick="obtenerDatosTabla('mouse','${equipo.cod_equipo}'),mostrarVentanaEmergente('modal6')">Editar Parametros</button>
+                            </td>
                         </tr>`;
             }).join('');
             resultsElement.innerHTML = `<table>${html}</table>`;
@@ -178,18 +181,100 @@ Nuevo Custodio: LIBRE`);
     }
 }
 
-async function datosCPU(codEquipo) {
+function mostrarDatosCPU(cpu) {
+    document.getElementById('nombreHost').value = cpu.nom_hots;
+    document.getElementById('nomUsuario').value = cpu.nom_usuario;
+    document.getElementById('generacion').value = cpu.ip_equipo;
+
+    document.getElementById('poseeAntivirus').value = cpu.antivirus;
+    document.getElementById('antivirusCPU').value = cpu.nom_antivirus;
+    document.getElementById('verAntivirus').value = cpu.ver_antivirus;
+
+    document.getElementById('tecCPU').textContent = cpu.nom_usua;
+    document.getElementById('codigoCPU').value = cpu.cod_cpu;
+    document.getElementById('codigoEqCPU').value = cpu.cod_equipo;
+    document.getElementById('codigoticsCPU').value = cpu.cod_tics_cpu;
+    document.getElementById('marcasCPU').value = cpu.mar_cpu;
+
+    document.getElementById('numSerieCPU').value = cpu.ser_cpu;
+    document.getElementById('Mainboard').value = cpu.tar_madre;
+    document.getElementById('procesador').value = cpu.procesador;
+    document.getElementById('velocidadProce').value = cpu.velocidad;
+    document.getElementById('ram').value = cpu.memoria;
+    document.getElementById('hdd').value = cpu.tam_hdd;
+    document.getElementById('disOpticos').value = cpu.disp_optico;
+
+    document.getElementById('sisOperativo').value = cpu.sis_ope;
+    document.getElementById('office').value = cpu.office;
+
+    document.getElementById('condicionCPU').value = cpu.con_cpu;
+    document.getElementById('observacionTxt').value = cpu.observacion;
+
+    // Marcar los checkboxes según los datos recibidos
+    document.getElementById('redFija').checked = cpu.red_fija === 'SI';
+    document.getElementById('redInalam').checked = cpu.red_inalam === 'SI';
+    document.getElementById('bluetooth').checked = cpu.bluetooth === 'SI';
+    document.getElementById('lectorTarjeta').checked = cpu.lec_tarjeta === 'SI';
+}
+
+function mostrarDatosMTR(mtr) {
+    document.getElementById('codigoMTR').value = mtr.cod_monitor;
+    document.getElementById('codigoticsMTR').value = mtr.cod_tics_monitor;
+    document.getElementById('codigoEqMTR').value = mtr.cod_equipo;
+    document.getElementById('tecMTR').textContent = mtr.nom_usua;
+    document.getElementById('marcasMTR').value = mtr.mar_monitor;
+    document.getElementById('modeloMTR').value = mtr.mod_monitor;
+    document.getElementById('tamanoMTR').value = mtr.tam_monitor;
+    document.getElementById('serieMTR').value = mtr.ser_monitor;
+    document.getElementById('condicionMTR').value = mtr.con_monitor;
+    document.getElementById('estadoMTR').value = mtr.est_monitor;
+    document.getElementById('observacionTxtM').value = mtr.observacion;
+}
+
+function mostrarDatosTCD(tcd) {
+    document.getElementById('codigoTCD').value = tcd.cod_teclado;
+    document.getElementById('codigoticsTCD').value = tcd.cod_tics_teclado;
+    document.getElementById('codigoEqTCD').value = tcd.cod_equipo;
+    document.getElementById('tecTCD').textContent = tcd.nom_usua;
+    document.getElementById('marcasTCD').value = tcd.mar_teclado;
+    document.getElementById('puertoTCD').value = tcd.puerto;
+    document.getElementById('tipoTCD').value = tcd.tip_teclado;
+    document.getElementById('serieTCD').value = tcd.ser_teclado;
+    document.getElementById('modeloTCD').value = tcd.mod_teclado;
+    document.getElementById('condicionTCD').value = tcd.con_teclado;
+    document.getElementById('estadoTCD').value = tcd.est_teclado;
+    document.getElementById('observacionTxtTCD').value = tcd.obs_teclado;
+}
+
+function mostrarDatosMS(ms) {
+    document.getElementById('codigoMS').value = ms.cod_mouse;
+    document.getElementById('codigoticsMS').value = ms.cod_tics_mouse;
+    document.getElementById('codigoEqMS').value = ms.cod_equipo;
+    document.getElementById('tecMS').textContent = ms.nom_usua;
+    document.getElementById('marcasMS').value = ms.mar_mouse;
+    document.getElementById('puertoMS').value = ms.puerto;
+    document.getElementById('tipoMS').value = ms.tip_mouse;
+    document.getElementById('serieMS').value = ms.ser_mouse;
+    document.getElementById('modeloMS').value = ms.mod_mouse;
+    document.getElementById('condicionMS').value = ms.con_mouse;
+    document.getElementById('estadoMS').value = ms.est_mouse;
+    document.getElementById('observacionTxtMS').value = ms.obs_mouse;
+}
+
+async function obtenerDatosTabla(tabla, codEquipo) {
     try {
-        const response = await fetch(`http://localhost:3000/tics/cpu/${codEquipo}`);
+        const response = await fetch(`http://localhost:3000/tics/datosTabla/${tabla}/${codEquipo}`);
         const data = await response.json();
 
         if (data.success) {
-            mostrarDatosCPU(data.cpu);
+            const componente = data[tabla]; // Acceder correctamente a los datos del componente
+            console.log("Datos de la tabla:", componente); // Imprimir los datos en la consola para verificar
+            mostrarDatosMS(componente);
         } else {
-            console.error('Error al obtener los datos del CPU:(', data.message);
+            console.error('Error al obtener datos de la tabla:', data.message);
         }
     } catch (error) {
-        console.error('Error al obtener los datos del CPU:', error);
+        console.error('Error al obtener datos de la tabla:', error);
     }
 }
 

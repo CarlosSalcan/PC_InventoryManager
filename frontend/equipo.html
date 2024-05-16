@@ -140,9 +140,10 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
             <form id="editarEquipo" class="formulario">
-                <h2>Edición de Equipo</h2>
+                <h2>Edición de Equipos</h2>
                 <span class="close" onclick="cerrarVentanaEmergente('modal1')">&times;</span>
 
+                <!-- Información básica -->
                 <div class="horizontal-container">
                     <div>
                         <label for="fecha">Fch. Entrega:</label>
@@ -156,45 +157,427 @@
                         <label for="cod">ID Equipo:</label>
                         <span id="cod"></span>
                     </div>
+                    <!-- <div class="button">
+                        <button type="button" class="edit-button" onclick="mostrarVentanaEmergente('modal3')">Edit.
+                            Params</button>
+                    </div> -->
                 </div>
 
-                <!-- <h3>Información del Equipo:</h3> -->
+                <!-- Titular y Código Almacén -->
                 <div class="horizontal-container">
                     <div>
-                        <label for="tipoEquipo">Tipo de Equipo</label>
-                        <select id="tipoEquipo" class="options"></select>
+                        <label for="titularEq">Titular:</label>
+                        <input type="text" id="titularEq" name="titularEq" class="newData">
                     </div>
                     <div>
-                        <label for="codAlmacen">Código Almacén</label>
+                        <label for="codAlmacen">Código Almacén:</label>
                         <input type="text" id="codAlmacen" name="codAlmacen" class="newData">
                     </div>
                 </div>
 
-                <!-- <h3>Usuario y Ubicación:</h3> -->
+                <!-- Tipo de Equipo, Piso Ubicado, y Departamento -->
                 <div class="horizontal-container">
                     <div>
-                        <label for="titularEq">Titular</label>
-                        <input type="text" id="titularEq" name="titularEq" class="newData">
+                        <label for="tipoEquipo">Tipo de Equipo:</label>
+                        <select id="tipoEquipo" class="options"></select>
                     </div>
                     <div>
-                        <label for="pisos">Piso Ubicado</label>
+                        <label for="pisos">Piso Ubicado:</label>
                         <select id="pisos" class="options"></select>
                     </div>
+                </div>
+                <div class="horizontal-container">
                     <div>
-                        <label for="departamentos">Dep./Serv.</label>
+                        <label for="departamentos">Dep./Serv.:</label>
                         <select id="departamentos" class="options"></select>
                     </div>
                 </div>
 
+                <!-- Botones -->
                 <div class="buttons">
                     <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Cambios</button>
                     <button type="button" class="orange-button" onclick="enviarBodega()">Enviar a Bodega</button>
                     <button type="button" class="red-button" onclick="">Eliminar Equipo</button>
                 </div>
-
             </form>
+        </div>
+    </div>
 
-            <div class="componentes"></div>
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <form id="editarCPU" class="formulario">
+                <h2>Edición de Parametros</h2>
+                <span class="close" onclick="cerrarVentanaEmergente('modal3')">&times;</span>
+                <div class="form-section">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="codigoticsCPU">Cod. Tics CPU:</label>
+                            <input type="text" id="codigoticsCPU" name="codigoticsCPU" class="newData">
+
+                            <label for="nombreHost">Host:</label>
+                            <input type="text" id="nombreHost" name="nombreHost" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="numSerieCPU">No. Serie CPU:</label>
+                            <input type="text" id="numSerieCPU" name="numSerieCPU" class="newData">
+
+                            <label for="nomUsuario">Usuario:</label>
+                            <input type="text" id="nomUsuario" name="nomUsuario" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="codigoCPU">Cod. CPU:</label>
+                            <input type="text" id="codigoCPU" name="codigoCPU" class="newData">
+
+                            <label for="poseeAntivirus">Posee Antivirus:</label>
+                            <select id="poseeAntivirus" class="options">
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="codigoEqCPU">Cod. Eq:</label>
+                            <input type="text" id="codigoEqCPU" name="codigoEqCPU" class="newData">
+
+                            <label for="tecCPU">Técnico:</label>
+                            <span id="tecCPU" name="tecCPU"></span>
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="marcasCPU">Marca CPU:</label>
+                            <select id="marcasCPU" class="options"></select>
+
+                            <label for="condicionCPU">Condicion CPU:</label>
+                            <select id="condicionCPU" class="options"></select>
+
+                            <label for="estadoCPU">Estado CPU:</label>
+                            <select id="estadoCPU" class="options"></select>
+
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="redFija" name="redFija">
+                                <label for="redFija">Red Fija</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="redInalam" name="redInalam">
+                                <label for="redInalam">Red Inalámbrica</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div>
+                                <label for="Mainboard">Mainboard:</label>
+                                <input type="text" id="Mainboard" name="Mainboard" class="newData">
+                            </div>
+
+                            <div>
+                                <label for="office">Office:</label>
+                                <select id="office" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="sisOperativo">Sistema Operativo:</label>
+                                <select id="sisOperativo" class="options"></select>
+                            </div>
+
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="bluetooth" name="bluetooth">
+                                <label for="bluetooth">Bluetooth</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="lectorTarjeta">
+                                <label for="lectorTarjeta">Lector de Tarjeta</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="procesador">Procesador:</label>
+                            <select id="procesador" class="options"></select>
+
+                            <label for="velocidadProce">Velocidad Procesador:</label>
+                            <input type="text" id="velocidadProce" name="velocidadProce" class="newData">
+
+                            <label for="generacion">Generación:</label>
+                            <input type="text" id="generacion" name="generacion" class="newData">
+
+                            <label for="disOpticos">Dispositivo Optico:</label>
+                            <select id="disOpticos" class="options"></select>
+                        </div>
+
+                        <div>
+                            <label for="ram">Memoria RAM:</label>
+                            <select id="ram" class="options"></select>
+
+                            <label for="hdd">Almacenamineto HDD:</label>
+                            <select id="hdd" class="options"></select>
+
+                            <label for="antivirusCPU">Nombre Antivirus:</label>
+                            <select id="antivirusCPU" class="options"></select>
+
+                            <label for="verAntivirus">Versión Antivirus:</label>
+                            <input type="text" id="verAntivirus" name="verAntivirus" class="newData">
+                        </div>
+                    </div>
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="observacionTxt">Observación:</label>
+                            <textarea id="observacionTxt" rows="3" cols="73"></textarea>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="green-button" onclick="guardarCambiosCPU()">Guardar
+                                Cambios</button>
+                            <button type="button" class="red-button" onclick="">Eliminar CPU</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <form id="editarMTR" class="formulario">
+                <h2>Edición de Parametros</h2>
+                <span class="close" onclick="cerrarVentanaEmergente('modal4')">&times;</span>
+                <div class="form-section">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="codigoMTR">Cod. Monitor:</label>
+                            <input type="text" id="codigoMTR" name="codigoMTR" class="newData">
+
+                            <label for="codigoticsMTR">Cod. Tics Monitor:</label>
+                            <input type="text" id="codigoticsMTR" name="codigoticsMTR" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="codigoEqMTR">Cod. Eq:</label>
+                            <input type="text" id="codigoEqMTR" name="codigoEqMTR" class="newData">
+
+                            <label for="tecMTR">Tecnico MTR:</label>
+                            <span id="tecMTR" name="tecMTR"></span>
+
+
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <div>
+                                <label for="marcasMTR">Marca MONITOR:</label>
+                                <select id="marcasMTR" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="modeloMTR">Modelo MONITOR:</label>
+                                <input type="text" id="modeloMTR" name="modeloMTR" class="newData">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="tamanoMTR">Tamaño MONITOR:</label>
+                            <select id="tamanoMTR" class="options"></select>
+
+                            <label for="serieMTR">No. Serie MONITOR:</label>
+                            <input type="text" id="serieMTR" name="serieMTR" class="newData">
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="condicionMTR">Condicion MONITOR:</label>
+                            <select id="condicionMTR" class="options"></select>
+                        </div>
+
+                        <div>
+                            <label for="estadoMTR">Estado MONITOR:</label>
+                            <select id="estadoMTR" class="options"></select>
+                        </div>
+                    </div>
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="observacionTxtM">Observación:</label>
+                            <textarea id="observacionTxtM" rows="4" cols="50"></textarea>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="green-button" onclick="guardarCambiosMTR()">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal5" class="modal">
+        <div class="modal-content">
+            <form id="editarTCD" class="formulario">
+                <h2>Edición de Parametros</h2>
+                <span class="close" onclick="cerrarVentanaEmergente('modal5')">&times;</span>
+                <div class="form-section">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="codigoTCD">Cod. Teclado:</label>
+                            <input type="text" id="codigoTCD" name="codigoTCD" class="newData">
+
+                            <label for="codigoticsTCD">Cod. Tics Teclado:</label>
+                            <input type="text" id="codigoticsTCD" name="codigoticsTCD" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="codigoEqTCD">Cod. Eq:</label>
+                            <input type="text" id="codigoEqTCD" name="codigoEqMTR" class="newData">
+
+                            <label for="tecTCD">Tecnico Teclado:</label>
+                            <span id="tecTCD" name="tecTCD"></span>
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <div>
+                                <label for="marcasTCD">Marca Teclado:</label>
+                                <select id="marcasTCD" class="options"></select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="puertoTCD">Puerto Teclado:</label>
+                            <select id="puertoTCD" class="options"></select>
+                        </div>
+
+                        <div>
+                            <label for="tipoTCD">Tipo Teclado:</label>
+                            <select id="tipoTCD" class="options"></select>
+                        </div>
+                    </div>
+
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="serieTCD">No. Serie Teclado:</label>
+                            <input type="text" id="serieTCD" name="serieTCD" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="modeloTCD">Modelo Teclado:</label>
+                            <input type="text" id="modeloTCD" name="modeloTCD" class="newData">
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="condicionTCD">Condicion Teclado:</label>
+                            <select id="condicionTCD" class="options"></select>
+                        </div>
+
+                        <div>
+                            <label for="estadoTCD">Estado Teclado:</label>
+                            <select id="estadoTCD" class="options"></select>
+                        </div>
+                    </div>
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="observacionTxtTCD">Observación:</label>
+                            <textarea id="observacionTxtTCD" rows="4" cols="35"></textarea>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="green-button" onclick="guardarCambiosTCD()">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <form id="editarMS" class="formulario">
+                <h2>Edición de Parametros</h2>
+                <span class="close" onclick="cerrarVentanaEmergente('modal6')">&times;</span>
+                <div class="form-section">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="codigoMS">Cod. Mouse:</label>
+                            <input type="text" id="codigoMS" name="codigoMS" class="newData">
+
+                            <label for="codigoticsMS">Cod. Tics Mouse:</label>
+                            <input type="text" id="codigoticsMS" name="codigoticsMS" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="codigoEqMS">Cod. Eq:</label>
+                            <input type="text" id="codigoEqMS" name="codigoEqMS" class="newData">
+
+                            <label for="tecMS">Tecnico Mouse:</label>
+                            <span id="tecMS" name="tecMS"></span>
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <div>
+                                <label for="marcasMS">Marca Mouse:</label>
+                                <select id="marcasMS" class="options"></select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="puertoMS">Puerto Mouse:</label>
+                            <select id="puertoMS" class="options"></select>
+                        </div>
+
+                        <div>
+                            <label for="tipoMS">Tipo Mouse:</label>
+                            <select id="tipoMS" class="options"></select>
+                        </div>
+                    </div>
+
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="serieMS">No. Serie Mouse:</label>
+                            <input type="text" id="serieMS" name="serieMS" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="modeloMS">Modelo Mouse:</label>
+                            <input type="text" id="modeloMS" name="modeloMS" class="newData">
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="condicionMS">Condicion Mouse:</label>
+                            <select id="condicionMS" class="options"></select>
+                        </div>
+
+                        <div>
+                            <label for="estadoMS">Estado Mouse:</label>
+                            <select id="estadoMS" class="options"></select>
+                        </div>
+                    </div>
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="observacionTxtMS">Observación:</label>
+                            <textarea id="observacionTxtMS" rows="4" cols="35"></textarea>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="green-button" onclick="guardarCambiosTCD()">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
