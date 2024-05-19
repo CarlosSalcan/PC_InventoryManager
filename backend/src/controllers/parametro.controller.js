@@ -95,6 +95,49 @@ const parametroController = {
             console.error('Error al modificar el nombre del registro:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
+    },
+
+    nuevoParametro: async (req, res) => {
+        try {
+            const { tabla } = req.params;
+            const { nombreParametro } = req.body;
+            let nombreCampo;
+
+            // Asignar el nombre del campo en la base de datos según la tabla seleccionada
+            if (tabla === 'param_antivirus') {
+                nombreCampo = 'nom_antivirus';
+            } else if (tabla === 'param_marcas') {
+                nombreCampo = 'nom_marca';
+            } else if (tabla === 'param_memoria') {
+                nombreCampo = 'nom_memoria';
+            } else if (tabla === 'param_office') {
+                nombreCampo = 'nom_office';
+            } else if (tabla === 'param_procesador') {
+                nombreCampo = 'nom_proce';
+            } else if (tabla === 'param_servicio') {
+                nombreCampo = 'nom_servicio';
+            } else if (tabla === 'param_sis_ope') {
+                nombreCampo = 'nom_sis_ope';
+            } else if (tabla === 'param_tamano_hdd') {
+                nombreCampo = 'nom_tam_hdd';
+            }
+
+            const query = `INSERT INTO ${tabla} (${nombreCampo}) VALUES (?)`;
+            const result = await new Promise((resolve, reject) => {
+                connection.query(query, [nombreParametro], (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve(results);
+                });
+            });
+
+            res.json({ success: true, message: `Parámetro insertado correctamente en la tabla ${tabla}` });
+        } catch (error) {
+            console.error('Error al insertar nuevo parámetro:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     }
 }
 module.exports = parametroController;

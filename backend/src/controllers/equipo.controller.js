@@ -134,21 +134,193 @@ const equipoController = {
                         return;
                     }
                     resolve(results);
-                    //console.log("SERVIDOR: ",results)
+                    console.log("SERVIDOR: ",query)
                 });
             });
-    
+
             if (results.length === 0) {
                 res.status(404).json({ success: false, message: `No se encontraron datos para ${tabla} del equipo especificado` });
                 return;
             }
-    
+
             res.json({ success: true, [tabla]: results[0] });
         } catch (error) {
             console.error(`Error al obtener datos de ${tabla}:`, error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
-    }
+    },
+
+    guardarCambiosCPU: async (req, res) => {
+        try {
+            const { codCPU, codEquipo, codTicsCPU, nuevaMarcaCPU, nuevoNumSerieCPU, nuevoMainboard, nuevoProcesador, nuevaVelocidadProcesador, nuevaRam, nuevoHDD, nuevoDispositivoOptico, redFija, redInalambrica, bluetooth, lectorTarjeta, sistemaOperativo, office, antivirus, nomAntivirus, verAntivirus, nomHost, nomUsuario, generacion, condicion, estado, observacion } = req.body;
+            const query = `UPDATE cpu_equipo
+                SET 
+                    cod_cpu = ?, 
+                    cod_equipo = ?,
+                    cod_tics_cpu = ?,
+                    mar_cpu = ?, 
+                    ser_cpu = ?, 
+                    tar_madre = ?, 
+                    procesador = ?, 
+                    velocidad = ?, 
+                    memoria = ?, 
+                    tam_hdd = ?, 
+                    disp_optico = ?,
+                    red_fija = ?,
+                    red_inalam = ?,
+                    bluetooth = ?,
+                    lec_tarjeta = ?,
+                    sis_ope = ?,
+                    office = ?,
+                    antivirus = ?,
+                    nom_antivirus = ?,
+                    ver_antivirus = ?,
+                    nom_hots = ?,
+                    nom_usuario = ?,
+                    ip_equipo = ?,
+                    con_cpu = ?,
+                    est_cpu = ?,
+                    observacion = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [codCPU, codEquipo, codTicsCPU, nuevaMarcaCPU, nuevoNumSerieCPU, nuevoMainboard, nuevoProcesador, nuevaVelocidadProcesador, nuevaRam, nuevoHDD, nuevoDispositivoOptico, redFija, redInalambrica, bluetooth, lectorTarjeta, sistemaOperativo, office, antivirus, nomAntivirus, verAntivirus, nomHost, nomUsuario, generacion, condicion, estado, observacion, codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al guardar cambios en el CPU:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el CPU:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarCambiosMTR: async (req, res) => {
+        try {
+            const { codMTR, codEquipo, codTicsMTR, nuevaMarcaMTR, nuevoModeloMTR, nuevoNumSerieMTR, nuevoTamMTR, nuevaConMTR, nuevoEstMTR, nuevaObservacionMTR } = req.body;
+            const query = `UPDATE monitor
+                SET 
+                    cod_monitor = ?,
+                    cod_equipo = ?,
+                    cod_tics_monitor = ?,
+                    mar_monitor = ?,
+                    mod_monitor = ?,
+                    ser_monitor = ?,
+                    tam_monitor = ?,
+                    con_monitor = ?,
+                    est_monitor = ?,
+                    observacion = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [codMTR, codEquipo, codTicsMTR, nuevaMarcaMTR, nuevoModeloMTR, nuevoNumSerieMTR, nuevoTamMTR, nuevaConMTR, nuevoEstMTR, nuevaObservacionMTR, codEquipo], (error, results, fields) => {
+                console.log('CONSULTA UPDATE VER: ',query);
+                if (error) {
+                    console.error('Error al guardar cambios en el MTR:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente MTR' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el MTR:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarCambiosTCD: async (req, res) => {
+        try {
+            const { codTCD, codEquipo, codTicsTCD, nuevaMarcaTCD, nuevoModeloTCD, nuevoNumSerieMTR, nuevoTipoTCD, nuevoPuertoTCD, nuevaConTCD, nuevoEstTCD, nuevaObservacionTCD } = req.body;
+            const query = `UPDATE teclado
+                SET
+                    cod_teclado = ?,
+                    cod_equipo = ?, 
+                    cod_tics_teclado = ?,
+                    mar_teclado = ?,
+                    mod_teclado = ?,
+                    ser_teclado = ?,
+                    tip_teclado = ?,
+                    pue_teclado = ?,
+                    con_teclado = ?,
+                    est_teclado = ?,
+                    obs_teclado = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [codTCD, codEquipo, codTicsTCD, nuevaMarcaTCD, nuevoModeloTCD, nuevoNumSerieMTR, nuevoTipoTCD, nuevoPuertoTCD, nuevaConTCD, nuevoEstTCD, nuevaObservacionTCD, codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al guardar cambios en el TCD:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente TCD' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el TCD:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarCambiosMS: async (req, res) => {
+        try {
+            const { codMS, codEquipo, codTicsMS, nuevaMarcaMS, nuevoModeloMS, nuevoNumSerieMS, nuevoTipoMS, nuevoPuertoMS, nuevaConMS, nuevoEstMS, nuevaObservacionMS } = req.body;
+            const query = `UPDATE mouse
+                SET
+                    cod_mouse = ?,
+                    cod_equipo = ?, 
+                    cod_tics_mouse = ?,
+                    mar_mouse = ?,
+                    mod_mouse = ?,
+                    ser_mouse = ?,
+                    tip_mouse = ?,
+                    pue_mouse = ?,
+                    con_mouse = ?,
+                    est_mouse = ?,
+                    obs_mouse = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [ codMS, codEquipo, codTicsMS, nuevaMarcaMS, nuevoModeloMS, nuevoNumSerieMS, nuevoTipoMS, nuevoPuertoMS, nuevaConMS, nuevoEstMS, nuevaObservacionMS, codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al guardar cambios en el MS:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor ms' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente MS' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el MS:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    getNextCodEquipo: async (req, res) => {
+        try {
+            const query = `SHOW TABLE STATUS LIKE 'equipo'`;
+            const results = await new Promise((resolve, reject) => {
+                connection.query(query, (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve(results);
+                });
+            });
+    
+            if (results.length > 0) {
+                const nextCodEquipo = results[0].Auto_increment;
+                res.json({ success: true, nextCodEquipo });
+            } else {
+                res.status(404).json({ success: false, message: 'No se pudo obtener el próximo código de equipo' });
+            }
+        } catch (error) {
+            console.error('Error al obtener el próximo código de equipo:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    }    
 };
 
 module.exports = equipoController;

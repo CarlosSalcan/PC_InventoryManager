@@ -21,6 +21,7 @@ function mostrarVentanaEmergente(idModal) {
   window.addEventListener("click", function (event) {
     if (event.target === modal) {
       modal.style.display = "none";
+      limpiezaArea();
     }
   });
 }
@@ -28,6 +29,43 @@ function mostrarVentanaEmergente(idModal) {
 function cerrarVentanaEmergente(idModal) {
   var modal = document.getElementById(idModal);
   modal.style.display = "none";
+  limpiezaArea();
+}
+
+//-------------------------------> MOSTRAR FORMULARIO SEGUN LA ELECCION
+function mostrarFormulario(formulario) {
+  const forms = document.querySelectorAll('.form-container');
+  const codEquipo = document.getElementById('cod').textContent;
+
+  forms.forEach(form => form.style.display = 'none');
+
+  switch (formulario) {
+    case 'cpu':
+      document.getElementById('formCPU').style.display = 'block';
+      obtenerDatosTabla('cpu_equipo', codEquipo);
+      break;
+    case 'monitor':
+      document.getElementById('formMonitor').style.display = 'block';
+      obtenerDatosTabla('monitor', codEquipo);
+      break;
+    case 'teclado':
+      document.getElementById('formTeclado').style.display = 'block';
+      obtenerDatosTabla('teclado', codEquipo);
+      break;
+    case 'mouse':
+      document.getElementById('formMouse').style.display = 'block';
+      obtenerDatosTabla('mouse', codEquipo);
+      break;
+    default:
+      break;
+  }
+}
+
+//-------------------------------> LIMPIAR AREA DONDE SE MUESTRAN FORMULARIOS
+function limpiezaArea() {
+  // Limpia el área donde se muestran los formularios
+  const forms = document.querySelectorAll('.form-container');
+  forms.forEach(form => form.style.display = 'none');
 }
 
 //-------------------------------> MENSAJE DURANTE Nseg
