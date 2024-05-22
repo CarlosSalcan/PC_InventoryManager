@@ -90,3 +90,4 @@ function mostrarMensaje(mensaje, duracion) {
     window.location.reload()
   }, duracion);
 }
+

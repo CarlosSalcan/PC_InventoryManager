@@ -38,20 +38,44 @@
         </nav>
     </header>
 
-    <main>
-        <table class="parametros">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Parametro</th>
-                    <th>Editar Param.</th>
-                    <th>Eliminar Param.</th>
-                </tr>
-            </thead>
-            <tbody id="">
-            </tbody>
-        </table>
-    </main>
+    <div class="contenedor">
+        <!-- Menu Parametros -->
+        <div class="sidebar">
+            <button type="button" class="edit-button" onclick="mostrarFormularios('antivirus')">Antivirus</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('marcas')">Marcas</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('memoria_ram')">Memoria Ram</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('office')">Office</button>
+        </div>
+
+        <main class="main-content">
+            <div id="content"></div>
+
+            <!-- Tablas de parámetros (ocultas por defecto) -->
+            <table id="tabla1" class="parametros" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Antivirus</th>
+                        <th>Editar Param.</th>
+                        <th>Eliminar Param.</th>
+                    </tr>
+                </thead>
+                <tbody id="searchAntivirus"></tbody>
+            </table>
+
+            <table id="tabla2" class="parametros" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Marca</th>
+                        <th>Editar Param.</th>
+                        <th>Eliminar Param.</th>
+                    </tr>
+                </thead>
+                <tbody id="searchMarcas"></tbody>
+            </table>
+        </main>
+    </div>
 
     <script src="./js/parametro.js"></script>
 </body>

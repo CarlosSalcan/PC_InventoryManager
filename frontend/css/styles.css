@@ -344,17 +344,21 @@ a {
     border-collapse: collapse;
 }
 
-.equipos thead {
+.equipos thead,
+.parametros thead {
     background-color: #38a5d8;
 }
 
 .equipos th,
-.equipos td {
+.equipos td,
+.parametros th,
+.parametros td {
     padding: 10px;
     border: 1px solid #87adb8;
 }
 
-.equipos tbody tr:hover {
+.equipos tbody tr:hover,
+.parametros tbody tr:hover {
     background-color: #a6c3d4;
 }
 
@@ -437,7 +441,7 @@ a {
 
 
 .modal-content-wide {
-    width: 90%; 
+    width: 90%;
 }
 
 
@@ -559,7 +563,8 @@ h3 {
     flex-wrap: wrap;
 }
 
-.buttons button {
+.buttons button,
+.sidebar button {
     flex: 1 0 10%;
     padding: 5px 10px;
     font-size: 16px;
@@ -641,7 +646,7 @@ textarea {
 
 
 
-.form-container{
+.form-container {
     margin: 15px 0 0 0;
 }
 
@@ -726,7 +731,8 @@ textarea {
 
 
 
-.registro, .registroEq {
+.registro,
+.registroEq {
     margin: 0 auto;
     padding: 20px;
     border-radius: 15px;
@@ -738,6 +744,7 @@ textarea {
 .registro {
     max-width: 500px;
 }
+
 .registroEq {
     max-width: 1430px;
 }
@@ -751,4 +758,44 @@ textarea {
     font-weight: bold;
     margin-bottom: 5px;
     font-weight: bold;
+}
+
+
+
+
+
+
+.contenedor {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    overflow-y: auto;
+    overflow-y: auto;
+    background-color: hsl(220, 24%, 12%);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .edit-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 4px;
+}
+
+.sidebar .edit-button:hover {
+    background-color: #2980b9;
+}
+
+.parametros {
+    display: none;
+    border-collapse: collapse;
 }
