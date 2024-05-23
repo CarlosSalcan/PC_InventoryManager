@@ -12,7 +12,7 @@ async function mostrarParametros(tabla, campoCodigo, campoNombre, campoMostrar) 
                         <tr>
                             <td>${parametro[campoCodigo]}</td>
                             <td>${parametro[campoNombre]}</td>
-                            <td><button class="edit-btn" onclick="mostrarVentanaEdit('modal2', '${parametro[campoCodigo]}', '${parametro[campoNombre]}')">
+                            <td><button class="edit-btn" onclick="mostrarVentanaEdit('modal2', '${parametro[campoCodigo]}', '${parametro[campoNombre]}','${tabla}', '${campoNombre}')">
                                     Editar
                                 </button>
                             </td>
@@ -22,7 +22,6 @@ async function mostrarParametros(tabla, campoCodigo, campoNombre, campoMostrar) 
                             </td>
                         </tr>`;
             });
-
             // Inserta la tabla de parámetros en el elemento con ID "searchParam"
             document.getElementById(campoMostrar).innerHTML = `<table>${html}</table>`;
         } else {
@@ -33,7 +32,6 @@ async function mostrarParametros(tabla, campoCodigo, campoNombre, campoMostrar) 
         console.error('Error al cargar los parámetros:', error);
     }
 }
-
 
 function mostrarFormularios(formulario) {
     const forms = document.querySelectorAll('.parametros');
@@ -56,23 +54,26 @@ function mostrarFormularios(formulario) {
             document.getElementById('tabla4').style.display = 'block';
             mostrarParametros('param_office', 'cod_office', 'nom_office', 'searchOffice');
             break;
+        case 'procesador':
+            document.getElementById('tabla5').style.display = 'block';
+            mostrarParametros('param_procesador', 'cod_proce', 'nom_proce', 'searchProce');
+            break;
+        case 'servicios':
+            document.getElementById('tabla6').style.display = 'block';
+            mostrarParametros('param_servicio', 'cod_servicio', 'nom_servicio', 'searchServDep');
+            break;
+        case 'sisOpe':
+            document.getElementById('tabla7').style.display = 'block';
+            mostrarParametros('param_sis_ope', 'cod_sis_ope', 'nom_sis_ope', 'searchSisOpe');
+            break;
+        case 'disco':
+            document.getElementById('tabla8').style.display = 'block';
+            mostrarParametros('param_tamano_hdd', 'cod_tam_hdd', 'nom_tam_hdd', 'searchDiscoDuro');
+            break;
         default:
             break;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 async function eliminarParam(tabla, campo, valor, name) {
     try {
@@ -100,13 +101,12 @@ async function eliminarParam(tabla, campo, valor, name) {
     }
 }
 
-function mostrarVentanaEdit(modalId, codigo, nombre) {
-    const codigoElement = document.getElementById('codigo');
-    const nombreElement = document.getElementById('nombreActual');
-
-    codigoElement.textContent = codigo;
-    nombreElement.textContent = nombre;
-
+function mostrarVentanaEdit(modalId, codigo, nombre, tabla, campo) {
+    document.getElementById('codigo').textContent = codigo;
+    document.getElementById('nombreActual').textContent = nombre;
+    document.getElementById('tablaMostrada').textContent = tabla;
+    document.getElementById('campoMostrado').textContent = campo;
+    // Mostrar la ventana emergente
     document.getElementById(modalId).style.display = 'block';
 }
 
@@ -131,11 +131,6 @@ async function modificarNombre(tabla, campo, valor, nuevoNombre) {
         console.error('Error al editar el nombre del parámetro:', error);
     }
 }
-
-// LLAMADO PRINCIPAL A FUNCIONES
-window.onload = function () {
-    mostrarParametros('param_marcas', 'cod_marcas', 'nom_marcas', 'searchAntivirus')
-};
 
 
 /* <div id="modal2" class="modal">

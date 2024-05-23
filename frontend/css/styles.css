@@ -62,7 +62,6 @@ a {
 
 /*-------------------------------> HEADER */
 .header {
-    /* position: fixed; */
     top: 0;
     left: 0;
     width: 100%;
@@ -766,29 +765,35 @@ textarea {
 
 
 .contenedor {
-    display: flex;
     width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F0F0;
+    display: flex;
 }
 
-.sidebar {
-    width: 250px;
-    overflow-y: auto;
-    overflow-y: auto;
+.contenedor .sidebar {
+    z-index: 1; /*********************************/
+    width: 20%;
+    padding: 20px;
     background-color: hsl(220, 24%, 12%);
-    padding: 10px;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
 
-.sidebar .edit-button {
+.sidebar button {
     background-color: #3498db;
     color: white;
     border: none;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
-    text-align: left;
-    border-radius: 4px;
+    text-align: center;
+    border-radius: 10px;
 }
 
 .sidebar .edit-button:hover {
@@ -796,6 +801,19 @@ textarea {
 }
 
 .parametros {
+    width: 100%;
     display: none;
     border-collapse: collapse;
+}
+
+.btns {
+    width: 20%;
+    padding: 20px;
+    background-color: #007bff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }

@@ -1,18 +1,18 @@
 //-------------------------------> MENU RESPONSIVE
-const showMenu = (toggleId, navId) =>{
+const showMenu = (toggleId, navId) => {
   const toggle = document.getElementById(toggleId),
-        nav = document.getElementById(navId)
+    nav = document.getElementById(navId)
 
-  toggle.addEventListener('click', () =>{
-      // Add show-menu class to nav menu
-      nav.classList.toggle('show-menu')
+  toggle.addEventListener('click', () => {
+    // Add show-menu class to nav menu
+    nav.classList.toggle('show-menu')
 
-      // Add show-icon to show and hide the menu icon
-      toggle.classList.toggle('show-icon')
+    // Add show-icon to show and hide the menu icon
+    toggle.classList.toggle('show-icon')
   })
 }
 
-showMenu('nav-toggle','nav-menu')
+showMenu('nav-toggle', 'nav-menu')
 
 //-------------------------------> VENTANA EMERGENTE
 function mostrarVentanaEmergente(idModal) {
@@ -65,7 +65,6 @@ function mostrarFormulario(formulario) {
 
 //-------------------------------> LIMPIAR AREA DONDE SE MUESTRAN FORMULARIOS
 function limpiezaArea() {
-  // Limpia el área donde se muestran los formularios
   const forms = document.querySelectorAll('.form-container');
   forms.forEach(form => form.style.display = 'none');
 }
@@ -90,4 +89,3 @@ function mostrarMensaje(mensaje, duracion) {
     window.location.reload()
   }, duracion);
 }
-

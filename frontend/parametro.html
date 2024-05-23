@@ -38,43 +38,157 @@
         </nav>
     </header>
 
-    <div class="contenedor">
-        <!-- Menu Parametros -->
+    <main class="contenedor">
         <div class="sidebar">
             <button type="button" class="edit-button" onclick="mostrarFormularios('antivirus')">Antivirus</button>
             <button type="button" class="edit-button" onclick="mostrarFormularios('marcas')">Marcas</button>
             <button type="button" class="edit-button" onclick="mostrarFormularios('memoria_ram')">Memoria Ram</button>
             <button type="button" class="edit-button" onclick="mostrarFormularios('office')">Office</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('procesador')">Procesador</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('servicios')">Serv. / Dep.</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('sisOpe')">Sistema Operativo</button>
+            <button type="button" class="edit-button" onclick="mostrarFormularios('disco')">Disco Duro</button>
         </div>
 
-        <main class="main-content">
-            <div id="content"></div>
+        <div class="contenedor2">
+            <div id="content" class="content"></div>
+        <!-- Tablas de parámetros (ocultas por defecto) -->
+        <table id="tabla1" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Antivirus</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="searchAntivirus"></tbody>
+        </table>
 
-            <!-- Tablas de parámetros (ocultas por defecto) -->
-            <table id="tabla1" class="parametros" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Antivirus</th>
-                        <th>Editar Param.</th>
-                        <th>Eliminar Param.</th>
-                    </tr>
-                </thead>
-                <tbody id="searchAntivirus"></tbody>
-            </table>
+        <table id="tabla2" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="searchMarcas"></tbody>
+        </table>
 
-            <table id="tabla2" class="parametros" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Marca</th>
-                        <th>Editar Param.</th>
-                        <th>Eliminar Param.</th>
-                    </tr>
-                </thead>
-                <tbody id="searchMarcas"></tbody>
-            </table>
-        </main>
+        <table id="tabla3" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Memoria Ram</th>
+                    <th>Editar</th>
+                    <th>Eliminar </th>
+                </tr>
+            </thead>
+            <tbody id="searchMemoriaRam"></tbody>
+        </table>
+
+        <table id="tabla4" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Office</th>
+                    <th>Editar</th>
+                    <th>Eliminar </th>
+                </tr>
+            </thead>
+            <tbody id="searchOffice"></tbody>
+        </table>
+
+        <table id="tabla5" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Procesador</th>
+                    <th>Editar</th>
+                    <th>Eliminar </th>
+                </tr>
+            </thead>
+            <tbody id="searchProce"></tbody>
+        </table>
+
+        <table id="tabla6" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Serv. / Dep.</th>
+                    <th>Editar</th>
+                    <th>Eliminar </th>
+                </tr>
+            </thead>
+            <tbody id="searchServDep"></tbody>
+        </table>
+
+        <table id="tabla7" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sistema Operativo</th>
+                    <th>Editar</th>
+                    <th>Eliminar </th>
+                </tr>
+            </thead>
+            <tbody id="searchSisOpe"></tbody>
+        </table>
+
+        <table id="tabla8" class="parametros" style="display: none;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Disco Duro</th>
+                    <th>Editar</th>
+                    <th>Eliminar </th>
+                </tr>
+            </thead>
+            <tbody id="searchDiscoDuro"></tbody>
+        </table>
+        </div>
+    </main>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarVentanaEmergente('modal2')">&times;</span>
+            <h2>Edicion de Parametros</h2>
+
+            <!-- Agrega el nombre de la tabla y el campo -->
+            <div style="display: none;">
+                <p>Tabla: <span id="tablaMostrada"></span></p>
+                <p>Campo: <span id="campoMostrado"></span></p>
+            </div>
+
+            <form id="editarParametroForm" class="formulario">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="codigo">Código:</label>
+                        <span id="codigo" name="codigo"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreActual">Nombre Actual:</label>
+                        <span id="nombreActual" name="nombreActual"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newNombre">Nuevo Nombre:</label>
+                    <input type="text" id="newNombre" name="newNombre" class="newData" required>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="green-button"
+                        onclick="modificarNombre(document.getElementById('tablaMostrada').textContent, document.getElementById('campoMostrado').textContent, document.getElementById('nombreActual').textContent, document.getElementById('newNombre').value)">
+                        Guardar
+                    </button>
+                    <button type="button" class="cancel-button" onclick="cerrarVentanaEmergente('modal2')">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="./js/parametro.js"></script>
