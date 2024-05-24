@@ -341,6 +341,7 @@ a {
 .equipos {
     width: 100%;
     border-collapse: collapse;
+    text-align: center;
 }
 
 .equipos thead,
@@ -377,10 +378,8 @@ a {
     width: 150px;
 }
 
-/* Alineación del contenido de col */
-.equipos td:nth-child(5) {
-    text-align: center;
-}
+
+
 
 
 .edit-btn {

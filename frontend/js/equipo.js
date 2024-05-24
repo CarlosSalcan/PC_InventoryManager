@@ -1,8 +1,13 @@
-async function mostrarContenidoTabla() {
-    const resultsElement = document.getElementById('results');
+async function mostrarContenidoTabla(tipEquipo, mostrar, modalID) {
+    const resultsElement = document.getElementById(mostrar);
+
+    if (!resultsElement) {
+        console.error(`Tabla with ID '${mostrar}' not encontrada`);
+        return;
+    }
 
     try {
-        const response = await fetch(`http://localhost:3000/tics/equipos`);
+        const response = await fetch(`http://localhost:3000/tics/equipos?tip_equipo=${tipEquipo}`);
         const data = await response.json();
 
         if (data.success && data.equipos.length > 0) {
@@ -27,10 +32,9 @@ async function mostrarContenidoTabla() {
                                                             '${equipo.serv_depar}', 
                                                             '${equipo.nom_custodio}', 
                                                             '${equipo.nom_usua}'), 
-                                                mostrarVentanaEmergente('modal1')">Equipo</button>
+                                                mostrarVentanaEmergente('${modalID}')">Equipo</button>
                             </td>
                         </tr>`;
-                //obtenerDatosTabla('cpu_equipo','${equipo.cod_equipo}')
             }).join('');
             resultsElement.innerHTML = `<table>${html}</table>`;
         } else {
@@ -42,6 +46,13 @@ async function mostrarContenidoTabla() {
 }
 
 async function getOptionsFrom(tabla, campo, selectId) {
+    const select = document.getElementById(selectId);
+
+    if (!select) {
+        console.error(`Element with ID '${selectId}' not found`);
+        return;
+    }
+
     try {
         const response = await fetch(`http://localhost:3000/tics/options/${tabla}/${campo}`);
         const data = await response.json();
@@ -49,6 +60,11 @@ async function getOptionsFrom(tabla, campo, selectId) {
         if (data.success) {
             const options = data.options;
             const select = document.getElementById(selectId);
+
+            if (!select) {
+                console.error(`Element with ID '${selectId}' no encontrado`);
+                return;
+            }
 
             // Limpiar select antes de agregar nuevas opciones
             select.innerHTML = "";
@@ -70,11 +86,6 @@ async function getOptionsFrom(tabla, campo, selectId) {
 }
 
 function llenarCampos(codEquipo, fecha, codAlmacen, tipoEquipo, piso, departamento, titular, tecnico) {
-    //-------------------------------> Selects Equipo
-    getOptionsFrom('param_tipo_equipo', 'nom_te', 'tipoEquipo');
-    getOptionsFrom('param_piso', 'nom_piso', 'pisos');
-    getOptionsFrom('param_servicio', 'nom_servicio', 'departamentos');
-
     document.getElementById('cod').textContent = codEquipo;
     document.getElementById('fecha').textContent = fecha;
     document.getElementById('codAlmacen').value = codAlmacen;
@@ -184,9 +195,19 @@ async function enviarBodega() {
     }
 }
 
+function marcarCheckBoxes(data, mapping) {
+    Object.keys(mapping).forEach(key => {
+        const checkbox = document.getElementById(mapping[key]);
+        if (checkbox) {
+            checkbox.checked = data[key] === 'SI';
+        }
+    });
+}
+
+//-------------------------------> PC DE ESCRITORIO
 function actualizarCamposAntivirus() {
     const nuevoPoseeAntivirus = document.getElementById('poseeAntivirus').value;
-    const antivirusCPU = document.getElementById('antivirusCPU');
+    const antivirusCPU = document.getElementById('antivirus');
     const verAntivirus = document.getElementById('verAntivirus');
 
     if (nuevoPoseeAntivirus === 'NO') {
@@ -195,19 +216,12 @@ function actualizarCamposAntivirus() {
     }
 }
 
-function marcarCheckBoxes(cpu) {
-    const redFijaCheckbox = document.getElementById('redFija');
-    redFijaCheckbox.checked = cpu.red_fija === 'SI';
-
-    const redInalamCheckbox = document.getElementById('redInalam');
-    redInalamCheckbox.checked = cpu.red_inalam === 'SI';
-
-    const bluetoothCheckbox = document.getElementById('bluetooth');
-    bluetoothCheckbox.checked = cpu.bluetooth === 'SI';
-
-    const lectorTarjetaCheckbox = document.getElementById('lectorTarjeta');
-    lectorTarjetaCheckbox.checked = cpu.lec_tarjeta === 'SI';
-}
+const escritorioMapping = {
+    red_fija: 'redFija',
+    red_inalam: 'redInalam',
+    bluetooth: 'bluetooth',
+    lec_tarjeta: 'lectorTarjeta'
+};
 
 function mostrarDatosCPU(cpu) {
     document.getElementById('nombreHost').value = cpu.nom_hots;
@@ -215,17 +229,17 @@ function mostrarDatosCPU(cpu) {
     document.getElementById('generacion').value = cpu.ip_equipo;
 
     document.getElementById('poseeAntivirus').value = cpu.antivirus;
-    document.getElementById('antivirusCPU').value = cpu.nom_antivirus;
+    document.getElementById('antivirus').value = cpu.nom_antivirus;
     document.getElementById('verAntivirus').value = cpu.ver_antivirus;
     actualizarCamposAntivirus();
 
-    document.getElementById('tecCPU').textContent = cpu.nom_usua;
-    document.getElementById('codigoCPU').textContent = cpu.cod_cpu;
-    document.getElementById('codigoEqCPU').value = cpu.cod_equipo;
-    document.getElementById('codigoticsCPU').value = cpu.cod_tics_cpu;
-    document.getElementById('marcasCPU').value = cpu.mar_cpu;
+    document.getElementById('tec').textContent = cpu.nom_usua;
+    document.getElementById('codigo').textContent = cpu.cod_cpu;
+    document.getElementById('codigoEq').value = cpu.cod_equipo;
+    document.getElementById('codigotics').value = cpu.cod_tics_cpu;
+    document.getElementById('marcas').value = cpu.mar_cpu;
 
-    document.getElementById('numSerieCPU').value = cpu.ser_cpu;
+    document.getElementById('numSerie').value = cpu.ser_cpu;
     document.getElementById('Mainboard').value = cpu.tar_madre;
     document.getElementById('procesador').value = cpu.procesador;
     document.getElementById('velocidadProce').value = cpu.velocidad;
@@ -236,10 +250,10 @@ function mostrarDatosCPU(cpu) {
     document.getElementById('sisOperativo').value = cpu.sis_ope;
     document.getElementById('office').value = cpu.office;
 
-    document.getElementById('condicionCPU').value = cpu.con_cpu;
+    document.getElementById('condicion').value = cpu.con_cpu;
     document.getElementById('observacionTxt').value = cpu.observacion;
 
-    marcarCheckBoxes(cpu);
+    marcarCheckBoxes(cpu, escritorioMapping);
 }
 
 function mostrarDatosMTR(mtr) {
@@ -303,6 +317,8 @@ async function obtenerDatosTabla(tabla, codEquipo) {
                 mostrarDatosMS(componente);
             } else if (tabla === "teclado") {
                 mostrarDatosTCD(componente);
+            } else if (tabla === "laptop") {
+                mostrarDatosPLT(componente);
             } else {
                 console.error("Tabla desconocida:", tabla);
             }
@@ -310,17 +326,17 @@ async function obtenerDatosTabla(tabla, codEquipo) {
             console.error('Error al obtener datos de la tabla:', data.message);
         }
     } catch (error) {
-        console.error('Error al obtener datos de la tabla:', error);
+        console.error('Error al obtener datos de la tablaa:', error);
     }
 }
 
 async function guardarCambiosCPU() {
     try {
-        const codCPU = document.getElementById('codigoCPU').textContent;
-        const codEquipo = document.getElementById('codigoEqCPU').value;
-        const codTicsCPU = document.getElementById('codigoticsCPU').value;
-        const nuevaMarcaCPU = document.getElementById('marcasCPU').value;
-        const nuevoNumSerieCPU = document.getElementById('numSerieCPU').value;
+        const codCPU = document.getElementById('codigo').textContent;
+        const codEquipo = document.getElementById('codigoEq').value;
+        const codTicsCPU = document.getElementById('codigotics').value;
+        const nuevaMarcaCPU = document.getElementById('marcas').value;
+        const nuevoNumSerieCPU = document.getElementById('numSerie').value;
         const nuevoMainboard = document.getElementById('Mainboard').value;
         const nuevoProcesador = document.getElementById('procesador').value;
         const nuevaVelocidadProcesador = document.getElementById('velocidadProce').value;
@@ -338,14 +354,20 @@ async function guardarCambiosCPU() {
         const nuevoOffice = document.getElementById('office').value;
 
         const nuevoPoseeAntivirus = document.getElementById('poseeAntivirus').value;
-        const nuevoNomAntivirus = document.getElementById('antivirusCPU').value;
-        const nuevaVerAntivirus = document.getElementById('verAntivirus').value;
+        let nuevoNomAntivirus = document.getElementById('antivirus').value;
+        let nuevaVerAntivirus = document.getElementById('verAntivirus').value;
+
+        // Verifica si nuevoPoseeAntivirus es "NO" y ajusta los campos correspondientes
+        if (nuevoPoseeAntivirus === 'NO') {
+            nuevoNomAntivirus = '';
+            nuevaVerAntivirus = '';
+        }
 
         const nuevoHost = document.getElementById('nombreHost').value;
         const nuevoUsuario = document.getElementById('nomUsuario').value;
         const nuevaGeneracion = document.getElementById('generacion').value;
-        const nuevaCondicion = document.getElementById('condicionCPU').value;
-        const nuevoEstado = document.getElementById('estadoCPU').value;
+        const nuevaCondicion = document.getElementById('condicion').value;
+        const nuevoEstado = document.getElementById('estado').value;
         const nuevaObservacion = document.getElementById('observacionTxt').value;
 
         // Envía los datos al servidor
@@ -540,38 +562,158 @@ async function guardarCambiosMS() {
     }
 }
 
+//-------------------------------> PORTATIL
+const portatilMapping = {
+    red_laptop: 'redFija',
+    wif_laptop: 'redInalam',
+    blu_laptop: 'bluetooth',
+    tar_laptop: 'lectorTarjeta'
+};
+
+function mostrarDatosPLT(plt) {
+    document.getElementById('nombreHost').value = plt.nom_hots_laptop;
+    document.getElementById('nomUsuario').value = plt.nom_usuario_laptop;
+
+    document.getElementById('poseeAntivirus').value = plt.antv_laptop;
+    document.getElementById('antivirus').value = plt.nom_antv_laptop;
+    document.getElementById('verAntivirus').value = plt.ver_antv_laptop;
+    actualizarCamposAntivirus();
+
+    document.getElementById('tec').textContent = plt.nom_usua;
+    document.getElementById('codigo').textContent = plt.cod_laptop;
+    document.getElementById('codigoEq').value = plt.cod_equipo;
+    document.getElementById('codigotics').value = plt.cod_tics_laptop;
+    document.getElementById('marcas').value = plt.mar_laptop;
+
+    document.getElementById('numSerie').value = plt.ser_laptop;
+    document.getElementById('modelo').value = plt.mod_laptop;
+    document.getElementById('procesador').value = plt.pro_laptop;
+    document.getElementById('velocidadProce').value = plt.vel_laptop;
+    document.getElementById('ram').value = plt.mem_laptop;
+    document.getElementById('hdd').value = plt.hdd_laptop;
+    document.getElementById('disOpticos').value = plt.dop_laptop;
+
+    document.getElementById('sisOperativo').value = plt.so_laptop;
+    document.getElementById('office').value = plt.off_laptop;
+
+    document.getElementById('estado').value = plt.est_laptop;
+    document.getElementById('observacionTxt').value = plt.observacion_laptop;
+
+    marcarCheckBoxes(plt, portatilMapping);
+}
+
+async function guardarCambiosPTL() {
+    try {
+        const cod = document.getElementById('codigo').textContent;
+        const codEquipo = document.getElementById('codigoEq').value;
+        const codTics = document.getElementById('codigotics').value;
+        const nuevaMarca = document.getElementById('marcas').value;
+        const nuevoNumSerie = document.getElementById('numSerie').value;
+        const nuevoModelo = document.getElementById('modelo').value;
+        const nuevoProcesador = document.getElementById('procesador').value;
+        const nuevaVelocidad = document.getElementById('velocidadProce').value;
+        const nuevaRam = document.getElementById('ram').value;
+        const nuevoHDD = document.getElementById('hdd').value;
+        const nuevoDispOptico = document.getElementById('disOpticos').value;
+
+        // Verifica el estado de los checkboxs
+        const redFija = document.getElementById('redFija').checked ? 'SI' : 'NO';
+        const redInalambrica = document.getElementById('redInalam').checked ? 'SI' : 'NO';
+        const bluethooth = document.getElementById('bluetooth').checked ? 'SI' : 'NO';
+        const lectorTarjeta = document.getElementById('lectorTarjeta').checked ? 'SI' : 'NO';
+
+        const nuevoSisOperativo = document.getElementById('sisOperativo').value;
+        const nuevoOffice = document.getElementById('office').value;
+
+        const nuevoPoseeAntivirus = document.getElementById('poseeAntivirus').value;
+        let nuevoNomAntivirus = document.getElementById('antivirus').value;
+        let nuevaVerAntivirus = document.getElementById('verAntivirus').value;
+
+        const nuevoHost = document.getElementById('nombreHost').value;
+        const nuevoUsuario = document.getElementById('nomUsuario').value;
+        const nuevoEstado = document.getElementById('estado').value;
+        const nuevaObservacion = document.getElementById('observacionTxt').value;
+
+        // Verifica si nuevoPoseeAntivirus es "NO" y ajusta los campos correspondientes
+        if (nuevoPoseeAntivirus === 'NO') {
+            nuevoNomAntivirus = '';
+            nuevaVerAntivirus = '';
+        }
+
+        // Envía los datos al servidor
+        const response = await fetch(`http://localhost:3000/tics/laptopModificada/${codEquipo}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codPTL: cod, codEquipo: codEquipo, codTics: codTics, marca: nuevaMarca,
+                modelo: nuevoModelo, serie: nuevoNumSerie, procesador: nuevoProcesador,
+                velocidad: nuevaVelocidad, memoria: nuevaRam, hdd: nuevoHDD, dispOpt: nuevoDispOptico,
+                red: redFija, wifi: redInalambrica, bluethooth: bluethooth, tarjeta: lectorTarjeta,
+                sisOpe: nuevoSisOperativo, office: nuevoOffice, antivirus: nuevoPoseeAntivirus,
+                nomAnt: nuevoNomAntivirus, verAnt: nuevaVerAntivirus, host: nuevoHost, usuario: nuevoUsuario,
+                estado: nuevoEstado, observacion: nuevaObservacion
+            })
+        });
+
+        // Maneja la respuesta del servidor aquí
+        const data = await response.json();
+        if (data.success) {
+            console.log('Cambios guardados correctamente');
+        } else {
+            console.error('Error al guardar los cambios PTL:', data.message);
+        }
+    } catch (error) {
+        console.error('Error al guardar los cambios PTL:', error);
+    }
+}
+
+//-------------------------------> Funcion Principal
 document.addEventListener('DOMContentLoaded', async () => {
-    await mostrarContenidoTabla();
-    //-------------------------------> Selects CPU
-    getOptionsFrom('param_marcas', 'nom_marcas', 'marcasCPU');
-    getOptionsFrom('param_procesador', 'nom_proce', 'procesador');
-    getOptionsFrom('param_memoria', 'nom_memoria', 'ram');
-    getOptionsFrom('param_tamano_hdd', 'nom_tam_hdd', 'hdd');
-    getOptionsFrom('param_dis_opt', 'nom_dis_opt', 'disOpticos');
-    getOptionsFrom('param_sis_ope', 'nom_sis_ope', 'sisOperativo');
-    getOptionsFrom('param_office', 'nom_office', 'office');
-    getOptionsFrom('param_antivirus', 'nom_antivirus', 'antivirusCPU');
-    getOptionsFrom('param_condicion', 'nom_condicion', 'condicionCPU');
-    getOptionsFrom('param_estado', 'nom_estado', 'estadoCPU');
+    //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
+    if (document.getElementById('results')) {
+        mostrarContenidoTabla('Escritorio', 'results', 'modal1');
+    }
+    if (document.getElementById('resultsPortatil')) {
+        mostrarContenidoTabla('Portatil', 'resultsPortatil', 'modal4');
+    }
 
-    //-------------------------------> Selects MTR
-    getOptionsFrom('param_marcas', 'nom_marcas', 'marcasMTR');
-    getOptionsFrom('param_tamano_monitor', 'nom_tam_mon', 'tamanoMTR')
-    getOptionsFrom('param_condicion', 'nom_condicion', 'condicionMTR');
-    getOptionsFrom('param_estado', 'nom_estado', 'estadoMTR');
+    //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
+    const optionMappings = [
+        { table: 'param_tipo_equipo', field: 'nom_te', id: 'tipoEquipo' },
+        { table: 'param_piso', field: 'nom_piso', id: 'pisos' },
+        { table: 'param_servicio', field: 'nom_servicio', id: 'departamentos' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcas' },
+        { table: 'param_procesador', field: 'nom_proce', id: 'procesador' },
+        { table: 'param_memoria', field: 'nom_memoria', id: 'ram' },
+        { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hdd' },
+        { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticos' },
+        { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativo' },
+        { table: 'param_office', field: 'nom_office', id: 'office' },
+        { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirus' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicion' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estado' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMTR' },
+        { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMTR' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoMTR' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTCD' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoTCD' },
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCD' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTCD' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoTCD' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMS' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMS' },
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMS' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoMS' }
+    ];
 
-    //-------------------------------> Selects TCD
-    getOptionsFrom('param_marcas', 'nom_marcas', 'marcasTCD');
-    getOptionsFrom('param_puertos', 'nom_puerto', 'puertoTCD');
-    getOptionsFrom('param_tipo_mt', 'nom_tmt', 'tipoTCD');
-    getOptionsFrom('param_condicion', 'nom_condicion', 'condicionTCD');
-    getOptionsFrom('param_estado', 'nom_estado', 'estadoTCD');
-
-    //-------------------------------> Selects MS
-    getOptionsFrom('param_marcas', 'nom_marcas', 'marcasMS');
-    getOptionsFrom('param_puertos', 'nom_puerto', 'puertoMS');
-    getOptionsFrom('param_tipo_mt', 'nom_tmt', 'tipoMS');
-    getOptionsFrom('param_condicion', 'nom_condicion', 'condicionMS');
-    getOptionsFrom('param_estado', 'nom_estado', 'estadoMS');
+    optionMappings.forEach(mapping => {
+        if (document.getElementById(mapping.id)) {
+            getOptionsFrom(mapping.table, mapping.field, mapping.id);
+        }
+    });
 });
 

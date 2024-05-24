@@ -3,8 +3,11 @@ const connection = require('../connection');
 const equipoController = {
     getEquipos: async (req, res) => {
         try {
+            const { tip_equipo } = req.query;
+    
+            const query = `SELECT * FROM equipo WHERE tip_equipo = ?`;
             const equipos = await new Promise((resolve, reject) => {
-                connection.query(`SELECT * FROM equipo`, (error, results) => {
+                connection.query(query, [tip_equipo], (error, results) => {
                     if (error) {
                         reject(error);
                         return;
@@ -12,7 +15,7 @@ const equipoController = {
                     resolve(results);
                 });
             });
-
+    
             res.status(200).json({ success: true, equipos: equipos });
         } catch (error) {
             console.error('Error al obtener equipos:', error);
@@ -320,7 +323,53 @@ const equipoController = {
             console.error('Error al obtener el próximo código de equipo:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
-    }    
+    },
+
+    guardarCambiosLaptop: async (req, res) => {
+        try {
+            const { codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe,office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion} = req.body;
+            const query = `UPDATE laptop
+                SET 
+                    cod_laptop = ?, 
+                    cod_equipo = ?,
+                    cod_tics_laptop = ?,
+                    mar_laptop = ?,  
+                    mod_laptop = ?,
+                    ser_laptop = ?,
+                    pro_laptop = ?,
+                    vel_laptop = ?, 
+                    mem_laptop = ?, 
+                    hdd_laptop = ?, 
+                    dop_laptop = ?,
+                    red_laptop = ?,
+                    wif_laptop = ?,
+                    blu_laptop = ?,
+                    tar_laptop = ?,
+                    so_laptop = ?,
+                    off_laptop = ?,
+                    antv_laptop= ?,
+                    nom_antv_laptop = ?,
+                    ver_antv_laptop = ?,
+                    nom_hots_laptop = ?,
+                    nom_usuario_laptop = ?,
+                    est_laptop = ?,
+                    observacion_laptop = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe,office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion, codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al guardar cambios en el PLTS:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el PLTS:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    }
 };
 
 module.exports = equipoController;

@@ -58,6 +58,10 @@ function mostrarFormulario(formulario) {
       document.getElementById('formMouse').style.display = 'block';
       obtenerDatosTabla('mouse', codEquipo);
       break;
+    case 'laptop':
+      document.getElementById('formLaptop').style.display = 'block';
+      obtenerDatosTabla('laptop', codEquipo);
+      break;
     default:
       break;
   }

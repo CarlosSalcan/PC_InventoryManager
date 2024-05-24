@@ -22,6 +22,7 @@ router.get('/datosTabla/:tabla/:codEquipo', equipo.obtenerDatosComponentes);
 //--------------------------> Modificar Monitor
 //--------------------------> Modificar Teclado
 //--------------------------> Modificar Mouse
+//--------------------------> Modificar Laptop
 router.put('/editEquipos/:codEquipo', equipo.modificarEquipo);
 router.put('/enviarBodega/:id',equipo.enviarBodegaEquipo)
 router.put('/modificarNombre/:tabla/:campo/:valor/:nuevoNombre', parametro.editarNombreParametro);
@@ -29,6 +30,7 @@ router.put('/cpuModificado/:codEquipo', equipo.guardarCambiosCPU);
 router.put('/mtrModificado/:codEquipo', equipo.guardarCambiosMTR);
 router.put('/tcdModificado/:codEquipo', equipo.guardarCambiosTCD);
 router.put('/msModificado/:codEquipo', equipo.guardarCambiosMS);
+router.put('/laptopModificada/:codEquipo', equipo.guardarCambiosLaptop);
 
 //--------------------------> Agregar nuevo Parametro
 //--------------------------> Agregar nuevo Equipo
