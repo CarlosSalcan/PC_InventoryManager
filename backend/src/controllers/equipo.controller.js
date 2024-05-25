@@ -369,6 +369,71 @@ const equipoController = {
             console.error('Error al guardar cambios en el PLTS:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
+    },
+
+    guardarCambiosImpresora: async (req, res) => {
+        try {
+            const { codIMP, codEquipo, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion} = req.body;
+            const query = `UPDATE impresora
+                SET 
+                    cod_impresora = ?, 
+                    cod_equipo = ?,
+                    cod_tics_impresora = ?,
+                    mar_imp = ?,  
+                    mod_imp = ?,
+                    ser_imp = ?,
+                    tip_imp = ?,
+                    pue_imp = ?,
+                    con_imp = ?,
+                    ip_equipo_imp = ?,
+                    est_imp = ?,
+                    obs_imp = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [codIMP, codEquipo, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion, codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al guardar cambios en el IMPS:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el IMP:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarCambiosTelefono: async (req, res) => {
+        try {
+            const { codTLF, codEquipo, codTics, marca, modelo, serie, condicion, estado, observacion } = req.body;
+            const query = `UPDATE telefono
+                SET 
+                    cod_telf = ?, 
+                    cod_equipo = ?,
+                    cod_tics_telf = ?,
+                    mar_telf = ?,  
+                    mod_telf = ?,
+                    ser_telf = ?,
+                    con_telf = ?,
+                    est_telf = ?,
+                    obs_telf = ?
+                WHERE cod_equipo = ?`;
+            // Ejecuta la consulta con los datos recibidos
+            connection.query(query, [codTLF, codEquipo, codTics, marca, modelo, serie, condicion, estado, observacion, codEquipo], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al guardar cambios en el TLFS:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                // Envía una respuesta exitosa
+                res.json({ success: true, message: 'Cambios guardados correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar cambios en el TLF:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     }
 };
 

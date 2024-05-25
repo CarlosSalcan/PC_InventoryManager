@@ -62,6 +62,14 @@ function mostrarFormulario(formulario) {
       document.getElementById('formLaptop').style.display = 'block';
       obtenerDatosTabla('laptop', codEquipo);
       break;
+    case 'impresora':
+      document.getElementById('formImpresora').style.display = 'block';
+      obtenerDatosTabla('impresora', codEquipo);
+      break;
+    case 'telefono':
+      document.getElementById('formTelefono').style.display = 'block';
+      obtenerDatosTabla('telefono', codEquipo);
+      break;
     default:
       break;
   }

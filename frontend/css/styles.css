@@ -453,7 +453,6 @@ a {
 .form-group {
     flex: 1;
     margin-right: 20px;
-    /* Espacio entre los elementos */
 }
 
 .form-group label {
@@ -526,7 +525,6 @@ h3 {
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    /* Asegura que el padding no afecte al ancho */
     margin-bottom: 10px;
 }
 
@@ -773,20 +771,21 @@ textarea {
 
 .contenedor .sidebar {
     z-index: 1; /*********************************/
-    width: 20%;
+    width: 25%;
     padding: 20px;
     background-color: hsl(220, 24%, 12%);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     position: sticky;
     top: 0;
     height: 100vh;
+    overflow-y: auto;
 }
 
 .sidebar button {
     background-color: #3498db;
     color: white;
+    font-size: 20px;
     border: none;
     padding: 10px;
     margin-bottom: 10px;

@@ -319,7 +319,11 @@ async function obtenerDatosTabla(tabla, codEquipo) {
                 mostrarDatosTCD(componente);
             } else if (tabla === "laptop") {
                 mostrarDatosPLT(componente);
-            } else {
+            } else if (tabla === "impresora") {
+                mostrarDatosIMP(componente);
+            }else if (tabla === "telefono") {
+                mostrarDatosTLF(componente);
+            }else {
                 console.error("Tabla desconocida:", tabla);
             }
         } else {
@@ -669,6 +673,114 @@ async function guardarCambiosPTL() {
     }
 }
 
+//-------------------------------> IMPRESORA
+function mostrarDatosIMP(imp) {
+    document.getElementById('tec').textContent = imp.nom_usua;
+    document.getElementById('codigo').textContent = imp.cod_impresora;
+    document.getElementById('codigoEq').value = imp.cod_equipo;
+    document.getElementById('codigotics').value = imp.cod_tics_impresora;
+    document.getElementById('marcas').value = imp.mar_imp;
+    document.getElementById('numSerie').value = imp.ser_imp;
+    document.getElementById('tipoIMP').value = imp.tip_imp;
+    document.getElementById('puerto').value = imp.pue_imp;
+    document.getElementById('modelo').value = imp.mod_imp;
+    document.getElementById('estado').value = imp.est_imp;
+    document.getElementById('condicion').value = imp.con_imp;
+    document.getElementById('observacionTxt').value = imp.obs_imp;
+}
+
+async function guardarCambiosIMP() {
+    try {
+        const cod = document.getElementById('codigo').textContent;
+        const codEquipo = document.getElementById('codigoEq').value;
+        const codTics = document.getElementById('codigotics').value;
+        const nuevoNumSerie = document.getElementById('numSerie').value;
+        const nuevaCondi = document.getElementById('condicion').value;
+        const nuevoEstado = document.getElementById('estado').value;
+        const nuevoTipo = document.getElementById('tipoIMP').value;
+        const nuevoModelo = document.getElementById('modelo').value;
+        const nuevaMarca = document.getElementById('marcas').value;
+        const nuevoPuerto = document.getElementById('puerto').value;
+
+        const nuevaIP = document.getElementById('ip').value;
+        const nuevaObservacion = document.getElementById('observacionTxt').value;
+
+        // Envía los datos al servidor
+        const response = await fetch(`http://localhost:3000/tics/impresoraModificada/${codEquipo}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codIMP:cod, codEquipo:codEquipo, codTics:codTics, marca:nuevaMarca, modelo:nuevoModelo, 
+                serie:nuevoNumSerie, tipo: nuevoTipo, puerto: nuevoPuerto, condicion:nuevaCondi, ip: nuevaIP, 
+                estado: nuevoEstado, observacion:nuevaObservacion
+            })
+        });
+
+        // Maneja la respuesta del servidor aquí
+        const data = await response.json();
+        if (data.success) {
+            console.log('Cambios guardados correctamente');
+        } else {
+            console.error('Error al guardar los cambios IMP:', data.message);
+        }
+    } catch (error) {
+        console.error('Error al guardar los cambios IMP:', error);
+    }
+}
+
+//-------------------------------> TELEFONO
+function mostrarDatosTLF(imp) {
+    document.getElementById('tec').textContent = imp.nom_usua;
+    document.getElementById('codigo').textContent = imp.cod_telf;
+    document.getElementById('codigoEq').value = imp.cod_equipo;
+    document.getElementById('codigotics').value = imp.cod_tics_telf;
+    document.getElementById('marcas').value = imp.mar_telf;
+    document.getElementById('numSerie').value = imp.ser_telf;
+    document.getElementById('modelo').value = imp.mod_telf;
+    document.getElementById('estado').value = imp.est_telf;
+    document.getElementById('condicion').value = imp.con_telf;
+    document.getElementById('observacionTxt').value = imp.obs_telf;
+}
+
+async function guardarCambiosTLF() {
+    try {
+        const cod = document.getElementById('codigo').textContent;
+        const codEquipo = document.getElementById('codigoEq').value;
+        const codTics = document.getElementById('codigotics').value;
+        const nuevoNumSerie = document.getElementById('numSerie').value;
+        const nuevaCondi = document.getElementById('condicion').value;
+        const nuevoEstado = document.getElementById('estado').value;
+        const nuevoModelo = document.getElementById('modelo').value;
+        const nuevaMarca = document.getElementById('marcas').value;
+
+        const nuevaObservacion = document.getElementById('observacionTxt').value;
+
+        // Envía los datos al servidor
+        const response = await fetch(`http://localhost:3000/tics/telefonoModificado/${codEquipo}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codTLF: cod, codEquipo: codEquipo, codTics:codTics, marca: nuevaMarca, modelo:nuevoModelo, 
+                serie: nuevoNumSerie, condicion:nuevaCondi, estado:nuevoEstado, observacion:nuevaObservacion
+            })
+        });
+
+        // Maneja la respuesta del servidor aquí
+        const data = await response.json();
+        if (data.success) {
+            console.log('Cambios guardados correctamente');
+        } else {
+            console.error('Error al guardar los cambios TLF:', data.message);
+        }
+    } catch (error) {
+        console.error('Error al guardar los cambios TLF:', error);
+    }
+}
+
 //-------------------------------> Funcion Principal
 document.addEventListener('DOMContentLoaded', async () => {
     //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
@@ -678,36 +790,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('resultsPortatil')) {
         mostrarContenidoTabla('Portatil', 'resultsPortatil', 'modal4');
     }
+    if (document.getElementById('resultsImpresora')) {
+        mostrarContenidoTabla('Impresora', 'resultsImpresora', 'modal5');
+    }
+    if (document.getElementById('resultsTelefono')) {
+        mostrarContenidoTabla('Teléfono', 'resultsTelefono', 'modal6');
+    }
 
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
     const optionMappings = [
-        { table: 'param_tipo_equipo', field: 'nom_te', id: 'tipoEquipo' },
-        { table: 'param_piso', field: 'nom_piso', id: 'pisos' },
-        { table: 'param_servicio', field: 'nom_servicio', id: 'departamentos' },
-        { table: 'param_marcas', field: 'nom_marcas', id: 'marcas' },
-        { table: 'param_procesador', field: 'nom_proce', id: 'procesador' },
-        { table: 'param_memoria', field: 'nom_memoria', id: 'ram' },
-        { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hdd' },
-        { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticos' },
-        { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativo' },
-        { table: 'param_office', field: 'nom_office', id: 'office' },
-        { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirus' },
-        { table: 'param_condicion', field: 'nom_condicion', id: 'condicion' },
-        { table: 'param_estado', field: 'nom_estado', id: 'estado' },
-        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMTR' },
-        { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMTR' },
-        { table: 'param_estado', field: 'nom_estado', id: 'estadoMTR' },
-        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTCD' },
-        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoTCD' },
-        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCD' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTCD' },
-        { table: 'param_estado', field: 'nom_estado', id: 'estadoTCD' },
-        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMS' },
-        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMS' },
-        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMS' },
-        { table: 'param_estado', field: 'nom_estado', id: 'estadoMS' }
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicion' },
+
+        { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativo' },
+        { table: 'param_procesador', field: 'nom_proce', id: 'procesador' },
+        { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticos' },
+        { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hdd' },
+        { table: 'param_office', field: 'nom_office', id: 'office' },
+        { table: 'param_memoria', field: 'nom_memoria', id: 'ram' },
+
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMTR' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTCD' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMS' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcas' },
+
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoMTR' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoTCD' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoMS' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estado' },
+
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoTCD' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMS' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puerto' },
+
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCD' },
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
+
+        { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
+        { table: 'param_servicio', field: 'nom_servicio', id: 'departamentos' },
+        { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirus' },
+        { table: 'param_tipo_impresora', field: 'nom_ti', id: 'tipoIMP' },
+        { table: 'param_tipo_equipo', field: 'nom_te', id: 'tipoEquipo' },
+        { table: 'param_piso', field: 'nom_piso', id: 'pisos' }
     ];
 
     optionMappings.forEach(mapping => {

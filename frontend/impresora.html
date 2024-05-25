@@ -67,9 +67,177 @@
     </header>
 
     <main>
-        <h1>Impresora</h1>
+        <table class="equipos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Cod. Almacén</th>
+                    <th>Tipo Eq.</th>
+                    <th>Piso Ubic.</th>
+                    <th>Dep. / Serv.</th>
+                    <th>Titular</th>
+                    <th>Técnico</th>
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody id="resultsImpresora">
+            </tbody>
+        </table>
     </main>
 
+    <div id="modal5" class="modal">
+        <div class="modal-content">
+            <form id="editarEquipo" class="formulario">
+                <h2>Ventan Prueba</h2>
+                <span class="close" onclick="cerrarVentanaEmergente('modal5')">&times;</span>
+                <div class="horizontal-container">
+                    <div>
+                        <div>
+                            <label for="cod">ID Equipo:</label>
+                            <span id="cod"></span>
+                        </div><br>
+                        <div>
+                            <label for="fecha">Fch. Entrega:</label>
+                            <span id="fecha"></span>
+                        </div><br>
+                        <div>
+                            <label for="tecnico">Técnico:</label>
+                            <span id="tecnico"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="codAlmacen">Código Almacén:</label>
+                            <input type="text" id="codAlmacen" name="codAlmacen" class="newData">
+                        </div>
+                        <div>
+                            <label for="pisos">Piso Ubicado:</label>
+                            <select id="pisos" class="options"></select>
+                        </div>
+                    </div>
+
+                    <div colspan="2">
+                        <div>
+                            <label for="titularEq">Titular:</label>
+                            <input type="text" id="titularEq" name="titularEq" class="newData">
+                        </div>
+                        <div>
+                            <label for="departamentos">Dep./Serv.:</label>
+                            <select id="departamentos" class="options"></select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="tipoEquipo">Tipo de Equipo:</label>
+                            <select id="tipoEquipo" class="options"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="horizontal-container">
+                    <!-- Botones -->
+                    <div class="buttons">
+                        <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Equipo</button>
+                        <button type="button" class="orange-button" onclick="enviarBodega()">Guardar Bodega</button>
+                        <button type="button" class="green-button"
+                            onclick="mostrarFormulario('impresora')">Modificar</button>
+                        <!-- <button type="button" class="red-button" onclick="">Eliminar Equipo</button> -->
+                    </div>
+                </div>
+            </form>
+
+            <hr class="lines">
+            <div id="formImpresora" class="form-container" style="display: none;">
+                <h2>Edición de Componente PTL</h2>
+                <form id="editarImpresora" class="formulario">
+                    <div class="form-section">
+                        <div class="horizontal-container">
+                            <div>
+                                <div>
+                                    <label for="codigo">Cod. Impresora:</label>
+                                    <span id="codigo" name="codigo"></span>
+                                </div><br>
+                                <div>
+                                    <label for="tec">Técnico:</label>
+                                    <span id="tec" name="tec"></span>
+                                </div><br>
+                                <div>
+                                    <label for="codigoEq">Cod. Eq:</label>
+                                    <input type="text" id="codigoEq" name="codigoEq" class="newData"
+                                        style="width: 75px;">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="codigotics">Cod. Tics :</label>
+                                <input type="text" id="codigotics" name="codigotics" class="newData">
+                            </div>
+
+                            <div>
+                                <label for="numSerie">No. Serie Impresora:</label>
+                                <input type="text" id="numSerie" name="numSerie" class="newData">
+                            </div>
+
+                            <div>
+                                <div class="horizontal-container" style="margin: 0;">
+                                    <div>
+                                        <label for="condicion">Condicion:</label>
+                                        <select id="condicion" class="options"></select>
+                                    </div>
+
+                                    <div>
+                                        <label for="estado">Estado:</label>
+                                        <select id="estado" class="options"></select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="tipoIMP">Tipo:</label>
+                                    <select id="tipoIMP" class="options"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="line">
+                        <div class="horizontal-container">
+                            <div>
+                                <label for="modelo">Modelo:</label>
+                                <input type="text" id="modelo" name="modelo" class="newData">
+                            </div>
+                            <div>
+                                <label for="marcas">Marca Impresora:</label>
+                                <select id="marcas" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="puerto">Puerto Impresora:</label>
+                                <select id="puerto" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="ip">IP:</label>
+                                <input type="text" id="ip" name="ip" class="newData">
+                            </div>
+                        </div>
+
+                        <div class="horizontal-container" >
+                            <div style="margin: 0;">
+                                <label for="observacionTxt">Observación:</label>
+                                <textarea id="observacionTxt" rows="2" cols="68"></textarea>
+                            </div>
+                            <div class="buttons" style="margin: 0;">
+                                <button type="button" class="green-button" onclick="guardarCambiosIMP()">Guardar
+                                    Cambios IMP</button>
+                                <!-- <button type="button" class="red-button" onclick="">Eliminar CPU</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/equipo.js"></script>
 </body>
 
 </html>

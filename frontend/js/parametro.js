@@ -131,24 +131,3 @@ async function modificarNombre(tabla, campo, valor, nuevoNombre) {
         console.error('Error al editar el nombre del parámetro:', error);
     }
 }
-
-
-/* <div id="modal2" class="modal">
-                            <div class="modal-content">
-                                <span class="close" onclick="cerrarVentanaEmergente('modal2')">&times;</span>
-                                <h2>Ventana Emergente 22</h2>
-
-                                <form id="editarParametroForm">
-                                    <label for="codigo">Código:</label>
-                                    <span id="codigo" name="codigo"></span>
-                                
-                                    <label for="nombreActual">Nombre Actual:</label>
-                                    <span id="nombreActual" name="nombreActual"></span>
-                                
-                                    <label for="newNombre">Nuevo Nombre:</label>
-                                    <input type="text" id="newNombre" name="newNombre" required>
-                                
-                                    <button type="button" onclick="modificarNombre('${tabla}', '${campoNombre}',document.getElementById('nombreActual').textContent, document.getElementById('newNombre').value)">Guardar</button>
-                                </form>
-                            </div>
-                        </div> */
