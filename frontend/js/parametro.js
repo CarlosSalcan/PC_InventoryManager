@@ -70,6 +70,55 @@ function mostrarFormularios(formulario) {
             document.getElementById('tabla8').style.display = 'block';
             mostrarParametros('param_tamano_hdd', 'cod_tam_hdd', 'nom_tam_hdd', 'searchDiscoDuro');
             break;
+
+        case 'cargo':
+            document.getElementById('tabla9').style.display = 'block';
+            mostrarParametros('param_cargo', 'cod_cargo', 'nom_cargo', 'searchCargo');
+            break;
+        case 'condicion':
+            document.getElementById('tabla10').style.display = 'block';
+            mostrarParametros('param_condicion', 'cod_condicion', 'nom_condicion', 'searchCondi');
+            break;
+        case 'dispOpt':
+            document.getElementById('tabla11').style.display = 'block';
+            mostrarParametros('param_dis_opt', 'cod_dis_opt', 'nom_dis_opt', 'searchDispOpt');
+            break;
+        case 'estado':
+            document.getElementById('tabla12').style.display = 'block';
+            mostrarParametros('param_estado', 'cod_estado', 'nom_estado', 'searchEstado');
+            break;
+        case 'numDisc':
+            document.getElementById('tabla13').style.display = 'block';
+            mostrarParametros('param_num_hdd', 'cod_n_hdd', 'nom_n_hdd', 'searchNumDisc');
+            break;
+        case 'pisos':
+            document.getElementById('tabla14').style.display = 'block';
+            mostrarParametros('param_piso', 'cod_piso', 'nom_piso', 'searchPiso');
+            break;
+        case 'puerto':
+            document.getElementById('tabla15').style.display = 'block';
+            mostrarParametros('param_puertos', 'cod_puerto', 'nom_puerto', 'searchPuerto');
+            break;
+        case 'tamMtr':
+            document.getElementById('tabla16').style.display = 'block';
+            mostrarParametros('param_tamano_monitor', 'cod_tam_mon', 'nom_tam_mon', 'searchTamMon');
+            break;
+        /*case 'tipEq':
+            document.getElementById('tabla17').style.display = 'block';
+            mostrarParametros('param_tipo_equipo', 'cod_te', 'nom_te', 'searchTipEq');
+            break;*/
+        case 'tipImp':
+            document.getElementById('tabla18').style.display = 'block';
+            mostrarParametros('param_tipo_impresora', 'cod_ti', 'nom_ti', 'searchTipImp');
+            break;
+        case 'tipMtr':
+            document.getElementById('tabla19').style.display = 'block';
+            mostrarParametros('param_tipo_monitor', 'cod_tm', 'nom_tm', 'searchTipMtr');
+            break;
+        case 'tipConex':
+            document.getElementById('tabla20').style.display = 'block';
+            mostrarParametros('param_tipo_mt', 'cod_tmt', 'nom_tmt', 'searchTipConex');
+            break;
         default:
             break;
     }

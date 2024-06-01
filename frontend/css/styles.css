@@ -65,9 +65,10 @@ a {
     top: 0;
     left: 0;
     width: 100%;
+    position: sticky;
     background-color: var(--black-color);
     box-shadow: 0 2px 16px hsla(220, 32%, 8%, .3);
-    z-index: var(--z-fixed);
+    z-index: 0;
 }
 
 /*-------------------------------> NAV */
@@ -559,8 +560,33 @@ h3 {
     flex-wrap: wrap;
 }
 
-.buttons button,
+.sidebar {
+    background-color: var(--black-color);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Dos columnas de igual ancho */
+    width: 420px;
+    padding: 20px;
+    gap: 10px;
+    /* Espacio entre botones */
+}
+
+.edit-button {
+    width: 100%;
+    /* Asegura que los botones llenen el ancho de la columna */
+    padding: 10px;
+    /* Ajusta el relleno según sea necesario */
+    font-size: 1rem;
+    /* Ajusta el tamaño de fuente según sea necesario */
+    /* Añade cualquier otro estilo necesario para los botones */
+}
+
 .sidebar button {
+    margin: 10px 5px;
+}
+
+
+.buttons button {
     flex: 1 0 10%;
     padding: 5px 10px;
     font-size: 16px;
@@ -763,14 +789,19 @@ textarea {
 
 .contenedor {
     width: 100%;
-    margin: 0;
+    height: 100%;
     padding: 0;
-    background-color: #F0F0F0;
     display: flex;
+    overflow-y: auto;
+}
+
+.contenedor2 {
+    margin: 10px 15px;
 }
 
 .contenedor .sidebar {
-    z-index: 1; /*********************************/
+    z-index: 1;
+    /*********************************/
     width: 25%;
     padding: 20px;
     background-color: hsl(220, 24%, 12%);
@@ -814,4 +845,76 @@ textarea {
     position: sticky;
     top: 0;
     height: 100vh;
+}
+
+
+
+.parametrosF {
+    display: flex;
+}
+
+
+
+
+
+/*************************************************
+*************************************************/
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 35%;
+    margin: 10px;
+    border-radius: 10px;
+    position: sticky;
+    top: 10px;
+    z-index: 0;
+    /* Establece un z-index bajo y negativo */
+    background-color: rgb(59, 80, 122);
+}
+
+.search-container input[type="text"],
+.search-container select {
+    flex: 1;
+    margin: 7px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-container button {
+    margin: 0 7px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.search-container button:hover {
+    background-color: #2980b9;
+}
+
+@media screen and (max-width: 768px) {
+    .search-container {
+        width: 50%;
+        height: 30px;
+        margin: 15px auto;
+    }
+
+    .search-container input[type="text"],
+    .search-container select,
+    .search-container button {
+        font-size: 0.8rem;
+        height: 10px;
+    }
+
+    .search-container button {
+        height: 70%;
+        padding: 4px 10px;
+    }
 }

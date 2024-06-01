@@ -4,7 +4,7 @@ const equipoController = {
     getEquipos: async (req, res) => {
         try {
             const { tip_equipo } = req.query;
-    
+
             const query = `SELECT * FROM equipo WHERE tip_equipo = ?`;
             const equipos = await new Promise((resolve, reject) => {
                 connection.query(query, [tip_equipo], (error, results) => {
@@ -15,7 +15,7 @@ const equipoController = {
                     resolve(results);
                 });
             });
-    
+
             res.status(200).json({ success: true, equipos: equipos });
         } catch (error) {
             console.error('Error al obtener equipos:', error);
@@ -137,7 +137,7 @@ const equipoController = {
                         return;
                     }
                     resolve(results);
-                    console.log("SERVIDOR: ",query)
+                    console.log("SERVIDOR: ", query)
                 });
             });
 
@@ -219,7 +219,7 @@ const equipoController = {
                 WHERE cod_equipo = ?`;
             // Ejecuta la consulta con los datos recibidos
             connection.query(query, [codMTR, codEquipo, codTicsMTR, nuevaMarcaMTR, nuevoModeloMTR, nuevoNumSerieMTR, nuevoTamMTR, nuevaConMTR, nuevoEstMTR, nuevaObservacionMTR, codEquipo], (error, results, fields) => {
-                console.log('CONSULTA UPDATE VER: ',query);
+                console.log('CONSULTA UPDATE VER: ', query);
                 if (error) {
                     console.error('Error al guardar cambios en el MTR:', error);
                     res.status(500).json({ success: false, message: 'Error interno del servidor' });
@@ -285,7 +285,7 @@ const equipoController = {
                     obs_mouse = ?
                 WHERE cod_equipo = ?`;
             // Ejecuta la consulta con los datos recibidos
-            connection.query(query, [ codMS, codEquipo, codTicsMS, nuevaMarcaMS, nuevoModeloMS, nuevoNumSerieMS, nuevoTipoMS, nuevoPuertoMS, nuevaConMS, nuevoEstMS, nuevaObservacionMS, codEquipo], (error, results, fields) => {
+            connection.query(query, [codMS, codEquipo, codTicsMS, nuevaMarcaMS, nuevoModeloMS, nuevoNumSerieMS, nuevoTipoMS, nuevoPuertoMS, nuevaConMS, nuevoEstMS, nuevaObservacionMS, codEquipo], (error, results, fields) => {
                 if (error) {
                     console.error('Error al guardar cambios en el MS:', error);
                     res.status(500).json({ success: false, message: 'Error interno del servidor ms' });
@@ -312,7 +312,7 @@ const equipoController = {
                     resolve(results);
                 });
             });
-    
+
             if (results.length > 0) {
                 const nextCodEquipo = results[0].Auto_increment;
                 res.json({ success: true, nextCodEquipo });
@@ -327,7 +327,7 @@ const equipoController = {
 
     guardarCambiosLaptop: async (req, res) => {
         try {
-            const { codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe,office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion} = req.body;
+            const { codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe, office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion } = req.body;
             const query = `UPDATE laptop
                 SET 
                     cod_laptop = ?, 
@@ -356,7 +356,7 @@ const equipoController = {
                     observacion_laptop = ?
                 WHERE cod_equipo = ?`;
             // Ejecuta la consulta con los datos recibidos
-            connection.query(query, [codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe,office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion, codEquipo], (error, results, fields) => {
+            connection.query(query, [codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe, office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion, codEquipo], (error, results, fields) => {
                 if (error) {
                     console.error('Error al guardar cambios en el PLTS:', error);
                     res.status(500).json({ success: false, message: 'Error interno del servidor' });
@@ -373,7 +373,7 @@ const equipoController = {
 
     guardarCambiosImpresora: async (req, res) => {
         try {
-            const { codIMP, codEquipo, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion} = req.body;
+            const { codIMP, codEquipo, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion } = req.body;
             const query = `UPDATE impresora
                 SET 
                     cod_impresora = ?, 
@@ -432,6 +432,77 @@ const equipoController = {
             });
         } catch (error) {
             console.error('Error al guardar cambios en el TLF:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    getEquiposReporte: async (req, res) => {
+        try {
+            const results = await new Promise((resolve, reject) => {
+                connection.query('SELECT * FROM equipo', (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                });
+            });
+            res.status(200).json({ success: true, equipos: results });
+        } catch (error) {
+            console.error('Error al obtener equiposR:', error);
+            res.status(500).json({ success: false, message: 'Error al obtener los equiposR de BDD' });
+        }
+    },
+
+    buscarEquipos: async (req, res) => {
+        try {
+            let { tipoEquipo, query } = req.params;
+
+            // Verificar si se proporcionó un tipo de equipo
+            let sqlQuery;
+            let values;
+            if (tipoEquipo === 'todos') {
+                // Si no se proporciona un tipo de equipo, buscar en todos los tipos
+                sqlQuery = `
+                    SELECT * FROM equipo
+                    WHERE 
+                        cod_equipo LIKE ? 
+                        OR fec_reg LIKE ?
+                        OR cod_almacen LIKE ?
+                        OR piso_ubic LIKE ?
+                        OR serv_depar LIKE ?
+                        OR nom_custodio LIKE ?
+                        OR nom_usua LIKE ?`;
+                values = Array(7).fill(`%${query}%`);
+            } else {
+                // Si se proporciona un tipo de equipo, buscar solo en ese tipo
+                sqlQuery = `
+                    SELECT * FROM equipo
+                    WHERE tip_equipo = ? AND (
+                        cod_equipo LIKE ? 
+                        OR fec_reg LIKE ?
+                        OR cod_almacen LIKE ?
+                        OR piso_ubic LIKE ?
+                        OR serv_depar LIKE ?
+                        OR nom_custodio LIKE ?
+                        OR nom_usua LIKE ?)`;
+                values = [tipoEquipo, ...Array(7).fill(`%${query}%`)];
+            }
+
+            const results = await new Promise((resolve, reject) => {
+                connection.query(sqlQuery, values, (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve(results);
+                });
+            });
+
+            // Enviar los resultados como respuesta
+            res.json({ success: true, equipos: results });
+        } catch (error) {
+            console.error('Error al buscar los equipos:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
     }

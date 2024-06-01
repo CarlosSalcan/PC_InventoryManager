@@ -9,11 +9,15 @@ const parametro=require('../controllers/parametro.controller.js');
 //--------------------------> Tomar IDpara Enviar a Bodega (1)
 //--------------------------> Obtener parametros
 //--------------------------> Obtener datos de Componentes del equipo (CPU, MONITOR, TECLADO, MOUSE)     
+//--------------------------> Obtener equipos de Reporte
+//--------------------------> Buscar por Tipo BDD
 router.get('/equipos', equipo.getEquipos);
 router.get('/options/:tabla/:campo', equipo.obtenerOpcSelect);
 router.get('/equipoB/:id',equipo.getEquipoById)
 router.get('/parametros/:tabla', parametro.getParametros);
 router.get('/datosTabla/:tabla/:codEquipo', equipo.obtenerDatosComponentes);
+router.get('/equiposR',equipo.getEquiposReporte);
+router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
 
 //--------------------------> Modificar Datos Equipo
 //--------------------------> Enviar a Bodega (2)
@@ -37,8 +41,9 @@ router.put('/impresoraModificada/:codEquipo', equipo.guardarCambiosImpresora);
 router.put('/telefonoModificado/:codEquipo', equipo.guardarCambiosTelefono);
 
 //--------------------------> Agregar nuevo Parametro
-//--------------------------> Obtener nuevo codigo para nuevo Equipo
 router.post('/nuevoParametro/:tabla', parametro.nuevoParametro);
+
+//--------------------------> Obtener nuevo codigo para nuevo Equipo
 router.get('/nextCodEquipo', equipo.getNextCodEquipo);
 
 module.exports = router;

@@ -321,9 +321,9 @@ async function obtenerDatosTabla(tabla, codEquipo) {
                 mostrarDatosPLT(componente);
             } else if (tabla === "impresora") {
                 mostrarDatosIMP(componente);
-            }else if (tabla === "telefono") {
+            } else if (tabla === "telefono") {
                 mostrarDatosTLF(componente);
-            }else {
+            } else {
                 console.error("Tabla desconocida:", tabla);
             }
         } else {
@@ -373,6 +373,27 @@ async function guardarCambiosCPU() {
         const nuevaCondicion = document.getElementById('condicion').value;
         const nuevoEstado = document.getElementById('estado').value;
         const nuevaObservacion = document.getElementById('observacionTxt').value;
+
+        // Mostrar ventana de confirmación al usuario
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?
+\u2022 Cod CPU: ${codCPU}         \u2022 Cod Equipo: ${codEquipo}         \u2022 TICS: ${codTicsCPU}
+\u2022 Titular: ${nuevoUsuario}     \u2022 Host: ${nuevoHost}
+\u2022 Condicion: ${nuevaCondicion}     \u2022 Estado: ${nuevoEstado}\n
+\u2022 Num Serie: ${nuevoNumSerieCPU}         
+\u2022 Marca: ${nuevaMarcaCPU}
+\u2022 Tar Madre: ${nuevoMainboard}         
+\u2022 HDD: ${nuevoHDD}                     \u2022 RAM: ${nuevaRam}
+\u2022 Procesador: ${nuevoProcesador}         \u2022 Velocidad: ${nuevaVelocidadProcesador}
+\u2022 Sis Ope: ${nuevoSisOperativo}        \u2022 Office: ${nuevoOffice}\n
+\u2022 Red Fija: ${redFija}         \u2022 Bluetoot: ${bluetooth}
+\u2022 Red Inalam: ${redInalambrica}         \u2022 Lec. Tarjeta:${lectorTarjeta}
+\u2022 Disp Opt: ${nuevoDispositivoOptico}\n
+\u2022 Posee Antivirus: ${nuevoPoseeAntivirus}   \u2022 Nombre: ${nuevoNomAntivirus}   \u2022 Version: ${nuevaVerAntivirus}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
 
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/cpuModificado/${codEquipo}`, {
@@ -436,6 +457,18 @@ async function guardarCambiosMTR() {
         const nuevoEstMTR = document.getElementById('estadoMTR').value;
         const nuevaObservacionMTR = document.getElementById('observacionTxtM').value;
 
+        // Mostrar ventana de confirmación al usuario
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod MTR: ${codMTR}         \u2022 Cod Eq: ${codEquipo}          \u2022 TICS: ${codTicsMTR}
+\u2022 Condicion: ${nuevaConMTR}     \u2022 Estado: ${nuevoEstMTR}\n
+\u2022 Num Serie: ${nuevoNumSerieMTR}         \u2022 Modelo: ${nuevoModeloMTR} 
+\u2022 Marca: ${nuevaMarcaMTR}         \u2022 Tamaño: ${nuevoTamMTR}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/mtrModificado/${codEquipo}`, {
             method: 'PUT',
@@ -485,6 +518,18 @@ async function guardarCambiosTCD() {
         const estado = document.getElementById('estadoTCD').value;
         const observacion = document.getElementById('observacionTxtTCD').value;
 
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod TCD: ${cod}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
+\u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
+\u2022 Num Serie: ${serie}
+\u2022 Puerto: ${puerto}       \u2022 Modelo: ${modelo} 
+\u2022 Marca: ${marca}         \u2022 Tipo: ${tipo}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/tcdModificado/${codEq}`, {
             method: 'PUT',
@@ -532,6 +577,18 @@ async function guardarCambiosMS() {
         const condicion = document.getElementById('condicionMS').value;
         const estado = document.getElementById('estadoMS').value;
         const observacion = document.getElementById('observacionTxtMS').value;
+
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod MS: ${cod}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
+\u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
+\u2022 Num Serie: ${serie}
+\u2022 Puerto: ${puerto}       \u2022 Modelo: ${modelo} 
+\u2022 Marca: ${marca}         \u2022 Tipo: ${tipo}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
 
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/msModificado/${codEq}`, {
@@ -644,6 +701,24 @@ async function guardarCambiosPTL() {
             nuevaVerAntivirus = '';
         }
 
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod PTL: ${cod}         \u2022 Cod Eq: ${codEquipo}          \u2022 TICS: ${codTics}
+\u2022 Titular: ${nuevoUsuario}     \u2022 Host: ${nuevoHost}     \u2022 Estado: ${nuevoEstado}\n
+\u2022 Num Serie: ${nuevoNumSerie}                     \u2022 Modelo: ${nuevoModelo}
+\u2022 Marca: ${nuevaMarca}
+\u2022 HDD: ${nuevoHDD}                     \u2022 RAM: ${nuevaRam}
+\u2022 Procesador: ${nuevoProcesador}         \u2022 Velocidad: ${nuevaVelocidad}
+\u2022 Sis Ope: ${nuevoSisOperativo}        \u2022 Office: ${nuevoOffice}\n
+\u2022 Red Fija: ${redFija}           \u2022 Bluetoot: ${bluethooth}
+\u2022 Red Inalam: ${redInalambrica}         \u2022 Lec. Tarjeta:${lectorTarjeta}
+\u2022 Disp Opt: ${nuevoDispOptico}\n
+\u2022 Posee Antivirus: ${nuevoPoseeAntivirus}   \u2022 Nombre: ${nuevoNomAntivirus}   \u2022 Version: ${nuevaVerAntivirus}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/laptopModificada/${codEquipo}`, {
             method: 'PUT',
@@ -705,6 +780,18 @@ async function guardarCambiosIMP() {
         const nuevaIP = document.getElementById('ip').value;
         const nuevaObservacion = document.getElementById('observacionTxt').value;
 
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod IMP: ${cod}         \u2022 Cod Eq: ${codEquipo}          \u2022 TICS: ${codTics}
+\u2022 Condicion: ${nuevaCondi}     \u2022 Estado: ${nuevoEstado}\n
+\u2022 Num Serie: ${nuevoNumSerie}     \u2022 IP: ${nuevaIP}
+\u2022 Puerto: ${nuevoPuerto}       \u2022 Modelo: ${nuevoModelo} 
+\u2022 Marca: ${nuevaMarca}         \u2022 Tipo: ${nuevoTipo}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/impresoraModificada/${codEquipo}`, {
             method: 'PUT',
@@ -712,9 +799,9 @@ async function guardarCambiosIMP() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codIMP:cod, codEquipo:codEquipo, codTics:codTics, marca:nuevaMarca, modelo:nuevoModelo, 
-                serie:nuevoNumSerie, tipo: nuevoTipo, puerto: nuevoPuerto, condicion:nuevaCondi, ip: nuevaIP, 
-                estado: nuevoEstado, observacion:nuevaObservacion
+                codIMP: cod, codEquipo: codEquipo, codTics: codTics, marca: nuevaMarca, modelo: nuevoModelo,
+                serie: nuevoNumSerie, tipo: nuevoTipo, puerto: nuevoPuerto, condicion: nuevaCondi, ip: nuevaIP,
+                estado: nuevoEstado, observacion: nuevaObservacion
             })
         });
 
@@ -757,6 +844,17 @@ async function guardarCambiosTLF() {
 
         const nuevaObservacion = document.getElementById('observacionTxt').value;
 
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod MS: ${cod}         \u2022 Cod Eq: ${codEquipo}          \u2022 TICS: ${codTics}
+\u2022 Condicion: ${nuevaCondi}     \u2022 Estado: ${nuevoEstado}\n
+\u2022 Num Serie: ${nuevoNumSerie}       \u2022 Modelo: ${nuevoModelo} 
+\u2022 Marca: ${nuevaMarca}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
         // Envía los datos al servidor
         const response = await fetch(`http://localhost:3000/tics/telefonoModificado/${codEquipo}`, {
             method: 'PUT',
@@ -764,8 +862,8 @@ async function guardarCambiosTLF() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codTLF: cod, codEquipo: codEquipo, codTics:codTics, marca: nuevaMarca, modelo:nuevoModelo, 
-                serie: nuevoNumSerie, condicion:nuevaCondi, estado:nuevoEstado, observacion:nuevaObservacion
+                codTLF: cod, codEquipo: codEquipo, codTics: codTics, marca: nuevaMarca, modelo: nuevoModelo,
+                serie: nuevoNumSerie, condicion: nuevaCondi, estado: nuevoEstado, observacion: nuevaObservacion
             })
         });
 
@@ -778,6 +876,98 @@ async function guardarCambiosTLF() {
         }
     } catch (error) {
         console.error('Error al guardar los cambios TLF:', error);
+    }
+}
+
+//-------------------------------> BUSCAR
+async function buscarEquipos(tipoEquipo, mostrar, modalID) {
+    const query = document.getElementById('searchQuery').value;
+    const resultsElement = document.getElementById(mostrar);
+
+    if (!resultsElement) {
+        console.error("Elemento 'results' no encontrado.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/tics/buscarEquipos/${tipoEquipo}/${query}`);
+        const data = await response.json();
+
+        if (data.success && data.equipos.length > 0) {
+            const equipos = data.equipos;
+            const html = equipos.map(equipo => {
+                const fecha = new Date(equipo.fec_reg).toISOString().split('T')[0]; // Obtener solo la parte de la fecha
+                let buttonColumn = ''; // Inicializamos la columna de botones como vacía
+                if (tipoEquipo !== 'todos') { // Verificamos si el tipo de equipo no es 'todos'
+                    buttonColumn = `<td><button class="edit-btn" id="openModalBtn" 
+                                    onclick="llenarCampos('${equipo.cod_equipo}', 
+                                                            '${fecha}', 
+                                                            '${equipo.cod_almacen}', 
+                                                            '${equipo.tip_equipo}', 
+                                                            '${equipo.piso_ubic}', 
+                                                            '${equipo.serv_depar}', 
+                                                            '${equipo.nom_custodio}', 
+                                                            '${equipo.nom_usua}'), 
+                                                        mostrarVentanaEmergente('${modalID}')">Equipo</button>
+                                    </td>`;
+                }
+                return `<tr>
+                            <td>${equipo.cod_equipo}</td>
+                            <td>${fecha}</td>
+                            <td>${equipo.cod_almacen}</td>
+                            <td>${equipo.tip_equipo}</td>
+                            <td>${equipo.piso_ubic}</td>
+                            <td>${equipo.serv_depar}</td>
+                            <td>${equipo.nom_custodio}</td>
+                            <td>${equipo.nom_usua}</td>
+                            ${buttonColumn} <!-- Insertamos la columna de botones aquí -->
+                        </tr>`;
+            }).join('');
+            resultsElement.innerHTML = `<table>${html}</table>`;
+        } else {
+            resultsElement.innerHTML = '<p>No se encontraron equipos.</p>';
+        }
+    } catch (error) {
+        resultsElement.innerHTML = '<p>Ocurrió un error al cargar el contenido de la tabla.</p>';
+        console.error('Error al buscar equipos:', error);
+    }
+}
+
+
+//-------------------------------> MOSTRAR PARA REPORTES
+async function mostrarEquiposReporte(tbodyId) {
+    const resultsElement = document.getElementById(tbodyId);
+    if (!resultsElement) {
+        console.error(`Tabla with ID '${tbodyId}' not encontrada`);
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/tics/equiposR');
+        const data = await response.json();
+
+        if (data.success && data.equipos.length > 0) {
+            const equipos = data.equipos;
+            const html = equipos.map(equipo => {
+                const fecha = new Date(equipo.fec_reg).toISOString().split('T')[0]; // Obtener solo la parte de la fecha
+                return `<tr>
+                            <td>${equipo.cod_equipo}</td>
+                            <td>${fecha}</td>
+                            <td>${equipo.cod_almacen}</td>
+                            <td>${equipo.tip_equipo}</td>
+                            <td>${equipo.piso_ubic}</td>
+                            <td>${equipo.serv_depar}</td>
+                            <td>${equipo.nom_custodio}</td>
+                            <td>${equipo.nom_usua}</td>
+                            </td>
+                        </tr>`;
+            }).join('');
+            resultsElement.innerHTML = `<table>${html}</table>`;
+        } else {
+            console.error('No se pudieron obtener los equiposR.');
+        }
+    } catch (error) {
+        console.error('Error al obtener equiposR:', error);
     }
 }
 
@@ -796,7 +986,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('resultsTelefono')) {
         mostrarContenidoTabla('Teléfono', 'resultsTelefono', 'modal6');
     }
-
+    if (document.getElementById('resultsReporte')) {
+        mostrarEquiposReporte('resultsReporte');
+    }
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
     const optionMappings = [
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMTR' },
@@ -842,4 +1034,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
-

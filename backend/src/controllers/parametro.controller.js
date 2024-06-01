@@ -55,6 +55,7 @@ const parametroController = {
         try {
             const { tabla, campo, valor, nuevoNombre } = req.params;
 
+            // Verificar si el nuevo nombre ya existe en la tabla
             const countResult = await new Promise((resolve, reject) => {
                 connection.query(`SELECT COUNT(*) AS count FROM ${tabla} WHERE ${campo} = ? AND ${campo} <> ?`, [nuevoNombre, valor], (error, results, fields) => {
                     if (error) {
@@ -66,13 +67,12 @@ const parametroController = {
             });
 
             const count = countResult[0].count;
-            // Si count es mayor que cero, significa que el nombre ya existe en la tabla
             if (count > 0) {
                 res.status(400).json({ success: false, message: 'El nombre ingresado ya existe en la tabla' });
                 return;
             }
 
-            // Realizar la consulta SQL para modificar el nombre del registro
+            // Actualizar el registro en la tabla especificada
             const result = await new Promise((resolve, reject) => {
                 connection.query(`UPDATE ${tabla} SET ${campo} = ? WHERE ${campo} = ?`, [nuevoNombre, valor], (error, results, fields) => {
                     if (error) {
@@ -83,13 +83,113 @@ const parametroController = {
                 });
             });
 
-            // Comprobar si se modificó algún registro
             if (result.affectedRows === 0) {
                 res.status(404).json({ success: false, message: 'No se encontró ningún registro para modificar' });
                 return;
             }
 
-            // Enviar una respuesta exitosa
+            // Actualizar registros en las tablas equipo y laptop
+            const updateQueries = [
+                //-------------------------------> PARAM ANTIVIRUS *
+                { table: 'param_antivirus', field: 'nom_antivirus' },
+                { table: 'cpu_equipo', field: 'nom_antivirus' },
+                { table: 'laptop', field: 'nom_antv_laptop' },
+                //-------------------------------> VENTANA CARGO -
+                { table: 'param_cargo', field: 'nom_cargo' },
+                //-------------------------------> PARAM CONDICION * 
+                { table: 'param_condicion', field: 'nom_condicion' },
+                { table: 'cpu_equipo', field: 'con_cpu' },
+                { table: 'impresora', field: 'con_imp' },
+                { table: 'monitor', field: 'con_monitor' },
+                { table: 'mouse', field: 'con_mouse' },
+                { table: 'teclado', field: 'con_teclado' },
+                { table: 'telefono', field: 'con_telf' },
+                //-------------------------------> PARAM DISP OPTICOS *
+                { table: 'param_dis_opt', field: 'nom_dis_opt' },
+                { table: 'cpu_equipo', field: 'disp_optico' },
+                { table: 'laptop', field: 'dop_laptop' },
+                //-------------------------------> PARAM ESTADO *
+                { table: 'param_estado', field: 'nom_estado' },
+                { table: 'cpu_equipo', field: 'est_cpu' },
+                { table: 'impresora', field: 'est_imp' },
+                { table: 'laptop', field: 'est_laptop' },
+                { table: 'monitor', field: 'est_monitor' },
+                { table: 'mouse', field: 'est_mouse' },
+                { table: 'teclado', field: 'est_teclado' },
+                { table: 'telefono', field: 'est_telf' },
+                //-------------------------------> PARAM MARCAS *
+                { table: 'param_marcas', field: 'nom_marcas' },
+                { table: 'cpu_equipo', field: 'mar_cpu' },
+                { table: 'impresora', field: 'mar_imp' },
+                { table: 'laptop', field: 'mar_laptop' },
+                { table: 'monitor', field: 'mar_monitor' },
+                { table: 'mouse', field: 'mar_mouse' },
+                { table: 'teclado', field: 'mar_teclado' },
+                { table: 'telefono', field: 'mar_telf' },
+                //-------------------------------> PARAM RAM *
+                { table: 'param_memoria', field: 'nom_memoria' },
+                { table: 'cpu_equipo', field: 'memoria' },
+                { table: 'laptop', field: 'mem_laptop' },
+                //-------------------------------> PARAM NUM DISCOS -
+                { table: 'param_num_hdd', field: 'nom_n_hdd' },
+                //-------------------------------> PARAM OFFICE 
+                { table: 'param_office', field: 'nom_office' },
+                { table: 'cpu_equipo', field: 'office' },
+                { table: 'laptop', field: 'off_laptop' },
+                //-------------------------------> PARAM PISOS *
+                { table: 'param_piso', field: 'nom_piso' },
+                { table: 'equipo', field: 'piso_ubic' },
+                //-------------------------------> PARAM PROCESADOR *
+                { table: 'param_procesador', field: 'nom_proce' },
+                { table: 'cpu_equipo', field: 'procesador' },
+                { table: 'laptop', field: 'pro_laptop' },
+                //-------------------------------> PARAM PUERTOS *
+                { table: 'param_puertos', field: 'nom_puerto' },
+                { table: 'impresora', field: 'pue_imp' },
+                { table: 'mouse', field: 'pue_mouse' },
+                { table: 'teclado', field: 'pue_teclado' },
+                //-------------------------------> PARAM SER/DEP *
+                { table: 'param_servicio', field: 'nom_servicio' },
+                { table: 'equipo', field: 'serv_depar' },
+                //-------------------------------> PARAM SIS OPE *
+                { table: 'param_sis_ope', field: 'nom_sis_ope' },
+                { table: 'cpu_equipo', field: 'sis_ope' },
+                { table: 'laptop', field: 'so_laptop' },
+                //-------------------------------> PARAM TAM HDD *
+                { table: 'param_tamano_hdd', field: 'nom_tam_hdd' },
+                { table: 'cpu_equipo', field: 'tam_hdd' },
+                { table: 'laptop', field: 'hdd_laptop' },
+                //-------------------------------> PARAM  TAM MONITOR *
+                { table: 'param_tamano_monitor', field: 'nom_tam_mon' },
+                { table: 'monitor', field: 'tam_monitor' },
+                //-------------------------------> PARAM TIPO EQ +++
+                { table: 'param_tipo_equipo', field: 'nom_te' },
+                //-------------------------------> PARAM TIP IMPRESORA *
+                { table: 'param_tipo_impresora', field: 'nom_ti' },
+                { table: 'impresora', field: 'tip_imp' },
+                //-------------------------------> PARAM TIP MONITOR *
+                // { table: 'param_tipo_monitor', field: 'nom_tm' },
+                //-------------------------------> PARAM TIP CONEXION (MT) *
+                { table: 'param_tipo_mt', field: 'nom_tmt' },
+                { table: 'mouse', field: 'tip_mouse' },
+            ];
+
+            // Ejecutar las consultas de actualización en ambas tablas
+            await Promise.all(updateQueries.map(async (query) => {
+                const updateResult = await new Promise((resolve, reject) => {
+                    connection.query(`UPDATE ${query.table} SET ${query.field} = ? WHERE ${query.field} = ?`, [nuevoNombre, valor], (error, results, fields) => {
+                        if (error) {
+                            reject(error);
+                            return;
+                        }
+                        resolve(results);
+                    });
+                });
+                if (updateResult.affectedRows === 0) {
+                    console.log(`No se encontraron registros para actualizar en la tabla ${query.table}`);
+                }
+            }));
+
             res.json({ success: true, message: 'Nombre del registro modificado correctamente' });
         } catch (error) {
             console.error('Error al modificar el nombre del registro:', error);

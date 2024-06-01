@@ -31,6 +31,7 @@
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                     <li><a href="index.html" class="nav__link">Registro</a></li>
+                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
                     <!--=============== DROPDOWN 1 ===============-->
                     <li class="dropdown__item">
                         <div class="nav__link">
@@ -60,13 +61,17 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
-                    <li><a href="#" class="nav__link">Reportes</a></li>
+                    <!-- <li><a href="reportes.html" class="nav__link">Reportes</a></li> -->
             </div>
         </nav>
     </header>
 
     <main>
+        <div class="search-container">
+            <input type="text" id="searchQuery" placeholder="Buscar...">
+            <button type="button" onclick="buscarEquipos('Escritorio','results','modal1')">Buscar</button>
+        </div>
+
         <table class="equipos">
             <thead>
                 <tr>
