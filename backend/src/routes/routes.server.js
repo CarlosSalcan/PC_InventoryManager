@@ -1,26 +1,28 @@
-const express=require('express')
-const router=express.Router();
+const express = require('express')
+const router = express.Router();
 
-const equipo=require('../controllers/equipo.controller.js');
-const parametro=require('../controllers/parametro.controller.js');
+const equipo = require('../controllers/equipo.controller.js');
+const parametro = require('../controllers/parametro.controller.js');
 
 //--------------------------> Obtener equipos de BDD
 //--------------------------> Obtener datos de BDD (Select)
-//--------------------------> Tomar IDpara Enviar a Bodega (1)
+//--------------------------> Tomar IDpara Enviar a Bodega (P1)
 //--------------------------> Obtener parametros
 //--------------------------> Obtener datos de Componentes del equipo (CPU, MONITOR, TECLADO, MOUSE)     
 //--------------------------> Obtener equipos de Reporte
 //--------------------------> Buscar por Tipo BDD
+//--------------------------> Obtener nuevo codigo para nuevo Equipo
 router.get('/equipos', equipo.getEquipos);
 router.get('/options/:tabla/:campo', equipo.obtenerOpcSelect);
-router.get('/equipoB/:id',equipo.getEquipoById)
+router.get('/equipoB/:id', equipo.getEquipoById)
 router.get('/parametros/:tabla', parametro.getParametros);
 router.get('/datosTabla/:tabla/:codEquipo', equipo.obtenerDatosComponentes);
-router.get('/equiposR',equipo.getEquiposReporte);
+router.get('/equiposR', equipo.getEquiposReporte);
 router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
+router.get('/getNextCod/:tableName/:campo', equipo.getNextCodEquipo);
 
 //--------------------------> Modificar Datos Equipo
-//--------------------------> Enviar a Bodega (2)
+//--------------------------> Enviar a Bodega (P2)
 //--------------------------> Modificar Nombre Parametro
 //--------------------------> Modificar CPU
 //--------------------------> Modificar Monitor
@@ -30,7 +32,7 @@ router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
 //--------------------------> Modificar Impresora
 //--------------------------> Modificar Telfono
 router.put('/editEquipos/:codEquipo', equipo.modificarEquipo);
-router.put('/enviarBodega/:id',equipo.enviarBodegaEquipo)
+router.put('/enviarBodega/:id', equipo.enviarBodegaEquipo)
 router.put('/modificarNombre/:tabla/:campo/:valor/:nuevoNombre', parametro.editarNombreParametro);
 router.put('/cpuModificado/:codEquipo', equipo.guardarCambiosCPU);
 router.put('/mtrModificado/:codEquipo', equipo.guardarCambiosMTR);
@@ -41,9 +43,8 @@ router.put('/impresoraModificada/:codEquipo', equipo.guardarCambiosImpresora);
 router.put('/telefonoModificado/:codEquipo', equipo.guardarCambiosTelefono);
 
 //--------------------------> Agregar nuevo Parametro
+//--------------------------> Agregar nuevo Equipo
 router.post('/nuevoParametro/:tabla', parametro.nuevoParametro);
-
-//--------------------------> Obtener nuevo codigo para nuevo Equipo
-router.get('/nextCodEquipo', equipo.getNextCodEquipo);
+router.post('/ingresarEquipo', equipo.nuevoEquipo);
 
 module.exports = router;

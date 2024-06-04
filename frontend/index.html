@@ -117,10 +117,9 @@
                         <input type="text" id="newCodAlmacen" name="newCodAlmacen" class="newData">
                     </div>
                     <div>
-                        <label for="newPisos">Piso Destinado:</label>
-                        <select id="newPisos" class="options"></select>
+                        <label for="pisos">Piso Destinado:</label>
+                        <select id="pisos" class="options"></select>
                     </div>
-    
                 </div>
     
                 <div colspan="2">
@@ -129,8 +128,8 @@
                         <input type="text" id="newTitularEq" name="newTitularEq" class="newData">
                     </div>
                     <div>
-                        <label for="newDepartamentos">Dep./Serv.:</label>
-                        <select id="newDepartamentos" class="options"></select>
+                        <label for="departamentos">Dep./Serv.:</label>
+                        <select id="departamentos" class="options"></select>
                     </div>
                 </div>
     
@@ -143,15 +142,161 @@
             </div>
     
             <div class="horizontal-container">
-                <!-- Botones -->
                 <div class="buttons">
-                    <button type="button" class="green-button" onclick="">Entregar Nuevo Equipo</button>
+                    <button type="button" class="green-button" onclick="enviarDatosEquipo(),mostrarNewRegistro()">Entregar Nuevo Equipo</button>
                 </div>
             </div>
         </form>
+
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <form id="editarEquipo" class="formulario">
+                    <h2>Nuevo CPU</h2>
+                    <form id="editarCPU" class="formulario">
+                        <div class="form-section">
+                            <div class="horizontal-container">
+                                <div>
+                                    <div>
+                                        <label for="codigo">Cod. CPU:</label>
+                                        <span id="codigo" name="codigo"></span>
+                                    </div><br>
+                                    <div>
+                                        <label for="tec">Técnico:</label>
+                                        <span id="tec" name="tec"></span>
+                                    </div><br>
+                                    <div>
+                                        <label for="codigoEq">Cod. Eq:</label>
+                                        <input type="text" id="codigoEq" name="codigoEq" class="newData"
+                                            style="width: 75px;">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="codigotics">Cod. Tics CPU:</label>
+                                    <input type="text" id="codigotics" name="codigotics" class="newData">
+
+                                    <label for="nombreHost">Host:</label>
+                                    <input type="text" id="nombreHost" name="nombreHost" class="newData">
+                                </div>
+
+                                <div>
+                                    <label for="numSerie">No. Serie CPU:</label>
+                                    <input type="text" id="numSerie" name="numSerie" class="newData">
+
+                                    <label for="nomUsuario">Usuario:</label>
+                                    <input type="text" id="nomUsuario" name="nomUsuario" class="newData">
+                                </div>
+
+                                <div>
+                                    <div class="horizontal-container" style="margin: 0;">
+                                        <div>
+                                            <label for="estado">Estado:</label>
+                                            <select id="estado" class="options"></select>
+                                        </div>
+
+                                        <div>
+                                            <label for="condicion">Condicion:</label>
+                                            <select id="condicion" class="options"></select>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top: -10px;">
+                                        <label for="marcas">Marca CPU:</label>
+                                        <select id="marcas" class="options"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="line">
+                            <div class="horizontal-container">
+                                <div>
+                                    <div>
+                                        <label for="Mainboard">Mainboard:</label>
+                                        <input type="text" id="Mainboard" name="Mainboard" class="newData">
+                                    </div>
+
+                                    <div class="horizontal-container">
+                                        <div>
+                                            <label for="ram">RAM:</label>
+                                            <select id="ram" class="options"></select>
+
+                                            <input type="checkbox" id="bluetooth" name="bluetooth">
+                                            <label for="bluetooth">Bluetooth</label>
+
+                                            <input type="checkbox" id="redFija" name="redFija">
+                                            <label for="redFija">Red Fija</label>
+                                        </div>
+
+                                        <div>
+                                            <label for="hdd">HDD:</label>
+                                            <select id="hdd" class="options"></select>
+
+                                            <input type="checkbox" id="lectorTarjeta">
+                                            <label for="lectorTarjeta">Lector Tar.</label>
+
+                                            <input type="checkbox" id="redInalam" name="redInalam">
+                                            <label for="redInalam">Red Inala.</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div>
+                                    <label for="procesador">Procesador:</label>
+                                    <select id="procesador" class="options"></select>
+
+                                    <label for="velocidadProce">Velocidad Procesador:</label>
+                                    <input type="text" id="velocidadProce" name="velocidadProce" class="newData">
+
+                                    <label for="generacion">Generación:</label>
+                                    <input type="text" id="generacion" name="generacion" class="newData">
+                                </div>
+
+                                <div>
+                                    <label for="poseeAntivirus">Posee Antivirus:</label>
+                                    <select id="poseeAntivirus" class="options">
+                                        <option value="SI">SI</option>
+                                        <option value="NO">NO</option>
+                                    </select>
+
+                                    <label for="antivirus">Nombre Antivirus:</label>
+                                    <select id="antivirus" class="options"></select>
+
+                                    <label for="verAntivirus">Versión Antivirus:</label>
+                                    <input type="text" id="verAntivirus" name="verAntivirus" class="newData">
+                                </div>
+
+                                <div>
+                                    <label for="office">Office:</label>
+                                    <select id="office" class="options"></select>
+
+                                    <label for="sisOperativo">Sistema Operativo:</label>
+                                    <select id="sisOperativo" class="options"></select>
+
+                                    <label for="disOpticos">Dispositivo Optico:</label>
+                                    <select id="disOpticos" class="options"></select>
+                                </div>
+                            </div>
+
+                            <div class="horizontal-container">
+                                <div>
+                                    <label for="observacionTxt">Observación:</label>
+                                    <textarea id="observacionTxt" rows="2" cols="68"></textarea>
+                                </div>
+                                <div class="buttons">
+                                    <button type="button" class="green-button" onclick="guardarCambiosCPU()">Guardar
+                                        Cambios CPU</button>
+                                    <!-- <button type="button" class="red-button" onclick="">Eliminar CPU</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
     </main>
 
-    <script src="./js/index.js"></script>
+    <script src="./js/equipo.js"></script>
+    <script src="./js/parametro.js"></script>
 </body>
 
 </html>

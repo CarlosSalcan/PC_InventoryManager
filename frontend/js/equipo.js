@@ -933,7 +933,6 @@ async function buscarEquipos(tipoEquipo, mostrar, modalID) {
     }
 }
 
-
 //-------------------------------> MOSTRAR PARA REPORTES
 async function mostrarEquiposReporte(tbodyId) {
     const resultsElement = document.getElementById(tbodyId);
@@ -971,8 +970,111 @@ async function mostrarEquiposReporte(tbodyId) {
     }
 }
 
+//------------------------------->  INGRESO DE NUEVO EQUIPO
+async function mostrarProximoCodEquipo(tabla, campo) {
+    try {
+        const response = await fetch(`http://localhost:3000/tics/getNextCod/${tabla}/${campo}`);
+        const data = await response.json();
+
+        if (data.success) {
+            const nextCod = data.nextCod;
+            console.log(`Próximo código de ${tabla}: ${nextCod}`)
+            document.getElementById(campo).textContent = nextCod;;
+            // Aquí puedes realizar cualquier acción con el próximo código obtenido
+        } else {
+            console.error(`No se pudo obtener el próximo código de ${tabla}`);
+        }
+    } catch (error) {
+        console.error(`Error al obtener el próximo código de ${tabla}:`, error);
+    }
+}
+
+function setearFechaActual(fecha) {
+    const spanFecha = document.getElementById(fecha);
+    const fechaActual = new Date().toISOString().split('T')[0];
+    spanFecha.textContent = fechaActual;
+}
+
+function enviarDatosEquipo() {
+    try {
+        const cod_equipo = document.getElementById('newCod').textContent;
+        const fec_reg = document.getElementById('newFecha').textContent;
+        const cod_almacen = document.getElementById('newCodAlmacen').value;
+        const tip_equipo = document.getElementById('newTipoEquipo').value;
+        const piso_ubic = document.getElementById('pisos').value;
+        const serv_depar = document.getElementById('departamentos').value;
+        const nom_custodio = document.getElementById('newTitularEq').value;
+
+        // Enviar los datos al servidor
+        fetch('http://localhost:3000/tics/ingresarEquipo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cod_equipo,
+                fec_reg,
+                cod_almacen,
+                tip_equipo,
+                piso_ubic,
+                serv_depar,
+                nom_custodio
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Equipo ingresado correctamenteJS');
+                } else {
+                    console.error('Error al ingresar el equipoJS:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar los datos del equipoJS:', error);
+            });
+    } catch (error) {
+        console.error('Error al enviar los datos del equipoJS:', error);
+    }
+}
+
+// Verifcar tipo de equipo
+function mostrarNewRegistro() {
+    const tipoEquipo = document.getElementById('newTipoEquipo').value;
+    let modalID;
+
+    switch (tipoEquipo) {
+        case 'Escritorio':
+            modalID = 'modal1';
+            break;
+        case 'Portátil':
+            modalID = 'modal2';
+            break;
+        default:
+            console.error('Tipo de equipo no válido');
+            return;
+    }
+
+    const modal = document.getElementById(modalID);
+    modal.style.display = 'flex';
+
+    // Cerrar con click afuera de la ventana
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            limpiezaArea();
+        }
+    });
+}
+
 //-------------------------------> Funcion Principal
 document.addEventListener('DOMContentLoaded', async () => {
+    //-------------------------------> INGRESO DE NUEVO EQUIPO
+    if (document.getElementById('newFecha')) {
+        setearFechaActual('newFecha');
+    }
+    if (document.getElementById('newCod')) {
+        mostrarProximoCodEquipo('equipo', 'newCod');
+    }
     //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
     if (document.getElementById('results')) {
         mostrarContenidoTabla('Escritorio', 'results', 'modal1');
@@ -1021,11 +1123,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
 
         { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
+
         { table: 'param_servicio', field: 'nom_servicio', id: 'departamentos' },
+        // { table: 'param_servicio', field: 'nom_servicio', id: 'newDepartamentos' },
+
         { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirus' },
         { table: 'param_tipo_impresora', field: 'nom_ti', id: 'tipoIMP' },
+
         { table: 'param_tipo_equipo', field: 'nom_te', id: 'tipoEquipo' },
+        { table: 'param_tipo_equipo', field: 'nom_te', id: 'newTipoEquipo' },
+
         { table: 'param_piso', field: 'nom_piso', id: 'pisos' }
+        // { table: 'param_piso', field: 'nom_piso', id: 'newPisos' }
     ];
 
     optionMappings.forEach(mapping => {

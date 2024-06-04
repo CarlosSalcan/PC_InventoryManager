@@ -86,12 +86,9 @@ async function getOptionsFrom(tabla, campo, selectId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    mostrarProximoCodEquipo();
-    setearFechaActual();
+    
     //-------------------------------> Selects NEW Equipo
-    getOptionsFrom('param_tipo_equipo', 'nom_te', 'newTipoEquipo');
-    getOptionsFrom('param_piso', 'nom_piso', 'newPisos');
-    getOptionsFrom('param_servicio', 'nom_servicio', 'newDepartamentos');
+    
 });
 
 

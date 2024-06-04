@@ -300,39 +300,14 @@ const equipoController = {
         }
     },
 
-    getNextCodEquipo: async (req, res) => {
-        try {
-            const query = `SHOW TABLE STATUS LIKE 'equipo'`;
-            const results = await new Promise((resolve, reject) => {
-                connection.query(query, (error, results, fields) => {
-                    if (error) {
-                        reject(error);
-                        return;
-                    }
-                    resolve(results);
-                });
-            });
-
-            if (results.length > 0) {
-                const nextCodEquipo = results[0].Auto_increment;
-                res.json({ success: true, nextCodEquipo });
-            } else {
-                res.status(404).json({ success: false, message: 'No se pudo obtener el próximo código de equipo' });
-            }
-        } catch (error) {
-            console.error('Error al obtener el próximo código de equipo:', error);
-            res.status(500).json({ success: false, message: 'Error interno del servidor' });
-        }
-    },
-
     guardarCambiosLaptop: async (req, res) => {
         try {
             const { codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe, office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion } = req.body;
             const query = `UPDATE laptop
-                SET 
-                    cod_laptop = ?, 
-                    cod_equipo = ?,
-                    cod_tics_laptop = ?,
+            SET 
+            cod_laptop = ?, 
+            cod_equipo = ?,
+            cod_tics_laptop = ?,
                     mar_laptop = ?,  
                     mod_laptop = ?,
                     ser_laptop = ?,
@@ -354,7 +329,7 @@ const equipoController = {
                     nom_usuario_laptop = ?,
                     est_laptop = ?,
                     observacion_laptop = ?
-                WHERE cod_equipo = ?`;
+                    WHERE cod_equipo = ?`;
             // Ejecuta la consulta con los datos recibidos
             connection.query(query, [codPTL, codEquipo, codTics, marca, modelo, serie, procesador, velocidad, memoria, hdd, dispOpt, red, wifi, bluethooth, tarjeta, sisOpe, office, antivirus, nomAnt, verAnt, host, usuario, estado, observacion, codEquipo], (error, results, fields) => {
                 if (error) {
@@ -375,7 +350,7 @@ const equipoController = {
         try {
             const { codIMP, codEquipo, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion } = req.body;
             const query = `UPDATE impresora
-                SET 
+            SET 
                     cod_impresora = ?, 
                     cod_equipo = ?,
                     cod_tics_impresora = ?,
@@ -409,8 +384,8 @@ const equipoController = {
         try {
             const { codTLF, codEquipo, codTics, marca, modelo, serie, condicion, estado, observacion } = req.body;
             const query = `UPDATE telefono
-                SET 
-                    cod_telf = ?, 
+            SET 
+            cod_telf = ?, 
                     cod_equipo = ?,
                     cod_tics_telf = ?,
                     mar_telf = ?,  
@@ -464,7 +439,7 @@ const equipoController = {
             if (tipoEquipo === 'todos') {
                 // Si no se proporciona un tipo de equipo, buscar en todos los tipos
                 sqlQuery = `
-                    SELECT * FROM equipo
+                SELECT * FROM equipo
                     WHERE 
                         cod_equipo LIKE ? 
                         OR fec_reg LIKE ?
@@ -477,8 +452,8 @@ const equipoController = {
             } else {
                 // Si se proporciona un tipo de equipo, buscar solo en ese tipo
                 sqlQuery = `
-                    SELECT * FROM equipo
-                    WHERE tip_equipo = ? AND (
+                SELECT * FROM equipo
+                WHERE tip_equipo = ? AND (
                         cod_equipo LIKE ? 
                         OR fec_reg LIKE ?
                         OR cod_almacen LIKE ?
@@ -505,7 +480,59 @@ const equipoController = {
             console.error('Error al buscar los equipos:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
+    },
+
+    getNextCodEquipo: async (req, res) => {
+        try {
+            const { tableName } = req.params;
+            const query = `SHOW TABLE STATUS LIKE '${tableName}'`;
+            const results = await new Promise((resolve, reject) => {
+                connection.query(query, (error, results, fields) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve(results);
+                });
+            });
+
+            if (results.length > 0) {
+                const nextCod = results[0].Auto_increment;
+                res.json({ success: true, nextCod });
+            } else {
+                res.status(404).json({ success: false, message: `No se pudo obtener el próximo código de ${tableName}` });
+            }
+        } catch (error) {
+            console.error(`Error al obtener el próximo código de ${tableName}:`, error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    nuevoEquipo: async (req, res) => {
+        try {
+            // Extraer los datos del cuerpo de la solicitud
+            const { cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio } = req.body;
+
+            // Realizar la inserción del nuevo equipo en la base de datos
+            const query = 'INSERT INTO equipo (cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio) VALUES (?, ?, ?, ?, ?, ?, ?)';
+            connection.query(query, [cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al insertar el equipo:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                if (results.affectedRows === 1) {
+                    res.status(200).json({ success: true, message: 'Equipo ingresado correctamente' });
+                } else {
+                    res.status(500).json({ success: false, message: 'Error al insertar el equipo' });
+                }
+            });
+        } catch (error) {
+            console.error('Error al insertar el equipo:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     }
+
 };
 
 module.exports = equipoController;
