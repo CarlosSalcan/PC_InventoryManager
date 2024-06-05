@@ -12,6 +12,7 @@ const parametro = require('../controllers/parametro.controller.js');
 //--------------------------> Obtener equipos de Reporte
 //--------------------------> Buscar por Tipo BDD
 //--------------------------> Obtener nuevo codigo para nuevo Equipo
+//--------------------------> Obtener ultimo codigo ingresado en la tabla X
 router.get('/equipos', equipo.getEquipos);
 router.get('/options/:tabla/:campo', equipo.obtenerOpcSelect);
 router.get('/equipoB/:id', equipo.getEquipoById)
@@ -20,6 +21,7 @@ router.get('/datosTabla/:tabla/:codEquipo', equipo.obtenerDatosComponentes);
 router.get('/equiposR', equipo.getEquiposReporte);
 router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
 router.get('/getNextCod/:tableName/:campo', equipo.getNextCodEquipo);
+router.get('/obtenerUltimoId/:tableName', equipo.obtenerUltimoId);
 
 //--------------------------> Modificar Datos Equipo
 //--------------------------> Enviar a Bodega (P2)

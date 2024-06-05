@@ -997,15 +997,20 @@ function setearFechaActual(fecha) {
 
 function enviarDatosEquipo() {
     try {
-        const cod_equipo = document.getElementById('newCod').textContent;
-        const fec_reg = document.getElementById('newFecha').textContent;
-        const cod_almacen = document.getElementById('newCodAlmacen').value;
-        const tip_equipo = document.getElementById('newTipoEquipo').value;
-        const piso_ubic = document.getElementById('pisos').value;
-        const serv_depar = document.getElementById('departamentos').value;
-        const nom_custodio = document.getElementById('newTitularEq').value;
+        const cod_equipo = document.getElementById('newCod').textContent.trim();
+        const fec_reg = document.getElementById('newFecha').textContent.trim();
+        const cod_almacen = document.getElementById('newCodAlmacen').value.trim();
+        const tip_equipo = document.getElementById('newTipoEquipo').value.trim();
+        const piso_ubic = document.getElementById('pisos').value.trim();
+        const serv_depar = document.getElementById('departamentos').value.trim();
+        const nom_custodio = document.getElementById('newTitularEq').value.trim();
+        // Verificar si hay campos vacíos
+        if (cod_almacen === '' || tip_equipo === '' || piso_ubic === '' || serv_depar === '' || nom_custodio === '') {
+            console.error('Error: Debe completar todos los campos.');
+            alert('No se puede dejar campos Vacios en el Formulario');
+            return;
+        }
 
-        // Enviar los datos al servidor
         fetch('http://localhost:3000/tics/ingresarEquipo', {
             method: 'POST',
             headers: {
@@ -1025,12 +1030,15 @@ function enviarDatosEquipo() {
             .then(data => {
                 if (data.success) {
                     console.log('Equipo ingresado correctamenteJS');
+                    mostrarNewRegistro();
                 } else {
                     console.error('Error al ingresar el equipoJS:', data.message);
+                    alert('ERROR al ingresar el Equipo');
                 }
             })
             .catch(error => {
                 console.error('Error al enviar los datos del equipoJS:', error);
+                alert('ERROR al enviar los datos Al Equipo');
             });
     } catch (error) {
         console.error('Error al enviar los datos del equipoJS:', error);
@@ -1066,6 +1074,26 @@ function mostrarNewRegistro() {
     });
 }
 
+function obtenerUltimoId(tableName, inputId) {
+    try {
+        fetch(`http://localhost:3000/tics/obtenerUltimoId/${tableName}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(`Último ID ingresado en ${tableName}:`, data.ultimoId);
+                    document.getElementById(inputId).value = (data.ultimoId+1);
+                } else {
+                    console.error(`Error al obtener el último ID de ${tableName}:`, data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar la solicitud:', error);
+            });
+    } catch (error) {
+        console.error('Error al ejecutar la función obtenerUltimoId:', error);
+    }
+}
+
 //-------------------------------> Funcion Principal
 document.addEventListener('DOMContentLoaded', async () => {
     //-------------------------------> INGRESO DE NUEVO EQUIPO
@@ -1074,6 +1102,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (document.getElementById('newCod')) {
         mostrarProximoCodEquipo('equipo', 'newCod');
+    }
+    if (document.getElementById('codigo')) {
+        mostrarProximoCodEquipo('cpu_equipo', 'codigo');
+    }
+    if (document.getElementById('codigoEq')) {
+        obtenerUltimoId('equipo', 'codigoEq');
     }
     //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
     if (document.getElementById('results')) {

@@ -531,6 +531,32 @@ const equipoController = {
             console.error('Error al insertar el equipo:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
+    },
+
+    obtenerUltimoId: async (req, res) => {
+        try {
+            const { tableName } = req.params;
+            if (!tableName) {
+                return res.status(400).json({ success: false, message: 'El nombre de la tabla es requerido' });
+            }
+            const query = `SELECT MAX(cod_equipo) AS ultimoId FROM ??`;
+            connection.query(query, [tableName], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al obtener el último ID:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                if (results.length > 0) {
+                    const ultimoId = results[0].ultimoId;
+                    res.status(200).json({ success: true, ultimoId });
+                } else {
+                    res.status(404).json({ success: false, message: `No se encontraron registros en la tabla ${tableName}` });
+                }
+            });
+        } catch (error) {
+            console.error('Error al obtener el último ID:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
     }
 
 };

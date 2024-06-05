@@ -1,32 +1,4 @@
-//------------------------------------------------------> Nuevo Parametro
-async function guardarNuevoParametro() {
-    const tabla = document.getElementById('tablas').value;
-    const nombreParametro = document.getElementById('nombreParametro').value;
 
-    try {
-        const response = await fetch(`http://localhost:3000/tics/nuevoParametro/${tabla}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nombreParametro: nombreParametro 
-            })
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            console.log('Nuevo parámetro guardado correctamente');
-            // Aquí puedes realizar alguna acción adicional si el guardado es exitoso
-        } else {
-            console.error('Error al guardar el nuevo parámetro:', data.message);
-            // Aquí puedes manejar el caso en que ocurra un error durante el guardado
-        }
-    } catch (error) {
-        console.error('Error al enviar datos al servidor:', error);
-        // Aquí puedes manejar el caso en que ocurra un error al enviar datos al servidor
-    }
-}
 // Evento 'submit' al formulario para capturar el envío del mismo
 document.getElementById('nuevoParametroForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -34,27 +6,27 @@ document.getElementById('nuevoParametroForm').addEventListener('submit', async (
 });
 
 //------------------------------------------------------> Mostrar nuevo id Equipo
-async function mostrarProximoCodEquipo() {
-    try {
-        const response = await fetch(`http://localhost:3000/tics/nextCodEquipo`);
-        const data = await response.json();
+// async function mostrarProximoCodEquipo() {
+//     try {
+//         const response = await fetch(`http://localhost:3000/tics/nextCodEquipo`);
+//         const data = await response.json();
 
-        if (data.success) {
-            document.getElementById('newCod').textContent = data.nextCodEquipo;
-        } else {
-            console.error('Error al obtener el próximo código de equipo:', data.message);
-        }
-    } catch (error) {
-        console.error('Error al obtener el próximo código de equipo:', error);
-    }
-}
+//         if (data.success) {
+//             document.getElementById('newCod').textContent = data.nextCodEquipo;
+//         } else {
+//             console.error('Error al obtener el próximo código de equipo:', data.message);
+//         }
+//     } catch (error) {
+//         console.error('Error al obtener el próximo código de equipo:', error);
+//     }
+// }
 
 //------------------------------------------------------> FechaActual para nuevo Equipo
-function setearFechaActual() {
-    const spanFecha = document.getElementById('newFecha');
-    const fechaActual = new Date().toISOString().split('T')[0];
-    spanFecha.textContent = fechaActual;
-}
+// function setearFechaActual() {
+//     const spanFecha = document.getElementById('newFecha');
+//     const fechaActual = new Date().toISOString().split('T')[0];
+//     spanFecha.textContent = fechaActual;
+// }
 
 //------------------------------------------------------> Obtener Ocpciones SLECT
 async function getOptionsFrom(tabla, campo, selectId) {

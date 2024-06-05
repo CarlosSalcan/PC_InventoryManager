@@ -90,7 +90,8 @@
                 </div>
             </div><br>
             <div class="buttons">
-                <button type="submit" class="green-button">Guardar Nuevo Parámetro</button>
+                <button type="submit" class="green-button" onclick="guardarNuevoParametro()">Guardar Nuevo
+                    Parámetro</button>
             </div>
         </form>
 
@@ -110,18 +111,18 @@
                         <span id="newTecnico"></span>
                     </div>
                 </div>
-    
+
                 <div>
                     <div>
                         <label for="newCodAlmacen">Nuevo Cod Almacén:</label>
-                        <input type="text" id="newCodAlmacen" name="newCodAlmacen" class="newData">
+                        <input type="text" id="newCodAlmacen" name="newCodAlmacen" class="newData" required>
                     </div>
                     <div>
                         <label for="pisos">Piso Destinado:</label>
                         <select id="pisos" class="options"></select>
                     </div>
                 </div>
-    
+
                 <div colspan="2">
                     <div>
                         <label for="newTitularEq">Titular:</label>
@@ -132,7 +133,7 @@
                         <select id="departamentos" class="options"></select>
                     </div>
                 </div>
-    
+
                 <div>
                     <div>
                         <label for="newTipoEquipo">Tipo de Equipo:</label>
@@ -140,10 +141,10 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="horizontal-container">
                 <div class="buttons">
-                    <button type="button" class="green-button" onclick="enviarDatosEquipo(),mostrarNewRegistro()">Entregar Nuevo Equipo</button>
+                    <button type="button" class="green-button" onclick="enviarDatosEquipo()">Entregar Equipo</button>
                 </div>
             </div>
         </form>
@@ -152,6 +153,7 @@
             <div class="modal-content">
                 <form id="editarEquipo" class="formulario">
                     <h2>Nuevo CPU</h2>
+                    <span class="close" onclick="cerrarVentanaEmergente('modal1')">&times;</span>
                     <form id="editarCPU" class="formulario">
                         <div class="form-section">
                             <div class="horizontal-container">

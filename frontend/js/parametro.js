@@ -180,3 +180,32 @@ async function modificarNombre(tabla, campo, valor, nuevoNombre) {
         console.error('Error al editar el nombre del parámetro:', error);
     }
 }
+
+async function guardarNuevoParametro() {
+    const tabla = document.getElementById('tablas').value;
+    const nombreParametro = document.getElementById('nombreParametro').value;
+
+    try {
+        const response = await fetch(`http://localhost:3000/tics/nuevoParametro/${tabla}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombreParametro: nombreParametro 
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            console.log('Nuevo parámetro guardado correctamente');
+            // Aquí puedes realizar alguna acción adicional si el guardado es exitoso
+        } else {
+            console.error('Error al guardar el nuevo parámetro:', data.message);
+            // Aquí puedes manejar el caso en que ocurra un error durante el guardado
+        }
+    } catch (error) {
+        console.error('Error al enviar datos al servidor:', error);
+        // Aquí puedes manejar el caso en que ocurra un error al enviar datos al servidor
+    }
+}
