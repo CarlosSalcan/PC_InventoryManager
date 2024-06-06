@@ -918,3 +918,22 @@ textarea {
         padding: 4px 10px;
     }
 }
+
+
+
+
+
+
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.main-container .registro, .registroEq {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    flex: 1;
+}

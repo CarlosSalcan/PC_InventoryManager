@@ -971,6 +971,75 @@ async function mostrarEquiposReporte(tbodyId) {
 }
 
 //------------------------------->  INGRESO DE NUEVO EQUIPO
+async function enviarDatosEquipo() {
+    try {
+        const cod_equipo = document.getElementById('newCod').textContent.trim();
+        const fec_reg = document.getElementById('newFecha').textContent.trim();
+        const cod_almacen = document.getElementById('newCodAlmacen').value.trim();
+        const tip_equipo = document.getElementById('newTipoEquipo').value.trim();
+        const piso_ubic = document.getElementById('pisos').value.trim();
+        const serv_depar = document.getElementById('departamentos').value.trim();
+        const nom_custodio = document.getElementById('newTitularEq').value.trim();
+        // Verificar si hay campos vacíos cod_almacen === '' || 
+        if (tip_equipo === '' || piso_ubic === '' || serv_depar === '' || nom_custodio === '') {
+            console.error('Error: Debe completar todos los campos.');
+            alert('No se puede dejar campos Vacios en el Formulario NUEVO EQUIPO');
+            return;
+        }
+
+        // Mostrar ventana de confirmación al usuario
+        const confirmacion = confirm(`Se Creara un Nuevo Equipo. ¿Estás seguro de guardar el Equipo?\n
+\u2022 Cod: ${cod_equipo}         \u2022 Fecha: ${fec_reg} 
+\u2022 Cod Almacen: ${cod_almacen}        
+\u2022 Tipo de Eq: ${tip_equipo}     \u2022 Piso: ${piso_ubic}
+\u2022 Serv/Depar: ${serv_depar}         \u2022 Custodio: ${nom_custodio}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
+        const response = await fetch('http://localhost:3000/tics/ingresarEquipo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cod_equipo,
+                fec_reg,
+                cod_almacen,
+                tip_equipo,
+                piso_ubic,
+                serv_depar,
+                nom_custodio
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            console.log('Equipo ingresado correctamenteJS');
+            mostrarNewRegistro();
+            // Setear el valor en otro formulario
+            setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigotics');
+            setearCodAlmacenEnOtroFormulario(nom_custodio, 'nomUsuario');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEq');
+        } else {
+            console.error('Error al ingresar el equipoJS:', data.message);
+            alert('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)');
+            window.location.reload()
+        }
+    } catch (error) {
+        console.error('Error al enviar los datos del equipoJS:', error);
+        alert('ERROR al enviar los datos Al Equipo');
+    }
+}
+
+function setearCodAlmacenEnOtroFormulario(dato, campo) {
+    const otroCampoCodAlmacen = document.getElementById(campo);
+    if (otroCampoCodAlmacen) {
+        otroCampoCodAlmacen.value = dato;
+    }
+}
+
 async function mostrarProximoCodEquipo(tabla, campo) {
     try {
         const response = await fetch(`http://localhost:3000/tics/getNextCod/${tabla}/${campo}`);
@@ -995,63 +1064,13 @@ function setearFechaActual(fecha) {
     spanFecha.textContent = fechaActual;
 }
 
-function enviarDatosEquipo() {
-    try {
-        const cod_equipo = document.getElementById('newCod').textContent.trim();
-        const fec_reg = document.getElementById('newFecha').textContent.trim();
-        const cod_almacen = document.getElementById('newCodAlmacen').value.trim();
-        const tip_equipo = document.getElementById('newTipoEquipo').value.trim();
-        const piso_ubic = document.getElementById('pisos').value.trim();
-        const serv_depar = document.getElementById('departamentos').value.trim();
-        const nom_custodio = document.getElementById('newTitularEq').value.trim();
-        // Verificar si hay campos vacíos
-        if (cod_almacen === '' || tip_equipo === '' || piso_ubic === '' || serv_depar === '' || nom_custodio === '') {
-            console.error('Error: Debe completar todos los campos.');
-            alert('No se puede dejar campos Vacios en el Formulario');
-            return;
-        }
-
-        fetch('http://localhost:3000/tics/ingresarEquipo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                cod_equipo,
-                fec_reg,
-                cod_almacen,
-                tip_equipo,
-                piso_ubic,
-                serv_depar,
-                nom_custodio
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Equipo ingresado correctamenteJS');
-                    mostrarNewRegistro();
-                } else {
-                    console.error('Error al ingresar el equipoJS:', data.message);
-                    alert('ERROR al ingresar el Equipo');
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar los datos del equipoJS:', error);
-                alert('ERROR al enviar los datos Al Equipo');
-            });
-    } catch (error) {
-        console.error('Error al enviar los datos del equipoJS:', error);
-    }
-}
-
-// Verifcar tipo de equipo
 function mostrarNewRegistro() {
     const tipoEquipo = document.getElementById('newTipoEquipo').value;
     let modalID;
 
     switch (tipoEquipo) {
         case 'Escritorio':
+
             modalID = 'modal1';
             break;
         case 'Portátil':
@@ -1074,29 +1093,36 @@ function mostrarNewRegistro() {
     });
 }
 
-function obtenerUltimoId(tableName, inputId) {
+function obtenerUltimosCodAlmacen() {
     try {
-        fetch(`http://localhost:3000/tics/obtenerUltimoId/${tableName}`)
+        fetch('http://localhost:3000/tics/obtenerUltimosCodAlmacen')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log(`Último ID ingresado en ${tableName}:`, data.ultimoId);
-                    document.getElementById(inputId).value = (data.ultimoId+1);
+                    console.log('Últimos registros de cod_almacen:', data.ultimosCodAlmacen);
+                    const textArea = document.getElementById('ultimosCodAlmacenArea');
+                    textArea.value = data.ultimosCodAlmacen.join('\n');
+                    // O si prefieres usar un span
+                    // const span = document.getElementById('ultimosCodAlmacenSpan');
+                    // span.textContent = data.ultimosCodAlmacen.join(', ');
                 } else {
-                    console.error(`Error al obtener el último ID de ${tableName}:`, data.message);
+                    console.error('Error al obtener los últimos registros de cod_almacen:', data.message);
                 }
             })
             .catch(error => {
                 console.error('Error al enviar la solicitud:', error);
             });
     } catch (error) {
-        console.error('Error al ejecutar la función obtenerUltimoId:', error);
+        console.error('Error al ejecutar la función obtenerUltimosCodAlmacen:', error);
     }
 }
 
 //-------------------------------> Funcion Principal
 document.addEventListener('DOMContentLoaded', async () => {
     //-------------------------------> INGRESO DE NUEVO EQUIPO
+    if (document.getElementById('newCodAlmacen')) {
+        document.getElementById('newCodAlmacen').value = 'CZ9TICS-';
+    }
     if (document.getElementById('newFecha')) {
         setearFechaActual('newFecha');
     }
@@ -1106,9 +1132,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('codigo')) {
         mostrarProximoCodEquipo('cpu_equipo', 'codigo');
     }
-    if (document.getElementById('codigoEq')) {
-        obtenerUltimoId('equipo', 'codigoEq');
-    }
+    obtenerUltimosCodAlmacen();
+
     //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
     if (document.getElementById('results')) {
         mostrarContenidoTabla('Escritorio', 'results', 'modal1');

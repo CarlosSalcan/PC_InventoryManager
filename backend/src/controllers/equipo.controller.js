@@ -482,6 +482,47 @@ const equipoController = {
         }
     },
 
+    //-------------------------------> GUARDAR NUEVO EQUIPO
+    nuevoEquipo: async (req, res) => {
+        try {
+            // Extraer los datos del cuerpo de la solicitud
+            const { cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio } = req.body;
+    
+            // Verificar si ya existe un registro con el mismo cod_almacen
+            const existeRegistroQuery = 'SELECT COUNT(*) AS numRegistros FROM equipo WHERE cod_almacen = ?';
+            connection.query(existeRegistroQuery, [cod_almacen], (error, results, fields) => {
+                if (error) {
+                    console.error('Error al verificar el registro existente:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                const numRegistros = results[0].numRegistros;
+                if (numRegistros > 0) {
+                    res.status(400).json({ success: false, message: 'Ya existe un equipo con el mismo código de almacén' });
+                    return;
+                }
+    
+                // Realizar la inserción del nuevo equipo en la base de datos
+                const query = 'INSERT INTO equipo (cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio) VALUES (?, ?, ?, ?, ?, ?, ?)';
+                connection.query(query, [cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio], (error, results, fields) => {
+                    if (error) {
+                        console.error('Error al insertar el equipo:', error);
+                        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                        return;
+                    }
+                    if (results.affectedRows === 1) {
+                        res.status(200).json({ success: true, message: 'Equipo ingresado correctamente' });
+                    } else {
+                        res.status(500).json({ success: false, message: 'Error al insertar el equipo' });
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Error al insertar el equipo:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
     getNextCodEquipo: async (req, res) => {
         try {
             const { tableName } = req.params;
@@ -508,57 +549,35 @@ const equipoController = {
         }
     },
 
-    nuevoEquipo: async (req, res) => {
+    obtenerUltimosCodAlmacen: async (req, res) => {
         try {
-            // Extraer los datos del cuerpo de la solicitud
-            const { cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio } = req.body;
-
-            // Realizar la inserción del nuevo equipo en la base de datos
-            const query = 'INSERT INTO equipo (cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio) VALUES (?, ?, ?, ?, ?, ?, ?)';
-            connection.query(query, [cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio], (error, results, fields) => {
+            const query = `
+                SELECT cod_almacen 
+                FROM equipo 
+                WHERE cod_equipo IN (
+                    SELECT MAX(cod_equipo) 
+                    FROM equipo 
+                    GROUP BY SUBSTRING_INDEX(SUBSTRING_INDEX(cod_almacen, '-', 2), '-', -1)
+                )
+            `;
+            connection.query(query, (error, results, fields) => {
                 if (error) {
-                    console.error('Error al insertar el equipo:', error);
-                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
-                    return;
-                }
-                if (results.affectedRows === 1) {
-                    res.status(200).json({ success: true, message: 'Equipo ingresado correctamente' });
-                } else {
-                    res.status(500).json({ success: false, message: 'Error al insertar el equipo' });
-                }
-            });
-        } catch (error) {
-            console.error('Error al insertar el equipo:', error);
-            res.status(500).json({ success: false, message: 'Error interno del servidor' });
-        }
-    },
-
-    obtenerUltimoId: async (req, res) => {
-        try {
-            const { tableName } = req.params;
-            if (!tableName) {
-                return res.status(400).json({ success: false, message: 'El nombre de la tabla es requerido' });
-            }
-            const query = `SELECT MAX(cod_equipo) AS ultimoId FROM ??`;
-            connection.query(query, [tableName], (error, results, fields) => {
-                if (error) {
-                    console.error('Error al obtener el último ID:', error);
+                    console.error('Error al obtener los últimos registros de cod_almacen:', error);
                     res.status(500).json({ success: false, message: 'Error interno del servidor' });
                     return;
                 }
                 if (results.length > 0) {
-                    const ultimoId = results[0].ultimoId;
-                    res.status(200).json({ success: true, ultimoId });
+                    const ultimosCodAlmacen = results.map(row => row.cod_almacen);
+                    res.status(200).json({ success: true, ultimosCodAlmacen });
                 } else {
-                    res.status(404).json({ success: false, message: `No se encontraron registros en la tabla ${tableName}` });
+                    res.status(404).json({ success: false, message: 'No se encontraron registros en la tabla equipo' });
                 }
             });
         } catch (error) {
-            console.error('Error al obtener el último ID:', error);
+            console.error('Error al obtener los últimos registros de cod_almacen:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
     }
-
 };
 
 module.exports = equipoController;

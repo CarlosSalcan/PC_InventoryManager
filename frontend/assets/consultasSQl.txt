@@ -52,6 +52,12 @@ UPDATE param_tipo_equipo
 SET nom_te = 'Escritorio'
 WHERE nom_te = 'Computador de Escritorio';
 
+UPDATE equipo
+SET cod_almacen = REPLACE(cod_almacen, '_', '-');
+
+
+
+
 UPDATE param_servicio
 SET nom_servicio = 'DIRECCION ZONAL DE GOBERNANZA DE LA SALUD'
 WHERE nom_servicio = 'DIRECCION  ZONAL DE GOBERNANZA DE LA SALUD';
