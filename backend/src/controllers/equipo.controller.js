@@ -1,3 +1,4 @@
+const { query } = require('express');
 const connection = require('../connection');
 
 const equipoController = {
@@ -487,7 +488,7 @@ const equipoController = {
         try {
             // Extraer los datos del cuerpo de la solicitud
             const { cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio } = req.body;
-    
+
             // Verificar si ya existe un registro con el mismo cod_almacen
             const existeRegistroQuery = 'SELECT COUNT(*) AS numRegistros FROM equipo WHERE cod_almacen = ?';
             connection.query(existeRegistroQuery, [cod_almacen], (error, results, fields) => {
@@ -501,7 +502,7 @@ const equipoController = {
                     res.status(400).json({ success: false, message: 'Ya existe un equipo con el mismo código de almacén' });
                     return;
                 }
-    
+
                 // Realizar la inserción del nuevo equipo en la base de datos
                 const query = 'INSERT INTO equipo (cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio) VALUES (?, ?, ?, ?, ?, ?, ?)';
                 connection.query(query, [cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio], (error, results, fields) => {
@@ -575,6 +576,231 @@ const equipoController = {
             });
         } catch (error) {
             console.error('Error al obtener los últimos registros de cod_almacen:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarCPU: async (req, res) => {
+        try {
+            console.log('Datos recibidos CPU:', req.body);
+
+            const {
+                codCpu, codEq, codTicsCpu, marca, serie, tarjeta, procesador, velocidad, memoria, tamHdd,
+                dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
+                verAnti, host, usuario, ip, condicion, estado, observacion
+            } = req.body;
+
+            const query = `INSERT INTO cpu_equipo (cod_cpu, cod_equipo, cod_tics_cpu, mar_cpu, ser_cpu,
+                                                    tar_madre, procesador, velocidad, memoria, tam_hdd,
+                                                    disp_optico, red_fija, red_inalam, bluetooth, lec_tarjeta,
+                                                    sis_ope, office, antivirus, nom_antivirus, ver_antivirus,
+                                                    nom_hots, nom_usuario, ip_equipo, con_cpu, est_cpu, observacion) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+            const values = [
+                codCpu, codEq, codTicsCpu, marca, serie, tarjeta, procesador, velocidad, memoria, tamHdd,
+                dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
+                verAnti, host, usuario, ip, condicion, estado, observacion
+            ];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el CPU:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'CPU guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el CPU:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarMTR: async (req, res) => {
+        try {
+            console.log('Datos recibidos MTR:', req.body);
+
+            const { codMTR, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion } = req.body;
+
+            const query = `INSERT INTO monitor (cod_monitor, cod_equipo, cod_tics_monitor, mar_monitor, mod_monitor, ser_monitor, 
+                                                tam_monitor, con_monitor, est_monitor, observacion)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+            const values = [codMTR, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el MTR:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'MTR guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el MTR:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarTCL: async (req, res) => {
+        try {
+            console.log('Datos recibidos TCL:', req.body);
+
+            const { codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion } = req.body;
+
+            const query = `INSERT INTO teclado (cod_teclado, cod_equipo, cod_tics_teclado, mar_teclado, mod_teclado, ser_teclado, 
+                                                tip_teclado, pue_teclado, con_teclado, est_teclado, obs_teclado)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+
+            const values = [codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el TCL:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'TCL guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el TCL:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarMS: async (req, res) => {
+        try {
+            console.log('Datos recibidos MS:', req.body);
+
+            const { codMS, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion } = req.body;
+
+            const query = `INSERT INTO mouse (cod_mouse, cod_equipo, cod_tics_mouse, mar_mouse, mod_mouse, ser_mouse, tip_mouse, 
+                                            pue_mouse, con_mouse, est_mouse, obs_mouse)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+
+            const values = [codMS, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el MS:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'MS guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el MS:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarLaptop: async (req, res) => {
+        try {
+            console.log('Datos recibidos PTL:', req.body);
+
+            const {
+                codPTL, codEq, codTicsCpu, marca, modelo, serie, procesador, velocidad, memoria, tamHdd,
+                dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
+                verAnti, host, usuario, estado, observacion
+            } = req.body;
+
+            const query = `INSERT INTO laptop (cod_laptop, cod_equipo, cod_tics_laptop, mar_laptop, mod_laptop, 
+                                                    ser_laptop, pro_laptop, vel_laptop, mem_laptop, hdd_laptop, 
+                                                    dop_laptop, red_laptop, wif_laptop, blu_laptop, tar_laptop, 
+                                                    so_laptop, off_laptop, antv_laptop, nom_antv_laptop, ver_antv_laptop, 
+                                                    nom_hots_laptop, nom_usuario_laptop, est_laptop, observacion_laptop) 
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+            const values = [
+                codPTL, codEq, codTicsCpu, marca, modelo, serie, procesador, velocidad, memoria, tamHdd,
+                dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
+                verAnti, host, usuario, estado, observacion
+            ];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el PTL:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'PTL guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el PTL:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarIMP: async (req, res) => {
+        try {
+            console.log('Datos recibidos IMP:', req.body);
+
+            const { codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion } = req.body;
+
+            const query = `INSERT INTO impresora (cod_impresora, cod_equipo, cod_tics_impresora, mar_imp, mod_imp, ser_imp, tip_imp, 
+                                                pue_imp, con_imp, ip_equipo_imp, est_imp, obs_imp)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+            const values = [codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el IMP:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'IMP guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el IMP:', error);
+            res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    guardarTLF: async (req, res) => {
+        try {
+            console.log('Datos recibidos TLF:', req.body);
+
+            const { codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion } = req.body;
+
+            const query = `INSERT INTO telefono (cod_telf, cod_equipo, cod_tics_telf, mar_telf, mod_telf, ser_telf, 
+                                                con_telf, est_telf, obs_telf)
+                            VALUES (?,?,?,?,?,?,?,?,?)`;
+
+            const values = [codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion];
+
+            console.log('Query:', query);
+            console.log('Values:', values);
+
+            connection.query(query, values, (error, results) => {
+                if (error) {
+                    console.error('Error al guardar el TLF:', error);
+                    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+                    return;
+                }
+                res.status(200).json({ success: true, message: 'TLF guardado correctamente' });
+            });
+        } catch (error) {
+            console.error('Error al guardar el TLF:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
         }
     }

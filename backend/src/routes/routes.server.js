@@ -12,6 +12,7 @@ const parametro = require('../controllers/parametro.controller.js');
 //--------------------------> Obtener equipos de Reporte
 //--------------------------> Buscar por Tipo BDD
 //--------------------------> Obtener nuevo codigo para nuevo Equipo
+//--------------------------> Obtener ultimos codigos ingresados
 router.get('/equipos', equipo.getEquipos);
 router.get('/options/:tabla/:campo', equipo.obtenerOpcSelect);
 router.get('/equipoB/:id', equipo.getEquipoById)
@@ -20,8 +21,8 @@ router.get('/datosTabla/:tabla/:codEquipo', equipo.obtenerDatosComponentes);
 router.get('/equiposR', equipo.getEquiposReporte);
 router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
 router.get('/getNextCod/:tableName/:campo', equipo.getNextCodEquipo);
-
 router.get('/obtenerUltimosCodAlmacen', equipo.obtenerUltimosCodAlmacen);
+
 
 //--------------------------> Modificar Datos Equipo
 //--------------------------> Enviar a Bodega (P2)
@@ -46,7 +47,21 @@ router.put('/telefonoModificado/:codEquipo', equipo.guardarCambiosTelefono);
 
 //--------------------------> Agregar nuevo Parametro
 //--------------------------> Agregar nuevo Equipo
+//--------------------------> Agregar nuevo CPU
+//--------------------------> Agregar nuevo MTR
+//--------------------------> Agregar nuevo TCL
+//--------------------------> Agregar nuevo MS
+//--------------------------> Agregar nuevo LAPTOP
+//--------------------------> Agregar nuevo IMP
+//--------------------------> Agregar nuevo TLF
 router.post('/nuevoParametro/:tabla', parametro.nuevoParametro);
 router.post('/ingresarEquipo', equipo.nuevoEquipo);
+router.post('/guardarCPU', equipo.guardarCPU);
+router.post('/guardarMTR', equipo.guardarMTR);
+router.post('/guardarTCL', equipo.guardarTCL);
+router.post('/guardarMS', equipo.guardarMS);
+router.post('/guardarLaptop', equipo.guardarLaptop);
+router.post('/guardarIMP', equipo.guardarIMP);
+router.post('/guardarTLF', equipo.guardarTLF);
 
 module.exports = router;

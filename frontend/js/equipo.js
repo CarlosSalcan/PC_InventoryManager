@@ -933,6 +933,7 @@ async function buscarEquipos(tipoEquipo, mostrar, modalID) {
     }
 }
 
+
 //-------------------------------> MOSTRAR PARA REPORTES
 async function mostrarEquiposReporte(tbodyId) {
     const resultsElement = document.getElementById(tbodyId);
@@ -984,7 +985,7 @@ async function enviarDatosEquipo() {
         if (tip_equipo === '' || piso_ubic === '' || serv_depar === '' || nom_custodio === '') {
             console.error('Error: Debe completar todos los campos.');
             //alert('No se puede dejar campos Vacios en el Formulario NUEVO EQUIPO');
-            //mostrarMensaje('No se puede dejar campos Vacios en el Formulario NUEVO EQUIPO', 3500);
+            mostrarMensaje('No se puede dejar campos Vacios en el Formulario NUEVO EQUIPO', 3500);
             return;
         }
 
@@ -1019,19 +1020,30 @@ async function enviarDatosEquipo() {
         if (data.success) {
             console.log('Equipo ingresado correctamenteJS');
             mostrarNewRegistro();
-            // Setear el valor en otro formulario
+            //-------------------------------> Enviar a los demas Form Cod Alamcen
             setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigotics');
+            setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigoticsPTL');
+            setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigoticsIMP');
+            //-------------------------------> Enviar a los demas Form Nom Usuario
             setearCodAlmacenEnOtroFormulario(nom_custodio, 'nomUsuario');
+            setearCodAlmacenEnOtroFormulario(nom_custodio, 'nomUsuarioPTL');
+            //-------------------------------> Enviar a los demas Form cod Equipo
             setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEq');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'newCodEqMTR');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'newCodEqTCD');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqMS');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqPTL');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqIMP');
+            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqTLF');
         } else {
             console.error('Error al ingresar el equipoJS:', data.message);
-            //alert('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)');
+            alert('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)');
             //mostrarMensaje('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)', 4000);
             window.location.reload()
         }
     } catch (error) {
         console.error('Error al enviar los datos del equipoJS:', error);
-        //alert('ERROR al enviar los datos Al Equipo');
+        alert('ERROR al enviar los datos Al Equipo');
         //mostrarMensaje('ERROR al enviar los datos Al Equipo', 4000);
     }
 }
@@ -1073,11 +1085,16 @@ function mostrarNewRegistro() {
 
     switch (tipoEquipo) {
         case 'Escritorio':
-
-            modalID = 'modal1';
+            modalID = 'modal7';
             break;
         case 'Portátil':
-            modalID = 'modal2';
+            modalID = 'modal8';
+            break;
+        case 'Impresora':
+            modalID = 'modal9';
+            break;
+        case 'Teléfono':
+            modalID = 'modal10';
             break;
         default:
             console.error('Tipo de equipo no válido');
@@ -1086,7 +1103,6 @@ function mostrarNewRegistro() {
 
     const modal = document.getElementById(modalID);
     modal.style.display = 'flex';
-
     // Cerrar con click afuera de la ventana
     window.addEventListener('click', function (event) {
         if (event.target === modal) {
@@ -1120,9 +1136,6 @@ function obtenerUltimosCodAlmacen() {
     }
 }
 
-<<<<<<< Updated upstream
-//-------------------------------> Funcion Principal
-=======
 //------------------------------->  INGRESO DE NUEVO CPU
 async function guardarCPU() {
     try {
@@ -1162,14 +1175,6 @@ async function guardarCPU() {
         const estado = document.getElementById('estado').value;
         const observacion = document.getElementById('observacionTxt').value;
 
-        // Validación de campos requeridos
-        if (!codCpu || !codEq || !codTicsCpu || !marca || !serie || !tarjeta || !procesador || !velocidad ||
-            !memoria || !tamHdd || !dispOpt || !host || !usuario || !ip || !condicion || !estado) {
-            //alert('Todos los campos son obligatorios.');
-            //mostrarMensaje('Todos los campos son obligatorios.', 3500);
-            return;
-        }
-
         const confirmacion = confirm(`¿Estás seguro de guardar el nuevo CPU?\n
 \u2022 Cod CPU: ${codCpu}         \u2022 Cod Equipo: ${codEq}         \u2022 TICS: ${codTicsCpu}
 \u2022 Titular: ${usuario}     \u2022 Host: ${host}
@@ -1205,15 +1210,15 @@ async function guardarCPU() {
 
         const result = await response.json();
         if (result.success) {
-            //alert('CPU guardado correctamente');
+            alert('CPU guardado correctamente');
             //mostrarMensaje('CPU guardado correctamente', 3000);
         } else {
-            //alert('Error al guardar el CPU: ' + result.message);
-            //mostrarMensaje('Error al guardar el CPU: ' + result.message, 3000);
+            alert('Error al guardar el CPU: ' + result.message);
+            //mostrarMensaje('Error al guardar el CPU: ' + result.message, 4000);
         }
     } catch (error) {
         console.error('Error al enviar los datos del CPU:', error);
-        //alert('Error al enviar los datos del CPU');
+        alert('Error al enviar los datos del CPU');
         //mostrarMensaje('Error al enviar los datos del CPU', 4000);
     }
 }
@@ -1223,26 +1228,20 @@ async function guardarMTR() {
     try {
         const codMtr = document.getElementById('newCodMTR').textContent.trim();
         const codEq = document.getElementById('newCodEqMTR').value.trim();
-        const codTicsMtr = document.getElementById('codigoticsMTR').value.trim();
+        const codTics = document.getElementById('codigoticsMTR').value.trim();
         const marca = document.getElementById('marcasMTR').value;
         const modelo = document.getElementById('modeloMTR').value.trim();
         const serie = document.getElementById('serieMTR').value.trim();
-        const tamanio = document.getElementById('tamanoMTR').value;
+        const tamano = document.getElementById('tamanoMTR').value.trim();
         const condicion = document.getElementById('condicionMTR').value;
         const estado = document.getElementById('estadoMTR').value;
         const observacion = document.getElementById('observacionTxtM').value;
 
-        if (!codMtr || !codEq || !codTicsMtr || !marca || !modelo || !serie || !tamanio || !condicion || !estado) {
-            //alert('Todos los campos son obligatorios.');
-            //mostrarMensaje('Todos los campos son obligatorios.', 3500);
-            return
-        }
-
         const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
-            \u2022 Cod MTR: ${codMtr}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTicsMtr}
+            \u2022 Cod MTR: ${codMtr}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
             \u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
             \u2022 Num Serie: ${serie}         \u2022 Modelo: ${modelo} 
-            \u2022 Marca: ${marca}         \u2022 Tamaño: ${tamanio}`
+            \u2022 Marca: ${marca}         \u2022 Tamaño: ${tamano}`
         );
 
         if (!confirmacion) {
@@ -1255,16 +1254,16 @@ async function guardarMTR() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codMtr, codEq, codTicsMtr, marca, modelo, serie, tamanio, condicion, estado, observacion
+                codMtr, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion
             })
         });
 
         const result = await response.json();
         if (result.success) {
-            //alert('MTR guardado correctamente');
+            alert('MTR guardado correctamente');
             //mostrarMensaje('MTR guardado correctamente', 3000);
         } else {
-            //alert('Error al guardar el MTR: ' + result.message);
+            alert('Error al guardar el MTR: ' + result.message);
             //mostrarMensaje('Error al guardar el MTR: '+ result.message, 4000);
         }
     } catch (error) {
@@ -1277,7 +1276,7 @@ async function guardarTCL() {
     try {
         const codTCL = document.getElementById('codigoTCD').textContent.trim();
         const codEq = document.getElementById('newCodEqTCD').value.trim();
-        const codTicsTCL = document.getElementById('codigoticsTCD').value.trim();
+        const codTics = document.getElementById('codigoticsTCD').value;
         const marca = document.getElementById('marcasTCD').value;
         const modelo = document.getElementById('modeloTCD').value.trim();
         const serie = document.getElementById('serieTCD').value.trim();
@@ -1287,14 +1286,8 @@ async function guardarTCL() {
         const estado = document.getElementById('estadoTCD').value;
         const observacion = document.getElementById('observacionTxtTCD').value;
 
-        if (!codTCL || !codEq || !codTicsTCL || !marca || !modelo || !serie || !tipo || !puerto || !condicion || !estado) {
-            //alert('Todos los campos son obligatorios.');
-            //mostrarMensaje('Todos los campos son obligatorios.', 3500);
-            return;
-        }
-
         const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
-\u2022 Cod TCD: ${codTCL}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTicsTCL}
+\u2022 Cod TCD: ${codTCL}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
 \u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
 \u2022 Num Serie: ${serie}
 \u2022 Puerto: ${puerto}       \u2022 Modelo: ${modelo} 
@@ -1311,16 +1304,16 @@ async function guardarTCL() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codTCL, codEq, codTicsTCL, marca, modelo, serie, tipo, puerto, condicion, estado, observacion
+                codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion
             })
         });
 
         const result = await response.json();
         if (result.success) {
-            //alert('TCL guardado correctamente');
+            alert('TCL guardado correctamente');
             //mostrarMensaje('TCL guardado correctamente', 3000);
         } else {
-            //alert('Error al guardar el TCL: ' + result.message);
+            alert('Error al guardar el TCL: ' + result.message);
             //mostrarMensaje('Error al guardar el TCL: ' + result.message, 4000);
         }
     } catch (error) {
@@ -1331,26 +1324,20 @@ async function guardarTCL() {
 //------------------------------->  INGRESO DE NUEVO MS
 async function guardarMS() {
     try {
-        const codMs = document.getElementById('codigoTCD').textContent.trim();
-        const codEq = document.getElementById('newCodEqTCD').value.trim();
-        const codTicsMs = document.getElementById('codigoticsTCD').value.trim();
-        const marca = document.getElementById('marcasTCD').value;
-        const modelo = document.getElementById('modeloTCD').value.trim();
-        const serie = document.getElementById('serieTCD').value.trim();
-        const tipo = document.getElementById('tipoTCD').value;
-        const puerto = document.getElementById('puertoTCD').value;
-        const condicion = document.getElementById('condicionTCD').value;
-        const estado = document.getElementById('estadoTCD').value;
-        const observacion = document.getElementById('observacionTxtTCD').value;
-
-        if (!codMs || !codEq || !codTicsMs || !marca || !modelo || !serie || !tipo || !puerto || !condicion || !estado) {
-            //alert('Todos los campos son obligatorios.');
-            //mostrarMensaje('Todos los campos son obligatorios.', 3500);
-            return
-        }
+        const codMs = document.getElementById('codigoMS').textContent.trim();
+        const codEq = document.getElementById('codigoEqMS').value.trim();
+        const codTics = document.getElementById('codigoticsMS').value;
+        const marca = document.getElementById('marcasMS').value;
+        const modelo = document.getElementById('modeloMS').value.trim();
+        const serie = document.getElementById('serieMS').value.trim();
+        const tipo = document.getElementById('tipoMS').value;
+        const puerto = document.getElementById('puertoMS').value;
+        const condicion = document.getElementById('condicionMS').value;
+        const estado = document.getElementById('estadoMS').value;
+        const observacion = document.getElementById('observacionTxtMS').value;
 
         const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
-\u2022 Cod MS: ${codMs}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTicsMs}
+\u2022 Cod MS: ${codMs}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
 \u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
 \u2022 Num Serie: ${serie}
 \u2022 Puerto: ${puerto}       \u2022 Modelo: ${modelo} 
@@ -1367,16 +1354,17 @@ async function guardarMS() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codMs, codEq, codTicsMs, marca, modelo, serie, tipo, puerto, condicion, estado, observacion
+                codMs, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion
             })
         });
 
         const result = await response.json();
         if (result.success) {
-            //alert('TCL guardado correctamente');
-            //mostrarMensaje('TCL guardado correctamente', 4000);
+            alert('TCL guardado correctamente');
+            cerrarVentanaEmergente('modal7')
+            //mostrarMensaje('TCL guardado correctamente', 3000);
         } else {
-            //alert('Error al guardar el MSs: ' + result.message);
+            alert('Error al guardar el MSs: ' + result.message);
             //mostrarMensaje('Error al guardar el MSs: ' + result.message, 4000);
         }
     } catch (error) {
@@ -1384,12 +1372,206 @@ async function guardarMS() {
     }
 }
 
+//------------------------------->  INGRESO DE NUEVA LALPTOP
+async function guardarPTL() {
+    try {
+        const codPTL = document.getElementById('codigoPTL').textContent.trim();
+        const codEq = document.getElementById('codigoEqPTL').value.trim();
+        const codTicsCpu = document.getElementById('codigoticsPTL').value.trim();
+        const marca = document.getElementById('marcasPTL').value;
+        const modelo = document.getElementById('modeloPTL').value;
+        const serie = document.getElementById('numSeriePTL').value.trim();
+        const procesador = document.getElementById('procesadorPTL').value;
+        const velocidad = document.getElementById('velocidadProcePTL').value.trim();
+        const memoria = document.getElementById('ramPTL').value;
+        const tamHdd = document.getElementById('hddPTL').value;
+        const dispOpt = document.getElementById('disOpticosPTL').value;
+
+        const redFija = document.getElementById('redFijaPTL').checked ? 'SI' : 'NO';
+        const redInalam = document.getElementById('redInalamPTL').checked ? 'SI' : 'NO';
+        const bluethooth = document.getElementById('bluetoothPTL').checked ? 'SI' : 'NO';
+        const lecTarjeta = document.getElementById('lectorTarjetaPTL').checked ? 'SI' : 'NO';
+
+        const sisOpe = document.getElementById('sisOperativoPTL').value;
+        const office = document.getElementById('officePTL').value;
+
+        const antivirus = document.getElementById('poseeAntivirusPTL').value;
+        let nomAnti = document.getElementById('antivirusPTL').value.trim();
+        let verAnti = document.getElementById('verAntivirusPTL').value.trim();
+
+        if (antivirus === 'NO') {
+            nomAnti = '';
+            verAnti = '';
+        }
+
+        const host = document.getElementById('nombreHostPTL').value.trim();
+        const usuario = document.getElementById('nomUsuarioPTL').value.trim();
+        const estado = document.getElementById('estadoPTL').value;
+        const observacion = document.getElementById('observacionTxtPTL').value;
+
+        const confirmacion = confirm(`¿Estás seguro de guardar el nuevo CPU?\n
+\u2022 Cod CPU: ${codPTL}         \u2022 Cod Equipo: ${codEq}         \u2022 TICS: ${codTicsCpu}
+\u2022 Titular: ${usuario}     \u2022 Host: ${host}
+\u2022 Estado: ${estado}\n
+\u2022 Num Serie: ${serie}         
+\u2022 Marca: ${marca}         \u2022 Modelo: ${modelo}         
+\u2022 HDD: ${tamHdd}                     \u2022 RAM: ${memoria}
+\u2022 Procesador: ${procesador}         \u2022 Velocidad: ${velocidad}
+\u2022 Sis Ope: ${sisOpe}        \u2022 Office: ${office}\n
+\u2022 Red Fija: ${redFija}         \u2022 Bluetooth: ${bluethooth}
+\u2022 Red Inalam: ${redInalam}         \u2022 Lec. Tarjeta:${lecTarjeta}
+\u2022 Disp Opt: ${dispOpt}\n
+\u2022 Posee Antivirus: ${antivirus}   \u2022 Nombre: ${nomAnti}   \u2022 Version: ${verAnti}`
+        );
+
+        if (!confirmacion) {
+            return;
+        }
+
+        const response = await fetch('http://localhost:3000/tics/guardarLaptop', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codPTL, codEq, codTicsCpu, marca, modelo, serie, procesador, velocidad, memoria, tamHdd,
+                dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
+                verAnti, host, usuario, estado, observacion
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('LAPTOP guardado correctamente');
+            //mostrarMensaje('CPU guardado correctamente', 3000);
+        } else {
+            alert('Error al guardar el LAPTOP: ' + result.message);
+            //mostrarMensaje('Error al guardar el CPU: ' + result.message, 4000);
+        }
+    } catch (error) {
+        console.error('Error al enviar los datos del LAPTOP:', error);
+        alert('Error al enviar los datos del LAPTOP');
+        //mostrarMensaje('Error al enviar los datos del CPU', 4000);
+    }
+}
+
+//------------------------------->  INGRESO DE NUEVA IMP
+async function guardarIMP() {
+    try {
+        const codIMP = document.getElementById('codigoIMP').textContent.trim();
+        const codEq = document.getElementById('codigoEqIMP').value.trim();
+        const codTics = document.getElementById('codigoticsIMP').value;
+        const marca = document.getElementById('marcasIMP').value;
+        const modelo = document.getElementById('modeloIMP').value.trim();
+        const serie = document.getElementById('numSerieIMP').value.trim();
+        const tipo = document.getElementById('tipoIMP').value;
+        const puerto = document.getElementById('puertoIMP').value;
+        const ip = document.getElementById('ipIMP').value;
+        const condicion = document.getElementById('condicionIMP').value;
+        const estado = document.getElementById('estadoIMP').value;
+        const observacion = document.getElementById('observacionTxtIMP').value;
+
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod MS: ${codIMP}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
+\u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
+\u2022 Num Serie: ${serie}     \u2022 IP: ${ip}
+\u2022 Puerto: ${puerto}       \u2022 Modelo: ${modelo} 
+\u2022 Marca: ${marca}         \u2022 Tipo: ${tipo}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
+        const response = await fetch('http://localhost:3000/tics/guardarIMP', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('TCL guardado correctamente');
+            cerrarVentanaEmergente('modal9')
+            //mostrarMensaje('TCL guardado correctamente', 3000);
+        } else {
+            alert('Error al guardar el MSs: ' + result.message);
+            //mostrarMensaje('Error al guardar el MSs: ' + result.message, 4000);
+        }
+    } catch (error) {
+        console.error('Error al guardar los cambios MSs:', error);
+    }
+}
+
+//------------------------------->  INGRESO DE NUEVA TLF
+async function guardarTLF() {
+    try {
+        const codTLF = document.getElementById('codigoTLF').textContent.trim();
+        const codEq = document.getElementById('codigoEqTLF').value.trim();
+        const codTics = document.getElementById('codigoticsTLF').value;
+        const marca = document.getElementById('marcasTLF').value;
+        const modelo = document.getElementById('modeloTLF').value.trim();
+        const serie = document.getElementById('numSerieTLF').value.trim();
+        const condicion = document.getElementById('condicionTLF').value;
+        const estado = document.getElementById('estadoTLF').value;
+        const observacion = document.getElementById('observacionTxtTLF').value;
+
+        const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?\n
+\u2022 Cod MS: ${codTLF}         \u2022 Cod Eq: ${codEq}          \u2022 TICS: ${codTics}
+\u2022 Condicion: ${condicion}     \u2022 Estado: ${estado}\n
+\u2022 Num Serie: ${serie}       \u2022 Modelo: ${modelo}
+\u2022 Marca: ${marca}`
+        );
+
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
+
+        const response = await fetch('http://localhost:3000/tics/guardarTLF', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('TLF guardado correctamente');
+            cerrarVentanaEmergente('modal10')
+            //mostrarMensaje('TCL guardado correctamente', 3000);
+        } else {
+            alert('Error al guardar el TLF: ' + result.message);
+            //mostrarMensaje('Error al guardar el MSs: ' + result.message, 4000);
+        }
+    } catch (error) {
+        console.error('Error al guardar los cambios TLF:', error);
+    }
+}
+
 //-------------------------------> FUNCION PRINCIPAL
->>>>>>> Stashed changes
 document.addEventListener('DOMContentLoaded', async () => {
     //-------------------------------> INGRESO DE NUEVO EQUIPO
     if (document.getElementById('newCodAlmacen')) {
         document.getElementById('newCodAlmacen').value = 'CZ9TICS-';
+    }
+    if (document.getElementById('codigoticsMTR')) {
+        document.getElementById('codigoticsMTR').value = 'CZ9TICS-MON-';
+    }
+    if (document.getElementById('codigoticsTCD')) {
+        document.getElementById('codigoticsTCD').value = 'CZ9TICS-TEC-';
+    }
+    if (document.getElementById('codigoticsMS')) {
+        document.getElementById('codigoticsMS').value = 'CZ9TICS-MOU-';
+    }
+    if (document.getElementById('codigoticsTLF')) {
+        document.getElementById('codigoticsTLF').value = 'CZ9TICS-TEL-';
     }
     if (document.getElementById('newFecha')) {
         setearFechaActual('newFecha');
@@ -1400,8 +1582,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('codigo')) {
         mostrarProximoCodEquipo('cpu_equipo', 'codigo');
     }
+    if (document.getElementById('codigoMTR')) {
+        mostrarProximoCodEquipo('monitor', 'codigoMTR');
+    }
+    if (document.getElementById('codigoTCD')) {
+        mostrarProximoCodEquipo('teclado', 'codigoTCD');
+    }
+    if (document.getElementById('codigoMS')) {
+        mostrarProximoCodEquipo('mouse', 'codigoMS');
+    }
+    if (document.getElementById('codigoPTL')) {
+        mostrarProximoCodEquipo('laptop', 'codigoPTL');
+    }
+    if (document.getElementById('codigoIMP')) {
+        mostrarProximoCodEquipo('impresora', 'codigoIMP');
+    }
+    if (document.getElementById('codigoTLF')) {
+        mostrarProximoCodEquipo('telefono', 'codigoTLF');
+    }
     obtenerUltimosCodAlmacen();
-
     //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
     if (document.getElementById('results')) {
         mostrarContenidoTabla('Escritorio', 'results', 'modal1');
@@ -1424,37 +1623,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTCD' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMS' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicion' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionIMP' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTLF' },
 
         { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativo' },
+        { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativoPTL' },
+
         { table: 'param_procesador', field: 'nom_proce', id: 'procesador' },
+        { table: 'param_procesador', field: 'nom_proce', id: 'procesadorPTL' },
+
         { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticos' },
+        { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticosPTL' },
+
         { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hdd' },
+        { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hddPTL' },
+
         { table: 'param_office', field: 'nom_office', id: 'office' },
+        { table: 'param_office', field: 'nom_office', id: 'officePTL' },
+
         { table: 'param_memoria', field: 'nom_memoria', id: 'ram' },
+        { table: 'param_memoria', field: 'nom_memoria', id: 'ramPTL' },
 
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMTR' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTCD' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMS' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcas' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasPTL' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasIMP' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTLF' },
 
         { table: 'param_estado', field: 'nom_estado', id: 'estadoMTR' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoTCD' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoMS' },
         { table: 'param_estado', field: 'nom_estado', id: 'estado' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoPTL' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoIMP' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoTLF' },
 
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoTCD' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMS' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puerto' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoIMP' },
 
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCD' },
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
 
         { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
-
         { table: 'param_servicio', field: 'nom_servicio', id: 'departamentos' },
         // { table: 'param_servicio', field: 'nom_servicio', id: 'newDepartamentos' },
 
         { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirus' },
+        { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirusPTL' },
+
         { table: 'param_tipo_impresora', field: 'nom_ti', id: 'tipoIMP' },
 
         { table: 'param_tipo_equipo', field: 'nom_te', id: 'tipoEquipo' },

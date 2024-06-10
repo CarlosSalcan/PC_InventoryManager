@@ -75,6 +75,29 @@ function mostrarFormulario(formulario) {
   }
 }
 
+function mostrarNewFormulario(formulario) {
+  const forms = document.querySelectorAll('.form-container');
+  forms.forEach(form => form.style.display = 'none');
+
+  switch (formulario) {
+    case 'cpu':
+      document.getElementById('formCPU').style.display = 'block';
+      obtenerDatosTabla
+      break;
+    case 'monitor':
+      document.getElementById('formMonitor').style.display = 'block';
+      break;
+    case 'teclado':
+      document.getElementById('formTeclado').style.display = 'block';
+      break;
+    case 'mouse':
+      document.getElementById('formMouse').style.display = 'block';
+      break;
+    default:
+      break;
+  }
+}
+
 //-------------------------------> LIMPIAR AREA DONDE SE MUESTRAN FORMULARIOS
 function limpiezaArea() {
   const forms = document.querySelectorAll('.form-container');
