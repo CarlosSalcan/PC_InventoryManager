@@ -94,7 +94,7 @@
     <div id="modal4" class="modal">
         <div class="modal-content">
             <form id="editarEquipo" class="formulario">
-                <h2>Ventan Prueba</h2>
+                <h2>Edicion Portatil</h2>
                 <span class="close" onclick="cerrarVentanaEmergente('modal4')">&times;</span>
                 <div class="horizontal-container">
                     <div>
@@ -115,7 +115,7 @@
                     <div>
                         <div>
                             <label for="codAlmacen">Código Almacén:</label>
-                            <input type="text" id="codAlmacen" name="codAlmacen" class="newData">
+                            <input type="text" id="codAlmacen" name="codAlmacen" class="newData" readonly>
                         </div>
                         <div>
                             <label for="pisos">Piso Ubicado:</label>
@@ -137,7 +137,7 @@
                     <div>
                         <div>
                             <label for="tipoEquipo">Tipo de Equipo:</label>
-                            <select id="tipoEquipo" class="options"></select>
+                            <select id="tipoEquipo" class="options" disabled></select>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
 
             <hr class="lines">
             <div id="formLaptop" class="form-container" style="display: none;">
-                <h2>Edición de Componente PTL</h2>
+                <h2>Edición de Componentes PTL</h2>
                 <form id="editarLaptop" class="formulario">
                     <div class="form-section">
                         <div class="horizontal-container">
@@ -171,13 +171,13 @@
                                 <div>
                                     <label for="codigoEq">Cod. Eq:</label>
                                     <input type="text" id="codigoEq" name="codigoEq" class="newData"
-                                        style="width: 75px;">
+                                        style="width: 75px;" readonly>
                                 </div>
                             </div>
 
                             <div>
                                 <label for="codigotics">Cod. Tics :</label>
-                                <input type="text" id="codigotics" name="codigotics" class="newData">
+                                <input type="text" id="codigotics" name="codigotics" class="newData" readonly>
 
                                 <label for="nombreHost">Host:</label>
                                 <input type="text" id="nombreHost" name="nombreHost" class="newData">

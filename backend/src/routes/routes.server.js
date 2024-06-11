@@ -3,6 +3,7 @@ const router = express.Router();
 
 const equipo = require('../controllers/equipo.controller.js');
 const parametro = require('../controllers/parametro.controller.js');
+const login = require('../controllers/user.controller.js');
 
 //--------------------------> Obtener equipos de BDD
 //--------------------------> Obtener datos de BDD (Select)
@@ -22,7 +23,6 @@ router.get('/equiposR', equipo.getEquiposReporte);
 router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
 router.get('/getNextCod/:tableName/:campo', equipo.getNextCodEquipo);
 router.get('/obtenerUltimosCodAlmacen', equipo.obtenerUltimosCodAlmacen);
-
 
 //--------------------------> Modificar Datos Equipo
 //--------------------------> Enviar a Bodega (P2)
@@ -63,5 +63,7 @@ router.post('/guardarMS', equipo.guardarMS);
 router.post('/guardarLaptop', equipo.guardarLaptop);
 router.post('/guardarIMP', equipo.guardarIMP);
 router.post('/guardarTLF', equipo.guardarTLF);
+
+router.post('/login', login.loginUser);
 
 module.exports = router;

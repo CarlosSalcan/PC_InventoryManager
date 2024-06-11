@@ -115,6 +115,7 @@ function guardarCambiosEq() {
     );
 
     if (!confirmacion) {
+        window.location.reload();
         return; // Si el usuario cancela, no hacemos nada
     }
 
@@ -147,52 +148,58 @@ function guardarCambiosEq() {
         });
 }
 
-async function enviarBodega() {
-    const codEquipo = document.getElementById('cod').innerText;
-    try {
-        // Obtener información del equipo
-        const equipoResponse = await fetch(`http://localhost:3000/tics/equipoB/${codEquipo}`);
-        const equipoData = await equipoResponse.json();
+function guardarCambiosEq() {
+    const codEquipo = document.getElementById('cod').textContent;
+    const newCodAlmacen = document.getElementById('codAlmacen').value;
+    const newTipoEquipo = document.getElementById('tipoEquipo').value;
+    const newPiso = document.getElementById('pisos').value;
+    const newDepartamento = document.getElementById('departamentos').value;
+    const newTitular = document.getElementById('titularEq').value;
 
-        // Mostrar ventana de confirmación al usuario
-        const confirmacion = confirm(`¿Estás seguro de enviar a bodega el siguiente equipo?
-            Código: ${equipoData.equipo.cod_equipo}
-            Ubicación Actual: ${equipoData.equipo.piso_ubic}
-            Serv/Depar Actual: ${equipoData.equipo.serv_depar}
-            Custodio Actual: ${equipoData.equipo.nom_custodio}
+    // Mostrar ventana de confirmación al usuario
+    const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?
+        Código de Equipo: ${codEquipo}
+        Código de Almacén: ${newCodAlmacen}
+        Tipo de Equipo: ${newTipoEquipo}
+        Piso: ${newPiso}
+        Departamento: ${newDepartamento}
+        Titular: ${newTitular}`
+    );
 
-            El equipo será modificado a:
-            Nueva Ubicación: SUBSUELO
-            Serv/Depar Nuevo: BODEGA / ACTIVOS FIJOS
-            Nuevo Custodio: LIBRE`
-        );
-        if (!confirmacion) {
-            return; // Si el usuario cancela, no hacemos nada
-        }
-
-        // Actualizar información del equipo
-        const response = await fetch(`http://localhost:3000/tics/enviarBodega/${codEquipo}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                piso_ubic: 'SUBSUELO',
-                serv_depar: 'BODEGA / ACTIVOS FIJOS',
-                nom_custodio: 'LIBRE'
-            })
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            console.log('Equipo Guardado en Bodega Correctamente');
-            mostrarMensaje('Equipo Guardado en Bodega Correctamente', 3000);
-        } else {
-            console.error('Error al editar equipo:', data.message);
-        }
-    } catch (error) {
-        console.error('Error al editar equipo:', error);
+    if (!confirmacion) {
+        // Cerrar la ventana emergente si el usuario cancela
+        window.location.reload();
+        return; // Si el usuario cancela, no hacemos nada
     }
+
+    fetch(`http://localhost:3000/tics/editEquipos/${codEquipo}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            codEquipo: codEquipo,
+            nuevoCodAlmacen: newCodAlmacen,
+            nuevoTipoEquipo: newTipoEquipo,
+            nuevoPiso: newPiso,
+            nuevoDepartamento: newDepartamento,
+            nuevoTitular: newTitular
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al guardar cambios en el equipo');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data.message);
+            mostrarMensaje('Equipo Modificado Correctamente', 3000);
+            cerrarVentanaEmergente(modalId); // Cerrar la ventana emergente después de guardar los cambios
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function marcarCheckBoxes(data, mapping) {
@@ -392,6 +399,7 @@ async function guardarCambiosCPU() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -466,6 +474,7 @@ async function guardarCambiosMTR() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -527,6 +536,7 @@ async function guardarCambiosTCD() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -587,6 +597,7 @@ async function guardarCambiosMS() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -716,6 +727,7 @@ async function guardarCambiosPTL() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -789,6 +801,7 @@ async function guardarCambiosIMP() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -852,6 +865,7 @@ async function guardarCambiosTLF() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -933,44 +947,6 @@ async function buscarEquipos(tipoEquipo, mostrar, modalID) {
     }
 }
 
-
-//-------------------------------> MOSTRAR PARA REPORTES
-async function mostrarEquiposReporte(tbodyId) {
-    const resultsElement = document.getElementById(tbodyId);
-    if (!resultsElement) {
-        console.error(`Tabla with ID '${tbodyId}' not encontrada`);
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost:3000/tics/equiposR');
-        const data = await response.json();
-
-        if (data.success && data.equipos.length > 0) {
-            const equipos = data.equipos;
-            const html = equipos.map(equipo => {
-                const fecha = new Date(equipo.fec_reg).toISOString().split('T')[0]; // Obtener solo la parte de la fecha
-                return `<tr>
-                            <td>${equipo.cod_equipo}</td>
-                            <td>${fecha}</td>
-                            <td>${equipo.cod_almacen}</td>
-                            <td>${equipo.tip_equipo}</td>
-                            <td>${equipo.piso_ubic}</td>
-                            <td>${equipo.serv_depar}</td>
-                            <td>${equipo.nom_custodio}</td>
-                            <td>${equipo.nom_usua}</td>
-                            </td>
-                        </tr>`;
-            }).join('');
-            resultsElement.innerHTML = `<table>${html}</table>`;
-        } else {
-            console.error('No se pudieron obtener los equiposR.');
-        }
-    } catch (error) {
-        console.error('Error al obtener equiposR:', error);
-    }
-}
-
 //------------------------------->  INGRESO DE NUEVO EQUIPO
 async function enviarDatosEquipo() {
     try {
@@ -998,6 +974,7 @@ async function enviarDatosEquipo() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return; // Si el usuario cancela, no hacemos nada
         }
 
@@ -1018,7 +995,8 @@ async function enviarDatosEquipo() {
         });
         const data = await response.json();
         if (data.success) {
-            console.log('Equipo ingresado correctamenteJS');
+            alert('Equipo ingresado correctamente');
+            //mostrarVentanaEmergente('modal7');
             mostrarNewRegistro();
             //-------------------------------> Enviar a los demas Form Cod Alamcen
             setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigotics');
@@ -1039,7 +1017,7 @@ async function enviarDatosEquipo() {
             console.error('Error al ingresar el equipoJS:', data.message);
             alert('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)');
             //mostrarMensaje('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)', 4000);
-            window.location.reload()
+            window.location.reload();
         }
     } catch (error) {
         console.error('Error al enviar los datos del equipoJS:', error);
@@ -1097,19 +1075,11 @@ function mostrarNewRegistro() {
             modalID = 'modal10';
             break;
         default:
-            console.error('Tipo de equipo no válido');
+            alert('Tipo de equipo no válido');
             return;
     }
-
     const modal = document.getElementById(modalID);
     modal.style.display = 'flex';
-    // Cerrar con click afuera de la ventana
-    window.addEventListener('click', function (event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-            limpiezaArea();
-        }
-    });
 }
 
 function obtenerUltimosCodAlmacen() {
@@ -1121,9 +1091,6 @@ function obtenerUltimosCodAlmacen() {
                     console.log('Últimos registros de cod_almacen:', data.ultimosCodAlmacen);
                     const textArea = document.getElementById('ultimosCodAlmacenArea');
                     textArea.value = data.ultimosCodAlmacen.join('\n');
-                    // O si prefieres usar un span
-                    // const span = document.getElementById('ultimosCodAlmacenSpan');
-                    // span.textContent = data.ultimosCodAlmacen.join(', ');
                 } else {
                     console.error('Error al obtener los últimos registros de cod_almacen:', data.message);
                 }
@@ -1193,6 +1160,7 @@ async function guardarCPU() {
         );
 
         if (!confirmacion) {
+            window.location.reload();
             return;
         }
 
@@ -1558,21 +1526,29 @@ async function guardarTLF() {
 //-------------------------------> FUNCION PRINCIPAL
 document.addEventListener('DOMContentLoaded', async () => {
     //-------------------------------> INGRESO DE NUEVO EQUIPO
+    const setDefaultValue = (elementId, value) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.value = value;
+        }
+    };
+
     if (document.getElementById('newCodAlmacen')) {
-        document.getElementById('newCodAlmacen').value = 'CZ9TICS-';
+        setDefaultValue('newCodAlmacen', 'CZ9TICS-');
     }
     if (document.getElementById('codigoticsMTR')) {
-        document.getElementById('codigoticsMTR').value = 'CZ9TICS-MON-';
+        setDefaultValue('codigoticsMTR', 'CZ9TICS-MON-');
     }
     if (document.getElementById('codigoticsTCD')) {
-        document.getElementById('codigoticsTCD').value = 'CZ9TICS-TEC-';
+        setDefaultValue('codigoticsTCD', 'CZ9TICS-TEC-');
     }
     if (document.getElementById('codigoticsMS')) {
-        document.getElementById('codigoticsMS').value = 'CZ9TICS-MOU-';
+        setDefaultValue('codigoticsMS', 'CZ9TICS-MOU-');
     }
     if (document.getElementById('codigoticsTLF')) {
-        document.getElementById('codigoticsTLF').value = 'CZ9TICS-TEL-';
+        setDefaultValue('codigoticsTLF', 'CZ9TICS-TEL-');
     }
+    //------------------------------->
     if (document.getElementById('newFecha')) {
         setearFechaActual('newFecha');
     }
@@ -1583,7 +1559,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         mostrarProximoCodEquipo('cpu_equipo', 'codigo');
     }
     if (document.getElementById('codigoMTR')) {
-        mostrarProximoCodEquipo('monitor', 'codigoMTR');
+        mostrarProximoCodEquipo('monitor', 'newCodMTR');
     }
     if (document.getElementById('codigoTCD')) {
         mostrarProximoCodEquipo('teclado', 'codigoTCD');
@@ -1601,22 +1577,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         mostrarProximoCodEquipo('telefono', 'codigoTLF');
     }
     obtenerUltimosCodAlmacen();
-    //-------------------------------> Verificar y llamar a mostrarContenidoTabla solo si el elemento existe
-    if (document.getElementById('results')) {
-        mostrarContenidoTabla('Escritorio', 'results', 'modal1');
-    }
-    if (document.getElementById('resultsPortatil')) {
-        mostrarContenidoTabla('Portatil', 'resultsPortatil', 'modal4');
-    }
-    if (document.getElementById('resultsImpresora')) {
-        mostrarContenidoTabla('Impresora', 'resultsImpresora', 'modal5');
-    }
-    if (document.getElementById('resultsTelefono')) {
-        mostrarContenidoTabla('Teléfono', 'resultsTelefono', 'modal6');
-    }
-    if (document.getElementById('resultsReporte')) {
-        mostrarEquiposReporte('resultsReporte');
-    }
+    //-------------------------------> Verificar y mostrarContenidoTabla 
+    const mostrarTablaIfExists = (tableName, resultId, modalId) => {
+        const resultsElement = document.getElementById(resultId);
+        if (resultsElement) {
+            mostrarContenidoTabla(tableName, resultId, modalId);
+        }
+    };
+    mostrarTablaIfExists('Escritorio', 'results', 'modal1');
+    mostrarTablaIfExists('Portatil', 'resultsPortatil', 'modal4');
+    mostrarTablaIfExists('Impresora', 'resultsImpresora', 'modal5');
+    mostrarTablaIfExists('Teléfono', 'resultsTelefono', 'modal6');
+
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
     const optionMappings = [
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMTR' },
@@ -1688,5 +1660,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (document.getElementById(mapping.id)) {
             getOptionsFrom(mapping.table, mapping.field, mapping.id);
         }
+    });
+});
+
+
+//-------------------------------> FUNCION PRINCIPAL
+document.addEventListener('DOMContentLoaded', async () => {
+    const mostrarTablaIfExists = (tableName, resultId, modalId) => {
+        const resultsElement = document.getElementById(resultId);
+        if (resultsElement) {
+            mostrarContenidoTabla(tableName, resultId, modalId);
+        }
+    };
+
+    mostrarTablaIfExists('Escritorio', 'results', 'modal1');
+    // Otros llamados a mostrarContenidoTabla...
+
+    const getOptionsIfExists = (table, field, id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            getOptionsFrom(table, field, id);
+        }
+    };
+
+    const optionMappings = [
+        // Array con los mapeos de opciones
+    ];
+
+    optionMappings.forEach(mapping => {
+        getOptionsIfExists(mapping.table, mapping.field, mapping.id);
     });
 });

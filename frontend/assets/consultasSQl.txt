@@ -91,3 +91,39 @@ WHERE serv_depar = 'DISPENSARIO';
 
 
 
+//-------------------------------> MOSTRAR PARA REPORTES
+async function mostrarEquiposReporte(tbodyId) {
+    const resultsElement = document.getElementById(tbodyId);
+    if (!resultsElement) {
+        console.error(`Tabla with ID '${tbodyId}' not encontrada`);
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/tics/equiposR');
+        const data = await response.json();
+
+        if (data.success && data.equipos.length > 0) {
+            const equipos = data.equipos;
+            const html = equipos.map(equipo => {
+                const fecha = new Date(equipo.fec_reg).toISOString().split('T')[0]; // Obtener solo la parte de la fecha
+                return `<tr>
+                            <td>${equipo.cod_equipo}</td>
+                            <td>${fecha}</td>
+                            <td>${equipo.cod_almacen}</td>
+                            <td>${equipo.tip_equipo}</td>
+                            <td>${equipo.piso_ubic}</td>
+                            <td>${equipo.serv_depar}</td>
+                            <td>${equipo.nom_custodio}</td>
+                            <td>${equipo.nom_usua}</td>
+                            </td>
+                        </tr>`;
+            }).join('');
+            resultsElement.innerHTML = `<table>${html}</table>`;
+        } else {
+            console.error('No se pudieron obtener los equiposR.');
+        }
+    } catch (error) {
+        console.error('Error al obtener equiposR:', error);
+    }
+}
