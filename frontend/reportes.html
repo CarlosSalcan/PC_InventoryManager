@@ -31,7 +31,6 @@
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                     <li><a href="index.html" class="nav__link">Registro</a></li>
-                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
                     <!--=============== DROPDOWN 1 ===============-->
                     <li class="dropdown__item">
                         <div class="nav__link">
@@ -61,65 +60,216 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- <li><a href="reportes.html" class="nav__link">Reportes</a></li> -->
+                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
+                    <li><a href="reportes.html" class="nav__link">Reportes</a></li>
             </div>
         </nav>
     </header>
 
-    <div class="checkbox-container">
-        <label>
-            <input type="checkbox" name="option1" value="Escritorio">
-            Escritorio
-        </label>
-        <label>
-            <input type="checkbox" name="option2" value="Portatil">
-            Portatil
-        </label>
-        <label>
-            <input type="checkbox" name="option3" value="Impresora">
-            Impresora
-        </label>
-        <label>
-            <input type="checkbox" name="option4" value="Telefono">
-            Telefono
-        </label>
-    </div>
-
     <main>
-        <div class="search-container">
-            <input type="text" id="searchQuery" placeholder="Buscar...">
-            <button type="button" onclick="buscarEquipos('todos', 'resultsReporte', 'modal1');">Buscar</button>
+        <br>
+        <div class="buttons">
+            <button type="button" class="edit-button" onclick="mostrarReporte('cpuR')">CPU</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('monitorR')">Laptop</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('tecladoR')">Impresora</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('mouseR')">Telefono</button>
         </div>
-        
-        <table class="equipos">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Fecha</th>
-                    <th>Cod. Almacén</th>
-                    <th>Tipo Eq.</th>
-                    <th>Piso Ubic.</th>
-                    <th>Dep. / Serv.</th>
-                    <th>Titular</th>
-                    <th>Técnico</th>
-                </tr>
-            </thead>
-            <tbody id="resultsReporte">
-            </tbody>
-        </table>
+        <br>
+
+        <div id="reportCPU" class="report" style="display: none;">
+            <h2>CPU</h2>
+            <div class="search-container">
+                <div class="busqueda">
+                    <input type="text" id="searchQueryPLT" placeholder="Buscar...">
+                    <button type="button" onclick="">Buscar</button>
+                </div>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" id="checkMarcaCPU" onchange="filtrarEquiposCPU()">Marca</label>
+                    <label><input type="checkbox" id="checkModeloCPU" onchange="filtrarEquiposCPU()">Modelo</label>
+                    <label><input type="checkbox" id="checkTarjetaMadreCPU" onchange="filtrarEquiposCPU()">Mainboard</label>
+                    <label><input type="checkbox" id="checkProcesadorCPU" onchange="filtrarEquiposCPU()">Procesador</label>
+                    <label><input type="checkbox" id="checkVelocidadCPU" onchange="filtrarEquiposCPU()">Velocidad</label>
+                    <label><input type="checkbox" id="checkMemoriaCPU" onchange="filtrarEquipoCPU()">Memoria</label>
+                    <label><input type="checkbox" id="checkAlamcenamientoCPU" onchange="filtrarEquiposCPU()">Almacenamiento</label>
+                    <label><input type="checkbox" id="checkDispositivosOpticosCPU" onchange="filtrarEquiposCPU()">Disp. Opt</label>
+                    <label><input type="checkbox" id="checkRedFijaCPU" onchange="filtrarEquiposCPU()">Red Fija</label>
+                    <label><input type="checkbox" id="checkRedInalambricaCPU" onchange="filtrarEquiposCPU()">Red Inalam</label>
+                    <label><input type="checkbox" id="checkBluetoothCPU" onchange="filtrarEquiposCPU()">Bluetooth</label>
+                    <label><input type="checkbox" id="checkLectorTarjetaCPU" onchange="filtrarEquiposCPU()">Lec. tarjeta</label>
+                    <label><input type="checkbox" id="checkSisOpePLT" onchange="filtrarEquiposCPU()">Sis Ope</label>
+                    <label><input type="checkbox" id="checkOfficePLT" onchange="filtrarEquiposCPU()">Office</label>
+                    <label><input type="checkbox" id="checkUsuaIpEquipoPLT" onchange="filtrarEquiposCPU()">Generación</label>
+                    <label><input type="checkbox" id="checkTecnicoPLT" onchange="filtrarEquiposCPU()">Tecnico</label>
+                </div>
+            </div>
+            <table class="equiposE">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipo</th>
+                        <th>Cod. Almacén</th>
+                        <th>Marca</th>
+                        <th>Serie</th>
+                        <th>Mainboard</th>
+                        <th>Procesador</th>
+                        <th>Velocidad</th>
+                        <th>Memoria</th>
+                        <th>Almacenamiento</th>
+                        <th>Disp. Opt</th>
+                        <th>Red Fija</th>
+                        <th>Red Inalam</th>
+                        <th>BT</th>
+                        <th>Lec. Tarjeta</th>
+                        <th>Sis. Ope</th>
+                        <th>Office</th>
+                        <th>Antivirus</th>
+                        <th>Nom Antivirus</th>
+                        <th>Ver Antivirus</th>
+                        <th>Host</th>
+                        <th>Usuario</th>
+                        <th>Generación</th>
+                        <th>Condicion</th>
+                        <th>Estado</th>
+                        <th>Observacion</th>
+                        <th>Tecnico</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsCPU">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="reportLaptop" class="report" style="display: none;">
+            <h2>LAPTOP</h2>
+            <div class="search-container">
+                <div class="busqueda">
+                    <input type="text" id="searchQueryPLT" placeholder="Buscar...">
+                    <button type="button" onclick="">Buscar</button>
+                </div>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" id="checkMarcaPLT" onchange="filtrarEquiposPTL()">Marca</label>
+                    <label><input type="checkbox" id="checkModeloPLT" onchange="filtrarEquiposPTL()">Modelo</label>
+                    <label><input type="checkbox" id="checkProcesadorPLT"
+                            onchange="filtrarEquiposPTL()">Procesador</label>
+                    <label><input type="checkbox" id="checkMemoriaPLT" onchange="filtrarEquiposPTL()">Memoria</label>
+                    <label><input type="checkbox" id="checkAlamcenamientoPLT"
+                            onchange="filtrarEquiposPTL()">Almacenamiento</label>
+                    <label><input type="checkbox" id="checkSisOpePLT" onchange="filtrarEquiposPTL()">Sis Ope</label>
+                    <label><input type="checkbox" id="checkOfficePLT" onchange="filtrarEquiposPTL()">Office</label>
+                    <label><input type="checkbox" id="checkUsuarioPLT" onchange="filtrarEquiposPTL()">Custodio</label>
+                    <label><input type="checkbox" id="checkTecnicoPLT" onchange="filtrarEquiposPTL()">Tecnico</label>
+                </div>
+            </div>
+            <table class="equiposP">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipo</th>
+                        <th>Cod. Almacén</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Serie</th>
+                        <th>Procesador</th>
+                        <th>Velocidad</th>
+                        <th>Memoria</th>
+                        <th>Almacenamiento</th>
+                        <th>Disp Opt</th>
+                        <th>Red Fija</th>
+                        <th>Red Inalam</th>
+                        <th>BT</th>
+                        <th>Lec. Tarjeta</th>
+                        <th>Sis. Ope</th>
+                        <th>Office</th>
+                        <th>Antivirus</th>
+                        <th>Nom Antivirus</th>
+                        <th>Ver Antivirus</th>
+                        <th>Host</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th>observacion</th>
+                        <th>Tecnico</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsPTL">
+                    <!-- Aquí se mostrarán los resultados de los equipos -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <div id="reportImp" class="report" style="display: none;">
+            <h2>Impresora</h2>
+            <div class="search-container">
+                <div class="busqueda">
+                    <input type="text" id="searchQuery" placeholder="Buscar...">
+                    <button type="button" onclick="">Buscar</button>
+                </div>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" id="checkMarcaIMP" onchange="filtrarEquiposIMP()">Marca</label>
+                    <label><input type="checkbox" id="checkModeloIMP" onchange="filtrarEquiposIMP()">Modelo</label>
+                    <label><input type="checkbox" id="checkTipoIMP" onchange="filtrarEquiposIMP()">tipo</label>
+                    <label><input type="checkbox" id="checkPuertoIMP" onchange="filtrarEquiposIMP()">Puerto</label>
+                    <label><input type="checkbox" id="checkTecnicoIMP" onchange="filtrarEquiposIMP()">Tecnico</label>
+                </div>
+            </div>
+            <table class="equiposI">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipo</th>
+                        <th>Cod. Almacén</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Serie</th>
+                        <th>Tipo</th>
+                        <th>Puerto</th>
+                        <th>Condicion</th>
+                        <th>IP Equipo</th>
+                        <th>Estado</th>
+                        <th>Observación</th>
+                        <th>Tecnico</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsIMP">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="reportTlf" class="report" style="display: none;">
+            <h2>TELEFONO</h2>
+            <div class="search-container">
+                <div class="busqueda">
+                    <input type="text" id="searchQuery" placeholder="Buscar...">
+                    <button type="button" onclick="">Buscar</button>
+                </div>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" id="checkMarcaTLF" onchange="filtrarEquiposTLF()">Marca</label>
+                    <label><input type="checkbox" id="checkModeloTLF" onchange="filtrarEquiposTLF()">Modelo</label>
+                    <label><input type="checkbox" id="checkTecnicoTLF" onchange="filtrarEquiposTLF()">Tecnico</label>
+                </div>
+            </div>
+            <table class="equiposT">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipo</th>
+                        <th>Cod. Almacén</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Serie</th>
+                        <th>Condicion</th>
+                        <th>Estado</th>
+                        <th>Observación</th>
+                        <th>Tecnico</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTLF">
+                </tbody>
+            </table>
+        </div>
     </main>
 
     <script src="./js/equipo.js"></script>
 </body>
 
 </html>
-
-        <!-- <div class="search-container">
-            <select class="options">
-                <option value="pdf">PDF</option>
-                <option value="excel">Excel</option>
-                <option value="csv">CSV</option>
-                <option value="xlsx">XLSX</option>
-            </select>
-            <button type="button"  class="orange-button">Imprimir</button>
-        </div> -->

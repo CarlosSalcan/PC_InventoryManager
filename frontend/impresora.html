@@ -31,7 +31,6 @@
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                     <li><a href="index.html" class="nav__link">Registro</a></li>
-                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
                     <!--=============== DROPDOWN 1 ===============-->
                     <li class="dropdown__item">
                         <div class="nav__link">
@@ -61,15 +60,25 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- <li><a href="reportes.html" class="nav__link">Reportes</a></li> -->
+                    <li><a href="parametro.html" class="nav__link">Parametros</a></li>
+                    <li><a href="reportes.html" class="nav__link">Reportes</a></li>
             </div>
         </nav>
     </header>
 
     <main>
         <div class="search-container">
-            <input type="text" id="searchQuery" placeholder="Buscar...">
-            <button type="button" onclick="buscarEquipos('Impresora','resultsImpresora','modal5')">Buscar</button>
+            <div class="busqueda">
+                <input type="text" id="searchQuery" placeholder="Buscar...">
+                <button type="button" onclick="buscarEquipos('Impresora','resultsImpresora','modal5')">Buscar</button>
+            </div>
+            <div class="checkbox-container">
+                <label><input type="checkbox" id="checkFecha" onchange="filtrarEquipos()">Fecha</label>
+                <label><input type="checkbox" id="checkPisos" onchange="filtrarEquipos()">Pisos</label>
+                <label><input type="checkbox" id="checkDepartamentos" onchange="filtrarEquipos()">Departamento</label>
+                <label><input type="checkbox" id="checkCustodio" onchange="filtrarEquipos()">Custodio</label>
+                <label><input type="checkbox" id="checkTecnico" onchange="filtrarEquipos()">Tecnico</label>
+            </div>
         </div>
         
         <table class="equipos">

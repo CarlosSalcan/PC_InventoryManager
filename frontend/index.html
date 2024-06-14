@@ -61,7 +61,7 @@
                         </ul>
                     </li>
                     <li><a href="parametro.html" class="nav__link">Parametros</a></li>
-                    <li><a href="#" class="nav__link">Reportes</a></li>
+                    <li><a href="reportes.html" class="nav__link">Reportes</a></li>
             </div>
         </nav>
     </header>
@@ -149,8 +149,8 @@
 
             <div class="horizontal-container">
                 <div class="buttons">
-                    <button type="button" class="green-button"
-                        onclick="enviarDatosEquipo()">Ingresar Nuevo Equipo</button>
+                    <button type="button" class="green-button" onclick="enviarDatosEquipo()">Ingresar Nuevo
+                        Equipo</button>
                 </div>
             </div>
         </form>
@@ -171,8 +171,8 @@
                                         <span id="codigo" name="codigo"></span>
                                     </div><br>
                                     <div>
-                                        <label for="tec">Técnico:</label>
-                                        <span id="tec" name="tec"></span>
+                                        <label for="tecCPU">Técnico:</label>
+                                        <span id="tecCPU" name="tecCPU"></span>
                                     </div><br>
                                     <div>
                                         <label for="codigoEq">Cod. Eq:</label>
@@ -295,7 +295,7 @@
                                 </div>
                                 <div class="buttons">
                                     <button type="button" class="green-button"
-                                        onclick="guardarCPU(),mostrarNewFormulario('monitor')">Guardar CPU</button>
+                                        onclick="guardarCPU(),mostrarRegistro('monitor')">Guardar CPU</button>
                                 </div>
                             </div>
                         </div>
@@ -364,7 +364,7 @@
                                 </div>
                                 <div class="buttons">
                                     <button type="button" class="green-button"
-                                        onclick="guardarMTR(),mostrarNewFormulario('teclado')">
+                                        onclick="guardarMTR(),mostrarRegistro('teclado')">
                                         Guardar Monitor
                                     </button>
                                 </div>
@@ -445,7 +445,7 @@
                             <div class="horizontal-container">
                                 <div class="buttons">
                                     <button type="button" class="green-button"
-                                        onclick="guardarTCL(),mostrarNewFormulario('mouse')">
+                                        onclick="guardarTCL(),mostrarRegistro('mouse')">
                                         Guardar Tecaldo
                                     </button>
                                 </div>
@@ -548,8 +548,8 @@
                                 <span id="codigoPTL" name="codigoPTL"></span>
                             </div><br>
                             <div>
-                                <label for="tec">Técnico:</label>
-                                <span id="tec" name="tec"></span>
+                                <label for="tecPTL">Técnico:</label>
+                                <span id="tecPTL" name="tecPTL"></span>
                             </div><br>
                             <div>
                                 <label for="codigoEqPTL">Cod. Eq:</label>
@@ -682,8 +682,8 @@
                                 <span id="codigoIMP" name="codigoIMP"></span>
                             </div><br>
                             <div>
-                                <label for="tec">Técnico:</label>
-                                <span id="tec" name="tec"></span>
+                                <label for="tecIMP">Técnico:</label>
+                                <span id="tecIMP" name="tecIMP"></span>
                             </div><br>
                             <div>
                                 <label for="codigoEqIMP">Cod. Eq:</label>
@@ -792,7 +792,8 @@
                                     </div>
                                     <div>
                                         <label for="codigoticsTLF">Cod. Tics :</label>
-                                        <input type="text" id="codigoticsTLF" name="codigoticsTLF" class="newData" readonly>
+                                        <input type="text" id="codigoticsTLF" name="codigoticsTLF" class="newData"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>

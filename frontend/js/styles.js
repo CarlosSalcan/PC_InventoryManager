@@ -75,27 +75,42 @@ function mostrarFormulario(formulario) {
   }
 }
 
-function mostrarNewFormulario(formulario) {
-  const forms = document.querySelectorAll('.form-container');
-  forms.forEach(form => form.style.display = 'none');
+//-------------------------------> MOSTRAR FORMULARIO INGRESO/TABLA REPORTE SEGUN LA ELECCION
+function mostrarElemento(tipo, elementoId) {
+  const tipos = {
+      form: '.form-container',
+      report: '.report'
+  };
 
-  switch (formulario) {
-    case 'cpu':
-      document.getElementById('formCPU').style.display = 'block';
-      obtenerDatosTabla
-      break;
-    case 'monitor':
-      document.getElementById('formMonitor').style.display = 'block';
-      break;
-    case 'teclado':
-      document.getElementById('formTeclado').style.display = 'block';
-      break;
-    case 'mouse':
-      document.getElementById('formMouse').style.display = 'block';
-      break;
-    default:
-      break;
+  const elementos = document.querySelectorAll(tipos[tipo]);
+  elementos.forEach(elemento => elemento.style.display = 'none');
+
+  const elementoMostrar = document.getElementById(elementoId);
+  if (elementoMostrar) {
+      elementoMostrar.style.display = 'block';
   }
+}
+
+function mostrarRegistro(formulario) {
+  const formularioIds = {
+      cpu: 'formCPU',
+      monitor: 'formMonitor',
+      teclado: 'formTeclado',
+      mouse: 'formMouse'
+  };
+
+  mostrarElemento('form', formularioIds[formulario]);
+}
+
+function mostrarReporte(reporte) {
+  const reporteIds = {
+      cpuR: 'reportCPU',
+      monitorR: 'reportLaptop',
+      tecladoR: 'reportImp',
+      mouseR: 'reportTlf'
+  };
+
+  mostrarElemento('report', reporteIds[reporte]);
 }
 
 //-------------------------------> LIMPIAR AREA DONDE SE MUESTRAN FORMULARIOS

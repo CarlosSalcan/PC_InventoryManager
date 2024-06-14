@@ -952,13 +952,14 @@ async function enviarDatosEquipo() {
     try {
         const cod_equipo = document.getElementById('newCod').textContent.trim();
         const fec_reg = document.getElementById('newFecha').textContent.trim();
+        const tec = document.getElementById('newTecnico').textContent.trim();
         const cod_almacen = document.getElementById('newCodAlmacen').value.trim();
         const tip_equipo = document.getElementById('newTipoEquipo').value.trim();
         const piso_ubic = document.getElementById('pisos').value.trim();
         const serv_depar = document.getElementById('departamentos').value.trim();
         const nom_custodio = document.getElementById('newTitularEq').value.trim();
         // Verificar si hay campos vacíos cod_almacen === '' || 
-        if (tip_equipo === '' || piso_ubic === '' || serv_depar === '' || nom_custodio === '') {
+        if (tip_equipo === '' || piso_ubic === '' || serv_depar === '' || nom_custodio === '' || tec === '') {
             console.error('Error: Debe completar todos los campos.');
             //alert('No se puede dejar campos Vacios en el Formulario NUEVO EQUIPO');
             mostrarMensaje('No se puede dejar campos Vacios en el Formulario NUEVO EQUIPO', 3500);
@@ -990,7 +991,8 @@ async function enviarDatosEquipo() {
                 tip_equipo,
                 piso_ubic,
                 serv_depar,
-                nom_custodio
+                nom_custodio,
+                tec
             })
         });
         const data = await response.json();
@@ -999,20 +1001,28 @@ async function enviarDatosEquipo() {
             //mostrarVentanaEmergente('modal7');
             mostrarNewRegistro();
             //-------------------------------> Enviar a los demas Form Cod Alamcen
-            setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigotics');
-            setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigoticsPTL');
-            setearCodAlmacenEnOtroFormulario(cod_almacen, 'codigoticsIMP');
+            setearDatoEnElemento(cod_almacen, 'codigotics', 'input');
+            setearDatoEnElemento(cod_almacen, 'codigoticsPTL', 'input');
+            setearDatoEnElemento(cod_almacen, 'codigoticsIMP', 'input');
             //-------------------------------> Enviar a los demas Form Nom Usuario
-            setearCodAlmacenEnOtroFormulario(nom_custodio, 'nomUsuario');
-            setearCodAlmacenEnOtroFormulario(nom_custodio, 'nomUsuarioPTL');
+            setearDatoEnElemento(nom_custodio, 'nomUsuario', 'input');
+            setearDatoEnElemento(nom_custodio, 'nomUsuarioPTL', 'input');
             //-------------------------------> Enviar a los demas Form cod Equipo
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEq');
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'newCodEqMTR');
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'newCodEqTCD');
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqMS');
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqPTL');
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqIMP');
-            setearCodAlmacenEnOtroFormulario(cod_equipo, 'codigoEqTLF');
+            setearDatoEnElemento(cod_equipo, 'codigoEq', 'input');
+            setearDatoEnElemento(cod_equipo, 'newCodEqMTR', 'input');
+            setearDatoEnElemento(cod_equipo, 'newCodEqTCD', 'input');
+            setearDatoEnElemento(cod_equipo, 'codigoEqMS', 'input');
+            setearDatoEnElemento(cod_equipo, 'codigoEqPTL', 'input');
+            setearDatoEnElemento(cod_equipo, 'codigoEqIMP', 'input');
+            setearDatoEnElemento(cod_equipo, 'codigoEqTLF', 'input');
+            //-------------------------------> Enviar a los demas Form nom Tec
+            setearDatoEnElemento(tec, 'tecCPU', 'span');
+            setearDatoEnElemento(tec, 'tecMTR', 'span');
+            setearDatoEnElemento(tec, 'tecTCD', 'span');
+            setearDatoEnElemento(tec, 'tecMS', 'span');
+            setearDatoEnElemento(tec, 'tecPTL', 'span');
+            setearDatoEnElemento(tec, 'tecIMP', 'span');
+            setearDatoEnElemento(tec, 'tecTLF', 'span');
         } else {
             console.error('Error al ingresar el equipoJS:', data.message);
             alert('ERROR al ingresar el Equipo (Dato ERRONEO o DUPLICADO)');
@@ -1026,10 +1036,18 @@ async function enviarDatosEquipo() {
     }
 }
 
-function setearCodAlmacenEnOtroFormulario(dato, campo) {
-    const otroCampoCodAlmacen = document.getElementById(campo);
-    if (otroCampoCodAlmacen) {
-        otroCampoCodAlmacen.value = dato;
+function setearDatoEnElemento(dato, campo, tipoElemento) {
+    const elemento = document.getElementById(campo);
+    if (elemento) {
+        if (tipoElemento === 'input') {
+            elemento.value = dato;
+        } else if (tipoElemento === 'span') {
+            elemento.textContent = dato;
+        } else {
+            console.error('Tipo de elemento no válido.');
+        }
+    } else {
+        console.error('Elemento no encontrado.');
     }
 }
 
@@ -1108,6 +1126,7 @@ async function guardarCPU() {
     try {
         const codCpu = document.getElementById('codigo').textContent.trim();
         const codEq = document.getElementById('codigoEq').value.trim();
+        const tec = document.getElementById('tecCPU').textContent.trim();
         const codTicsCpu = document.getElementById('codigotics').value.trim();
         const marca = document.getElementById('marcas').value;
         const serie = document.getElementById('numSerie').value.trim();
@@ -1172,7 +1191,7 @@ async function guardarCPU() {
             body: JSON.stringify({
                 codCpu, codEq, codTicsCpu, marca, serie, tarjeta, procesador, velocidad, memoria, tamHdd,
                 dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
-                verAnti, host, usuario, ip, condicion, estado, observacion
+                verAnti, host, usuario, ip, condicion, estado, observacion, tec
             })
         });
 
@@ -1196,6 +1215,7 @@ async function guardarMTR() {
     try {
         const codMtr = document.getElementById('newCodMTR').textContent.trim();
         const codEq = document.getElementById('newCodEqMTR').value.trim();
+        const tec = document.getElementById('tecMTR').textContent.trim();
         const codTics = document.getElementById('codigoticsMTR').value.trim();
         const marca = document.getElementById('marcasMTR').value;
         const modelo = document.getElementById('modeloMTR').value.trim();
@@ -1222,7 +1242,7 @@ async function guardarMTR() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codMtr, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion
+                codMtr, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion, tec
             })
         });
 
@@ -1244,6 +1264,7 @@ async function guardarTCL() {
     try {
         const codTCL = document.getElementById('codigoTCD').textContent.trim();
         const codEq = document.getElementById('newCodEqTCD').value.trim();
+        const tec = document.getElementById('tecTCD').textContent.trim();
         const codTics = document.getElementById('codigoticsTCD').value;
         const marca = document.getElementById('marcasTCD').value;
         const modelo = document.getElementById('modeloTCD').value.trim();
@@ -1272,7 +1293,7 @@ async function guardarTCL() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion
+                codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion, tec
             })
         });
 
@@ -1294,6 +1315,7 @@ async function guardarMS() {
     try {
         const codMs = document.getElementById('codigoMS').textContent.trim();
         const codEq = document.getElementById('codigoEqMS').value.trim();
+        const tec = document.getElementById('tecMS').textContent.trim();
         const codTics = document.getElementById('codigoticsMS').value;
         const marca = document.getElementById('marcasMS').value;
         const modelo = document.getElementById('modeloMS').value.trim();
@@ -1322,7 +1344,7 @@ async function guardarMS() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codMs, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion
+                codMs, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion, tec
             })
         });
 
@@ -1345,6 +1367,7 @@ async function guardarPTL() {
     try {
         const codPTL = document.getElementById('codigoPTL').textContent.trim();
         const codEq = document.getElementById('codigoEqPTL').value.trim();
+        const tec = document.getElementById('tecPTL').textContent.trim();
         const codTicsCpu = document.getElementById('codigoticsPTL').value.trim();
         const marca = document.getElementById('marcasPTL').value;
         const modelo = document.getElementById('modeloPTL').value;
@@ -1404,7 +1427,7 @@ async function guardarPTL() {
             body: JSON.stringify({
                 codPTL, codEq, codTicsCpu, marca, modelo, serie, procesador, velocidad, memoria, tamHdd,
                 dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
-                verAnti, host, usuario, estado, observacion
+                verAnti, host, usuario, estado, observacion, tec
             })
         });
 
@@ -1428,6 +1451,7 @@ async function guardarIMP() {
     try {
         const codIMP = document.getElementById('codigoIMP').textContent.trim();
         const codEq = document.getElementById('codigoEqIMP').value.trim();
+        const tec = document.getElementById('tecCPU').textContent.trim();
         const codTics = document.getElementById('codigoticsIMP').value;
         const marca = document.getElementById('marcasIMP').value;
         const modelo = document.getElementById('modeloIMP').value.trim();
@@ -1457,7 +1481,7 @@ async function guardarIMP() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion
+                codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion, tec
             })
         });
 
@@ -1480,6 +1504,7 @@ async function guardarTLF() {
     try {
         const codTLF = document.getElementById('codigoTLF').textContent.trim();
         const codEq = document.getElementById('codigoEqTLF').value.trim();
+        const tec = document.getElementById('tecCPU').textContent.trim();
         const codTics = document.getElementById('codigoticsTLF').value;
         const marca = document.getElementById('marcasTLF').value;
         const modelo = document.getElementById('modeloTLF').value.trim();
@@ -1505,7 +1530,7 @@ async function guardarTLF() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion
+                codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion, tec
             })
         });
 
@@ -1523,8 +1548,569 @@ async function guardarTLF() {
     }
 }
 
+//-------------------------------> FILTADRADO
+function filtrarEquipos() {
+    // Obtener el estado de los checkboxes
+    const mostrarFecha = document.getElementById('checkFecha').checked;
+    const mostrarPisos = document.getElementById('checkPisos').checked;
+    const mostrarDepartamentos = document.getElementById('checkDepartamentos').checked;
+    const mostrarCustodio = document.getElementById('checkCustodio').checked;
+    const mostrarTecnico = document.getElementById('checkTecnico').checked;
+
+    // Verificar si no hay ningún checkbox seleccionado
+    if (!mostrarFecha && !mostrarPisos && !mostrarDepartamentos && !mostrarCustodio && !mostrarTecnico) {
+        location.reload(); // Recargar la página
+        return;
+    }
+
+    // Obtener la tabla y los equipos
+    const table = document.querySelector('.equipos');
+    const equipos = table.querySelectorAll('tr:not(:first-child) ');
+
+    // Crear un objeto para agrupar los equipos
+    const equiposAgrupados = {};
+
+    // Iterar sobre los equipos y agruparlos según los checkboxes seleccionados
+    equipos.forEach(equipo => {
+        let claveGrupo = '';
+
+        // Construir la clave de grupo basada en los checkboxes seleccionados
+        if (mostrarFecha) {
+            const fechaCell = equipo.querySelector('td:nth-child(2)');
+            if (fechaCell && fechaCell.textContent.trim() !== '') {
+                claveGrupo += fechaCell.textContent;
+            }
+        }
+        if (mostrarPisos) {
+            const pisoCell = equipo.querySelector('td:nth-child(5)');
+            if (pisoCell && pisoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarFecha ? ` - ${pisoCell.textContent}` : `${pisoCell.textContent}`;
+            }
+        }
+        if (mostrarDepartamentos) {
+            const departamentoCell = equipo.querySelector('td:nth-child(6)');
+            if (departamentoCell && departamentoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarFecha || mostrarPisos ? ` - ${departamentoCell.textContent}` : `${departamentoCell.textContent}`;
+            }
+        }
+        if (mostrarCustodio) {
+            const custodioCell = equipo.querySelector('td:nth-child(7)');
+            if (custodioCell && custodioCell.textContent.trim() !== '') {
+                claveGrupo += mostrarFecha || mostrarPisos || mostrarDepartamentos ? ` - ${custodioCell.textContent}` : `${custodioCell.textContent}`;
+            }
+        }
+        if (mostrarTecnico) {
+            const tecnicoCell = equipo.querySelector('td:nth-child(8)');
+            if (tecnicoCell && tecnicoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarFecha || mostrarPisos || mostrarDepartamentos || mostrarCustodio ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
+            }
+        }
+
+        // Agregar el equipo al grupo correspondiente si hay contenido en la clave del grupo
+        if (claveGrupo !== '') {
+            if (!equiposAgrupados[claveGrupo]) {
+                equiposAgrupados[claveGrupo] = [];
+            }
+            equiposAgrupados[claveGrupo].push(equipo.outerHTML);
+        }
+    });
+
+    // Generar el HTML para mostrar los equipos agrupados en la tabla
+    let html = '';
+    for (const key in equiposAgrupados) {
+        html += `<tr style="background-color: #38a5d8;"><td colspan="9">${key}</td></tr>`; // Encabezado del grupo
+        equiposAgrupados[key].forEach(equipo => {
+            html += equipo; // Agregar cada equipo del grupo
+        });
+    }
+
+    // Actualizar el contenido de la tabla
+    table.innerHTML = `<table>${html}</table>`;
+}
+
+// Función para filtrar y agrupar equipos de la tabla de CPU
+function filtrarEquiposCPU() {
+    // Obtener el estado de los checkboxes
+    const mostrarMarca = document.getElementById('checkMarcaCPU').checked;
+    const mostrarModelo = document.getElementById('checkModeloCPU').checked;
+    const mostrarTarjetaMadre = document.getElementById('checkTarjetaMadreCPU').checked;
+    const mostrarProcesador = document.getElementById('checkProcesadorCPU').checked;
+    const mostrarVelocidad = document.getElementById('checkVelocidadCPU').checked;
+    const mostrarMemoria = document.getElementById('checkMemoriaCPU').checked;
+    const mostrarAlmacenamiento = document.getElementById('checkAlamcenamientoCPU').checked;
+    const mostrarDispositivosOpticos = document.getElementById('checkDispositivosOpticosCPU').checked;
+    const mostrarRedFija = document.getElementById('checkRedFijaCPU').checked;
+    const mostrarRedInalambrica = document.getElementById('checkRedInalambricaCPU').checked;
+    const mostrarBluetooth = document.getElementById('checkBluetoothCPU').checked;
+    const mostrarLectorTarjeta = document.getElementById('checkLectorTarjetaCPU').checked;
+    const mostrarSisOpe = document.getElementById('checkSisOpePLT').checked;
+    const mostrarOffice = document.getElementById('checkOfficePLT').checked;
+    const mostrarIpEquipo = document.getElementById('checkUsuaIpEquipoPLT').checked;
+    const mostrarTecnico = document.getElementById('checkTecnicoPLT').checked;
+
+    // Verificar si no hay ningún checkbox seleccionado
+    if (!mostrarMarca && !mostrarModelo && !mostrarTarjetaMadre && !mostrarProcesador &&
+        !mostrarVelocidad && !mostrarMemoria && !mostrarAlmacenamiento && !mostrarDispositivosOpticos &&
+        !mostrarRedFija && !mostrarRedInalambrica && !mostrarBluetooth && !mostrarLectorTarjeta &&
+        !mostrarSisOpe && !mostrarOffice && !mostrarIpEquipo && !mostrarTecnico) {
+        location.reload();// Mostrar todos los equipos si no se selecciona ningún filtro
+        return;
+    }
+
+    // Obtener la tabla y los equipos
+    const table = document.querySelector('.equiposE tbody');
+    const equipos = table.querySelectorAll('tr');
+
+    // Crear un objeto para agrupar los equipos
+    const equiposAgrupados = {};
+
+    // Iterar sobre los equipos y agruparlos según los checkboxes seleccionados
+    equipos.forEach(equipo => {
+        let claveGrupo = '';
+
+        // Construir la clave de grupo basada en los checkboxes seleccionados
+        if (mostrarMarca) {
+            const marcaCell = equipo.querySelector('td:nth-child(4)');
+            if (marcaCell && marcaCell.textContent.trim() !== '') {
+                claveGrupo += marcaCell.textContent;
+            }
+        }
+        if (mostrarModelo) {
+            const modeloCell = equipo.querySelector('td:nth-child(5)');
+            if (modeloCell && modeloCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca ? ` - ${modeloCell.textContent}` : `${modeloCell.textContent}`;
+            }
+        }
+        if (mostrarTarjetaMadre) {
+            const tarjetaMadreCell = equipo.querySelector('td:nth-child(6)');
+            if (tarjetaMadreCell && tarjetaMadreCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo ? ` - ${tarjetaMadreCell.textContent}` : `${tarjetaMadreCell.textContent}`;
+            }
+        }
+        if (mostrarProcesador) {
+            const procesadorCell = equipo.querySelector('td:nth-child(7)');
+            if (procesadorCell && procesadorCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre ? ` - ${procesadorCell.textContent}` : `${procesadorCell.textContent}`;
+            }
+        }
+        if (mostrarVelocidad) {
+            const velocidadCell = equipo.querySelector('td:nth-child(8)');
+            if (velocidadCell && velocidadCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador ? ` - ${velocidadCell.textContent}` : `${velocidadCell.textContent}`;
+            }
+        }
+        if (mostrarMemoria) {
+            const memoriaCell = equipo.querySelector('td:nth-child(9)');
+            if (memoriaCell && memoriaCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad ? ` - ${memoriaCell.textContent}` : `${memoriaCell.textContent}`;
+            }
+        }
+        if (mostrarAlmacenamiento) {
+            const almacenamientoCell = equipo.querySelector('td:nth-child(10)');
+            if (almacenamientoCell && almacenamientoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria ? ` - ${almacenamientoCell.textContent}` : `${almacenamientoCell.textContent}`;
+            }
+        }
+        if (mostrarDispositivosOpticos) {
+            const dispositivosOpticosCell = equipo.querySelector('td:nth-child(11)');
+            if (dispositivosOpticosCell && dispositivosOpticosCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento ? ` - ${dispositivosOpticosCell.textContent}` : `${dispositivosOpticosCell.textContent}`;
+            }
+        }
+        if (mostrarRedFija) {
+            const redFijaCell = equipo.querySelector('td:nth-child(12)');
+            if (redFijaCell && redFijaCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos ? ` - ${redFijaCell.textContent}` : `${redFijaCell.textContent}`;
+            }
+        }
+        if (mostrarRedInalambrica) {
+            const redInalambricaCell = equipo.querySelector('td:nth-child(13)');
+            if (redInalambricaCell && redInalambricaCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija ? ` - ${redInalambricaCell.textContent}` : `${redInalambricaCell.textContent}`;
+            }
+        }
+        if (mostrarBluetooth) {
+            const bluetoothCell = equipo.querySelector('td:nth-child(14)');
+            if (bluetoothCell && bluetoothCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica ? ` - ${bluetoothCell.textContent}` : `${bluetoothCell.textContent}`;
+            }
+        }
+        if (mostrarLectorTarjeta) {
+            const lectorTarjetaCell = equipo.querySelector('td:nth-child(15)');
+            if (lectorTarjetaCell && lectorTarjetaCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth ? ` - ${lectorTarjetaCell.textContent}` : `${lectorTarjetaCell.textContent}`;
+            }
+        }
+        if (mostrarSisOpe) {
+            const sisOpeCell = equipo.querySelector('td:nth-child(16)');
+            if (sisOpeCell && sisOpeCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta ? ` - ${sisOpeCell.textContent}` : `${sisOpeCell.textContent}`;
+            }
+        }
+        if (mostrarOffice) {
+            const officeCell = equipo.querySelector('td:nth-child(17)');
+            if (officeCell && officeCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe ? ` - ${officeCell.textContent}` : `${officeCell.textContent}`;
+            }
+        }
+        if (mostrarIpEquipo) {
+            const ipEquipoCell = equipo.querySelector('td:nth-child(23)');
+            if (ipEquipoCell && ipEquipoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe || mostrarOffice ? ` - ${ipEquipoCell.textContent}` : `${ipEquipoCell.textContent}`;
+            }
+        }
+
+        if (mostrarTecnico) {
+            const tecnicoCell = equipo.querySelector('td:nth-child(27)');
+            if (tecnicoCell && tecnicoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe || mostrarOffice || mostrarIpEquipo ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
+            }
+        }
+
+        // Agregar el equipo al grupo correspondiente si hay contenido en la clave del grupo
+        if (claveGrupo !== '') {
+            if (!equiposAgrupados[claveGrupo]) {
+                equiposAgrupados[claveGrupo] = [];
+            }
+            equiposAgrupados[claveGrupo].push(equipo.outerHTML);
+        }
+    });
+
+    // Generar el HTML para mostrar los equipos agrupados en la tabla
+    let html = '';
+    for (const key in equiposAgrupados) {
+        html += `<tr style="background-color: #38a5d8;"><td colspan="25">${key}</td></tr>`; // Encabezado del grupo
+        equiposAgrupados[key].forEach(equipo => {
+            html += equipo; // Agregar cada equipo del grupo
+        });
+    }
+
+    // Actualizar el contenido de la tabla
+    table.innerHTML = html;
+}
+
+function filtrarEquiposPTL() {
+    // Obtener el estado de los checkboxes
+    const mostrarMarca = document.getElementById('checkMarcaPLT').checked;
+    const mostrarModelo = document.getElementById('checkModeloPLT').checked;
+    const mostrarProcesador = document.getElementById('checkProcesadorPLT').checked;
+    const mostrarMemoria = document.getElementById('checkMemoriaPLT').checked;
+    const mostrarAlmacenamiento = document.getElementById('checkAlamcenamientoPLT').checked;
+    const mostrarSisOpe = document.getElementById('checkSisOpePLT').checked;
+    const mostrarOffice = document.getElementById('checkOfficePLT').checked;
+    const mostrarUsuario = document.getElementById('checkUsuarioPLT').checked;
+    const mostrarTecnico = document.getElementById('checkTecnicoPLT').checked;
+
+    // Verificar si no hay ningún checkbox seleccionado
+    if (!mostrarMarca && !mostrarModelo && !mostrarProcesador && !mostrarMemoria && !mostrarAlmacenamiento && !mostrarSisOpe && !mostrarOffice && !mostrarUsuario && !mostrarTecnico) {
+        location.reload(); // Recargar la página
+        return;
+    }
+
+    // Obtener la tabla y los equipos
+    const table = document.querySelector('.equiposP tbody');
+    const equipos = table.querySelectorAll('tr');
+
+    // Crear un objeto para agrupar los equipos
+    const equiposAgrupados = {};
+
+    // Iterar sobre los equipos y agruparlos según los checkboxes seleccionados
+    equipos.forEach(equipo => {
+        let claveGrupo = '';
+
+        // Construir la clave de grupo basada en los checkboxes seleccionados
+        if (mostrarMarca) {
+            const marcaCell = equipo.querySelector('td:nth-child(4)');
+            if (marcaCell && marcaCell.textContent.trim() !== '') {
+                claveGrupo += marcaCell.textContent;
+            }
+        }
+        if (mostrarModelo) {
+            const modeloCell = equipo.querySelector('td:nth-child(5)');
+            if (modeloCell && modeloCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca ? ` - ${modeloCell.textContent}` : `${modeloCell.textContent}`;
+            }
+        }
+        if (mostrarProcesador) {
+            const procesadorCell = equipo.querySelector('td:nth-child(7)');
+            if (procesadorCell && procesadorCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo ? ` - ${procesadorCell.textContent}` : `${procesadorCell.textContent}`;
+            }
+        }
+        if (mostrarMemoria) {
+            const memoriaCell = equipo.querySelector('td:nth-child(9)');
+            if (memoriaCell && memoriaCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador ? ` - ${memoriaCell.textContent}` : `${memoriaCell.textContent}`;
+            }
+        }
+        if (mostrarAlmacenamiento) {
+            const almacenamientoCell = equipo.querySelector('td:nth-child(10)');
+            if (almacenamientoCell && almacenamientoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria ? ` - ${almacenamientoCell.textContent}` : `${almacenamientoCell.textContent}`;
+            }
+        }
+        if (mostrarSisOpe) {
+            const sisOpeCell = equipo.querySelector('td:nth-child(16)');
+            if (sisOpeCell && sisOpeCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria || mostrarAlmacenamiento ? ` - ${sisOpeCell.textContent}` : `${sisOpeCell.textContent}`;
+            }
+        }
+        if (mostrarOffice) {
+            const officeCell = equipo.querySelector('td:nth-child(17)');
+            if (officeCell && officeCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria || mostrarAlmacenamiento || mostrarSisOpe ? ` - ${officeCell.textContent}` : `${officeCell.textContent}`;
+            }
+        }
+        if (mostrarUsuario) {
+            const usuarioCell = equipo.querySelector('td:nth-child(22)');
+            if (usuarioCell && usuarioCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria || mostrarAlmacenamiento || mostrarSisOpe || mostrarOffice ? ` - ${usuarioCell.textContent}` : `${usuarioCell.textContent}`;
+            }
+        }
+        if (mostrarTecnico) {
+            const tecnicoCell = equipo.querySelector('td:nth-child(25)');
+            if (tecnicoCell && tecnicoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria || mostrarAlmacenamiento || mostrarSisOpe || mostrarOffice || mostrarUsuario ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
+            }
+        }
+
+        // Agregar el equipo al grupo correspondiente si hay contenido en la clave del grupo
+        if (claveGrupo !== '') {
+            if (!equiposAgrupados[claveGrupo]) {
+                equiposAgrupados[claveGrupo] = [];
+            }
+            equiposAgrupados[claveGrupo].push(equipo.outerHTML);
+        }
+    });
+
+    // Generar el HTML para mostrar los equipos agrupados en la tabla
+    let html = '';
+    for (const key in equiposAgrupados) {
+        html += `<tr style="background-color: #38a5d8;"><td colspan="25">${key}</td></tr>`; // Encabezado del grupo
+        equiposAgrupados[key].forEach(equipo => {
+            html += equipo; // Agregar cada equipo del grupo
+        });
+    }
+
+    // Actualizar el contenido de la tabla
+    table.innerHTML = html;
+}
+
+function filtrarEquiposIMP() {
+    // Obtener el estado de los checkboxes
+    const mostrarMarca = document.getElementById('checkMarcaIMP').checked;
+    const mostrarModelo = document.getElementById('checkModeloIMP').checked;
+    const mostrarTipo = document.getElementById('checkTipoIMP').checked;
+    const mostrarPuerto = document.getElementById('checkPuertoIMP').checked;
+    const mostrarTecnico = document.getElementById('checkTecnicoIMP').checked;
+
+    // Verificar si no hay ningún checkbox seleccionado
+    if (!mostrarMarca && !mostrarModelo && !mostrarTipo && !mostrarPuerto && !mostrarTecnico) {
+        location.reload(); // Recargar la página
+        return;
+    }
+
+    // Obtener la tabla y los equipos
+    const table = document.querySelector('.equiposI tbody');
+    const equipos = table.querySelectorAll('tr');
+
+    // Crear un objeto para agrupar los equipos
+    const equiposAgrupados = {};
+
+    // Iterar sobre los equipos y agruparlos según los checkboxes seleccionados
+    equipos.forEach(equipo => {
+        let claveGrupo = '';
+
+        // Construir la clave de grupo basada en los checkboxes seleccionados
+        if (mostrarMarca) {
+            const marcaCell = equipo.querySelector('td:nth-child(4)');
+            if (marcaCell && marcaCell.textContent.trim() !== '') {
+                claveGrupo += marcaCell.textContent;
+            }
+        }
+        if (mostrarModelo) {
+            const modeloCell = equipo.querySelector('td:nth-child(5)');
+            if (modeloCell && modeloCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca ? ` - ${modeloCell.textContent}` : `${modeloCell.textContent}`;
+            }
+        }
+        if (mostrarTipo) {
+            const tipoCell = equipo.querySelector('td:nth-child(7)');
+            if (tipoCell && tipoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo ? ` - ${tipoCell.textContent}` : `${tipoCell.textContent}`;
+            }
+        }
+        if (mostrarPuerto) {
+            const puertoCell = equipo.querySelector('td:nth-child(8)');
+            if (puertoCell && puertoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTipo ? ` - ${puertoCell.textContent}` : `${puertoCell.textContent}`;
+            }
+        }
+        if (mostrarTecnico) {
+            const tecnicoCell = equipo.querySelector('td:nth-child(12)');
+            if (tecnicoCell && tecnicoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo || mostrarTipo || mostrarPuerto ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
+            }
+        }
+
+        // Agregar el equipo al grupo correspondiente si hay contenido en la clave del grupo
+        if (claveGrupo !== '') {
+            if (!equiposAgrupados[claveGrupo]) {
+                equiposAgrupados[claveGrupo] = [];
+            }
+            equiposAgrupados[claveGrupo].push(equipo.outerHTML);
+        }
+    });
+
+    // Generar el HTML para mostrar los equipos agrupados en la tabla
+    let html = '';
+    for (const key in equiposAgrupados) {
+        html += `<tr style="background-color: #38a5d8;"><td colspan="12">${key}</td></tr>`; // Encabezado del grupo
+        equiposAgrupados[key].forEach(equipo => {
+            html += equipo; // Agregar cada equipo del grupo
+        });
+    }
+
+    // Actualizar el contenido de la tabla
+    table.innerHTML = html;
+}
+
+function filtrarEquiposTLF() {
+    // Obtener el estado de los checkboxes
+    const mostrarMarca = document.getElementById('checkMarcaTLF').checked;
+    const mostrarModelo = document.getElementById('checkModeloTLF').checked;
+    const mostrarTecnico = document.getElementById('checkTecnicoTLF').checked;
+
+    // Verificar si no hay ningún checkbox seleccionado
+    if (!mostrarMarca && !mostrarModelo && !mostrarTecnico) {
+        // Mostrar todos los equipos si no se selecciona ningún filtro
+        mostrarTodosEquiposTLF();
+        return;
+    }
+
+    // Obtener la tabla y los equipos
+    const table = document.querySelector('.equiposT');
+    const equipos = table.querySelectorAll('tbody tr');
+
+    // Crear un objeto para agrupar los equipos
+    const equiposAgrupados = {};
+
+    // Iterar sobre los equipos y agruparlos según los checkboxes seleccionados
+    equipos.forEach(equipo => {
+        let claveGrupo = '';
+
+        // Construir la clave de grupo basada en los checkboxes seleccionados
+        if (mostrarMarca) {
+            const marcaCell = equipo.querySelector('td:nth-child(4)');
+            if (marcaCell && marcaCell.textContent.trim() !== '') {
+                claveGrupo += marcaCell.textContent;
+            }
+        }
+        if (mostrarModelo) {
+            const modeloCell = equipo.querySelector('td:nth-child(5)');
+            if (modeloCell && modeloCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca ? ` - ${modeloCell.textContent}` : `${modeloCell.textContent}`;
+            }
+        }
+        if (mostrarTecnico) {
+            const tecnicoCell = equipo.querySelector('td:nth-child(10)');
+            if (tecnicoCell && tecnicoCell.textContent.trim() !== '') {
+                claveGrupo += mostrarMarca || mostrarModelo ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
+            }
+        }
+
+        // Agregar el equipo al grupo correspondiente si hay contenido en la clave del grupo
+        if (claveGrupo !== '') {
+            if (!equiposAgrupados[claveGrupo]) {
+                equiposAgrupados[claveGrupo] = [];
+            }
+            equiposAgrupados[claveGrupo].push(equipo.outerHTML);
+        }
+    });
+
+    // Generar el HTML para mostrar los equipos agrupados en la tabla
+    let html = '';
+    for (const key in equiposAgrupados) {
+        html += `<tr style="background-color: #38a5d8;"><td colspan="10">${key}</td></tr>`; // Encabezado del grupo
+        equiposAgrupados[key].forEach(equipo => {
+            html += equipo; // Agregar cada equipo del grupo
+        });
+    }
+
+    // Actualizar el contenido de la tabla
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = html;
+}
+
+// Función para mostrar todos los equipos en la tabla de teléfonos
+function mostrarTodosEquiposTLF() {
+    const table = document.querySelector('.equiposTLF');
+    const tbody = table.querySelector('tbody');
+    const equipos = tbody.querySelectorAll('tr');
+
+    let html = '';
+    equipos.forEach(equipo => {
+        html += equipo.outerHTML;
+    });
+
+    tbody.innerHTML = html;
+}
+
+
+
+//-------------------------------> REPORTES
+async function obtenerYMostrarRegistros(url, idTabla) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.success) {
+            const registros = data.registros;
+            const resultsElement = document.getElementById(idTabla);
+
+            if (!resultsElement) {
+                console.error(`Elemento de resultados para ${idTabla} no encontrado.`);
+                return;
+            }
+
+            if (registros.length === 0) {
+                resultsElement.innerHTML = `<tr><td colspan="23">No se encontraron registros.</td></tr>`;
+                return;
+            }
+
+            const html = registros.map(registro => {
+                const valores = Object.values(registro);
+                const columns = valores.map(value => `<td>${value}</td>`).join('');
+                return `<tr>${columns}</tr>`;
+            }).join('');
+
+            resultsElement.innerHTML = html;
+        } else {
+            console.error(`Error al obtener los registros: ${data.message}`);
+        }
+    } catch (error) {
+        console.error(`Error al obtener los registros: ${error}`);
+    }
+}
+
+//-------------------------------> ENVIAR NOM USER REGIRSTRO
+function setUsernameFromURL(spanId) {
+    // Obtener el nombre de usuario de la URL
+    const params = new URLSearchParams(window.location.search);
+    const username = params.get('username');
+
+    // Establecer el nombre de usuario en el span
+    const usernameSpan = document.getElementById(spanId);
+    if (usernameSpan) {
+        usernameSpan.textContent = username || 'Usuario no especificado';
+    } else {
+        console.error(`Elemento con ID ${spanId} no encontrado.`);
+    }
+}
+
 //-------------------------------> FUNCION PRINCIPAL
 document.addEventListener('DOMContentLoaded', async () => {
+    setUsernameFromURL('newTecnico');
     //-------------------------------> INGRESO DE NUEVO EQUIPO
     const setDefaultValue = (elementId, value) => {
         const element = document.getElementById(elementId);
@@ -1548,7 +2134,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('codigoticsTLF')) {
         setDefaultValue('codigoticsTLF', 'CZ9TICS-TEL-');
     }
-    //------------------------------->
     if (document.getElementById('newFecha')) {
         setearFechaActual('newFecha');
     }
@@ -1588,6 +2173,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     mostrarTablaIfExists('Portatil', 'resultsPortatil', 'modal4');
     mostrarTablaIfExists('Impresora', 'resultsImpresora', 'modal5');
     mostrarTablaIfExists('Teléfono', 'resultsTelefono', 'modal6');
+
+    //-------------------------------> Mostrar registros Reporte
+    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/cpu_equipo', 'resultsCPU');
+    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/laptop', 'resultsPTL');
+    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/impresora', 'resultsIMP');
+    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/telefono', 'resultsTLF');
 
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
     const optionMappings = [
@@ -1660,34 +2251,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (document.getElementById(mapping.id)) {
             getOptionsFrom(mapping.table, mapping.field, mapping.id);
         }
-    });
-});
-
-
-//-------------------------------> FUNCION PRINCIPAL
-document.addEventListener('DOMContentLoaded', async () => {
-    const mostrarTablaIfExists = (tableName, resultId, modalId) => {
-        const resultsElement = document.getElementById(resultId);
-        if (resultsElement) {
-            mostrarContenidoTabla(tableName, resultId, modalId);
-        }
-    };
-
-    mostrarTablaIfExists('Escritorio', 'results', 'modal1');
-    // Otros llamados a mostrarContenidoTabla...
-
-    const getOptionsIfExists = (table, field, id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            getOptionsFrom(table, field, id);
-        }
-    };
-
-    const optionMappings = [
-        // Array con los mapeos de opciones
-    ];
-
-    optionMappings.forEach(mapping => {
-        getOptionsIfExists(mapping.table, mapping.field, mapping.id);
     });
 });

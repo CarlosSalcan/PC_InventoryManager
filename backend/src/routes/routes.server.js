@@ -14,6 +14,7 @@ const login = require('../controllers/user.controller.js');
 //--------------------------> Buscar por Tipo BDD
 //--------------------------> Obtener nuevo codigo para nuevo Equipo
 //--------------------------> Obtener ultimos codigos ingresados
+//--------------------------> Obtener Datos para Reportes
 router.get('/equipos', equipo.getEquipos);
 router.get('/options/:tabla/:campo', equipo.obtenerOpcSelect);
 router.get('/equipoB/:id', equipo.getEquipoById)
@@ -23,6 +24,7 @@ router.get('/equiposR', equipo.getEquiposReporte);
 router.get('/buscarEquipos/:tipoEquipo/:query', equipo.buscarEquipos);
 router.get('/getNextCod/:tableName/:campo', equipo.getNextCodEquipo);
 router.get('/obtenerUltimosCodAlmacen', equipo.obtenerUltimosCodAlmacen);
+router.get('/reporte/:tabla', equipo.getRegistrosTables);
 
 //--------------------------> Modificar Datos Equipo
 //--------------------------> Enviar a Bodega (P2)
@@ -54,6 +56,7 @@ router.put('/telefonoModificado/:codEquipo', equipo.guardarCambiosTelefono);
 //--------------------------> Agregar nuevo LAPTOP
 //--------------------------> Agregar nuevo IMP
 //--------------------------> Agregar nuevo TLF
+//--------------------------> Verificar LOGIN
 router.post('/nuevoParametro/:tabla', parametro.nuevoParametro);
 router.post('/ingresarEquipo', equipo.nuevoEquipo);
 router.post('/guardarCPU', equipo.guardarCPU);
@@ -63,7 +66,6 @@ router.post('/guardarMS', equipo.guardarMS);
 router.post('/guardarLaptop', equipo.guardarLaptop);
 router.post('/guardarIMP', equipo.guardarIMP);
 router.post('/guardarTLF', equipo.guardarTLF);
-
 router.post('/login', login.loginUser);
 
 module.exports = router;

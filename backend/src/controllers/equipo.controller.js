@@ -487,7 +487,7 @@ const equipoController = {
     nuevoEquipo: async (req, res) => {
         try {
             // Extraer los datos del cuerpo de la solicitud
-            const { cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio } = req.body;
+            const { cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio, tec } = req.body;
 
             // Verificar si ya existe un registro con el mismo cod_almacen
             const existeRegistroQuery = 'SELECT COUNT(*) AS numRegistros FROM equipo WHERE cod_almacen = ?';
@@ -504,8 +504,8 @@ const equipoController = {
                 }
 
                 // Realizar la inserción del nuevo equipo en la base de datos
-                const query = 'INSERT INTO equipo (cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio) VALUES (?, ?, ?, ?, ?, ?, ?)';
-                connection.query(query, [cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio], (error, results, fields) => {
+                const query = 'INSERT INTO equipo (cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio, nom_usua) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+                connection.query(query, [cod_equipo, fec_reg, cod_almacen, tip_equipo, piso_ubic, serv_depar, nom_custodio, tec], (error, results, fields) => {
                     if (error) {
                         console.error('Error al insertar el equipo:', error);
                         res.status(500).json({ success: false, message: 'Error interno del servidor' });
@@ -587,20 +587,20 @@ const equipoController = {
             const {
                 codCpu, codEq, codTicsCpu, marca, serie, tarjeta, procesador, velocidad, memoria, tamHdd,
                 dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
-                verAnti, host, usuario, ip, condicion, estado, observacion
+                verAnti, host, usuario, ip, condicion, estado, observacion, tec
             } = req.body;
 
             const query = `INSERT INTO cpu_equipo (cod_cpu, cod_equipo, cod_tics_cpu, mar_cpu, ser_cpu,
                                                     tar_madre, procesador, velocidad, memoria, tam_hdd,
                                                     disp_optico, red_fija, red_inalam, bluetooth, lec_tarjeta,
                                                     sis_ope, office, antivirus, nom_antivirus, ver_antivirus,
-                                                    nom_hots, nom_usuario, ip_equipo, con_cpu, est_cpu, observacion) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                                                    nom_hots, nom_usuario, ip_equipo, con_cpu, est_cpu, observacion, nom_usua) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
             const values = [
                 codCpu, codEq, codTicsCpu, marca, serie, tarjeta, procesador, velocidad, memoria, tamHdd,
                 dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
-                verAnti, host, usuario, ip, condicion, estado, observacion
+                verAnti, host, usuario, ip, condicion, estado, observacion, tec
             ];
 
             console.log('Query:', query);
@@ -624,13 +624,13 @@ const equipoController = {
         try {
             console.log('Datos recibidos MTR:', req.body);
 
-            const { codMTR, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion } = req.body;
+            const { codMTR, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion, tec } = req.body;
 
             const query = `INSERT INTO monitor (cod_monitor, cod_equipo, cod_tics_monitor, mar_monitor, mod_monitor, ser_monitor, 
-                                                tam_monitor, con_monitor, est_monitor, observacion)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                                                tam_monitor, con_monitor, est_monitor, observacion, nom_usua)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-            const values = [codMTR, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion];
+            const values = [codMTR, codEq, codTics, marca, modelo, serie, tamano, condicion, estado, observacion, tec];
 
             console.log('Query:', query);
             console.log('Values:', values);
@@ -653,13 +653,13 @@ const equipoController = {
         try {
             console.log('Datos recibidos TCL:', req.body);
 
-            const { codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion } = req.body;
+            const { codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion, tec } = req.body;
 
             const query = `INSERT INTO teclado (cod_teclado, cod_equipo, cod_tics_teclado, mar_teclado, mod_teclado, ser_teclado, 
-                                                tip_teclado, pue_teclado, con_teclado, est_teclado, obs_teclado)
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+                                                tip_teclado, pue_teclado, con_teclado, est_teclado, obs_teclado, nom_usua)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
 
-            const values = [codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion];
+            const values = [codTCL, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion, tec];
 
             console.log('Query:', query);
             console.log('Values:', values);
@@ -682,13 +682,13 @@ const equipoController = {
         try {
             console.log('Datos recibidos MS:', req.body);
 
-            const { codMS, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion } = req.body;
+            const { codMS, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion, tec } = req.body;
 
             const query = `INSERT INTO mouse (cod_mouse, cod_equipo, cod_tics_mouse, mar_mouse, mod_mouse, ser_mouse, tip_mouse, 
-                                            pue_mouse, con_mouse, est_mouse, obs_mouse)
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+                                            pue_mouse, con_mouse, est_mouse, obs_mouse, nom_usua)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
 
-            const values = [codMS, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion];
+            const values = [codMS, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, estado, observacion, tec];
 
             console.log('Query:', query);
             console.log('Values:', values);
@@ -714,20 +714,20 @@ const equipoController = {
             const {
                 codPTL, codEq, codTicsCpu, marca, modelo, serie, procesador, velocidad, memoria, tamHdd,
                 dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
-                verAnti, host, usuario, estado, observacion
+                verAnti, host, usuario, estado, observacion, tec
             } = req.body;
 
             const query = `INSERT INTO laptop (cod_laptop, cod_equipo, cod_tics_laptop, mar_laptop, mod_laptop, 
                                                     ser_laptop, pro_laptop, vel_laptop, mem_laptop, hdd_laptop, 
                                                     dop_laptop, red_laptop, wif_laptop, blu_laptop, tar_laptop, 
                                                     so_laptop, off_laptop, antv_laptop, nom_antv_laptop, ver_antv_laptop, 
-                                                    nom_hots_laptop, nom_usuario_laptop, est_laptop, observacion_laptop) 
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+                                                    nom_hots_laptop, nom_usuario_laptop, est_laptop, observacion_laptop, nom_usua) 
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
             const values = [
                 codPTL, codEq, codTicsCpu, marca, modelo, serie, procesador, velocidad, memoria, tamHdd,
                 dispOpt, redFija, redInalam, bluethooth, lecTarjeta, sisOpe, office, antivirus, nomAnti,
-                verAnti, host, usuario, estado, observacion
+                verAnti, host, usuario, estado, observacion, tec
             ];
 
             console.log('Query:', query);
@@ -751,13 +751,13 @@ const equipoController = {
         try {
             console.log('Datos recibidos IMP:', req.body);
 
-            const { codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion } = req.body;
+            const { codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion, tec } = req.body;
 
             const query = `INSERT INTO impresora (cod_impresora, cod_equipo, cod_tics_impresora, mar_imp, mod_imp, ser_imp, tip_imp, 
-                                                pue_imp, con_imp, ip_equipo_imp, est_imp, obs_imp)
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+                                                pue_imp, con_imp, ip_equipo_imp, est_imp, obs_imp, nom_usua)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
-            const values = [codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion];
+            const values = [codIMP, codEq, codTics, marca, modelo, serie, tipo, puerto, condicion, ip, estado, observacion, tec];
 
             console.log('Query:', query);
             console.log('Values:', values);
@@ -780,13 +780,13 @@ const equipoController = {
         try {
             console.log('Datos recibidos TLF:', req.body);
 
-            const { codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion } = req.body;
+            const { codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion, tec } = req.body;
 
             const query = `INSERT INTO telefono (cod_telf, cod_equipo, cod_tics_telf, mar_telf, mod_telf, ser_telf, 
-                                                con_telf, est_telf, obs_telf)
-                            VALUES (?,?,?,?,?,?,?,?,?)`;
+                                                con_telf, est_telf, obs_telf, nom_usua)
+                            VALUES (?,?,?,?,?,?,?,?,?,?)`;
 
-            const values = [codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion];
+            const values = [codTLF, codEq, codTics, marca, modelo, serie, condicion, estado, observacion, tec];
 
             console.log('Query:', query);
             console.log('Values:', values);
@@ -802,6 +802,25 @@ const equipoController = {
         } catch (error) {
             console.error('Error al guardar el TLF:', error);
             res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        }
+    },
+
+    //-------------------------------> OBTENER CPU LAPTOP IMPRESORA TELEFONO (EPORTES)
+    getRegistrosTables: async (req, res) => {
+        try {
+            const { tabla } = req.params;
+            const query = `SELECT * FROM ${tabla}`;
+            connection.query(query, (error, results) => {
+                if (error) {
+                    console.error(`Error al obtener registros de ${tabla}:`, error);
+                    res.status(500).json({ success: false, message: `Error al obtener registros de ${tabla} de la base de datos` });
+                    return;
+                }
+                res.status(200).json({ success: true, registros: results });
+            });
+        } catch (error) {
+            console.error('Error al procesar solicitud:', error);
+            res.status(500).json({ success: false, message: 'Error interno al procesar la solicitud' });
         }
     }
 };
