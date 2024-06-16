@@ -78,8 +78,8 @@ function mostrarFormulario(formulario) {
 //-------------------------------> MOSTRAR FORMULARIO INGRESO/TABLA REPORTE SEGUN LA ELECCION
 function mostrarElemento(tipo, elementoId) {
   const tipos = {
-      form: '.form-container',
-      report: '.report'
+    form: '.form-container',
+    report: '.report'
   };
 
   const elementos = document.querySelectorAll(tipos[tipo]);
@@ -87,16 +87,16 @@ function mostrarElemento(tipo, elementoId) {
 
   const elementoMostrar = document.getElementById(elementoId);
   if (elementoMostrar) {
-      elementoMostrar.style.display = 'block';
+    elementoMostrar.style.display = 'block';
   }
 }
 
 function mostrarRegistro(formulario) {
   const formularioIds = {
-      cpu: 'formCPU',
-      monitor: 'formMonitor',
-      teclado: 'formTeclado',
-      mouse: 'formMouse'
+    cpu: 'formCPU',
+    monitor: 'formMonitor',
+    teclado: 'formTeclado',
+    mouse: 'formMouse'
   };
 
   mostrarElemento('form', formularioIds[formulario]);
@@ -104,10 +104,10 @@ function mostrarRegistro(formulario) {
 
 function mostrarReporte(reporte) {
   const reporteIds = {
-      cpuR: 'reportCPU',
-      monitorR: 'reportLaptop',
-      tecladoR: 'reportImp',
-      mouseR: 'reportTlf'
+    cpuR: 'reportCPU',
+    monitorR: 'reportLaptop',
+    tecladoR: 'reportImp',
+    mouseR: 'reportTlf'
   };
 
   mostrarElemento('report', reporteIds[reporte]);

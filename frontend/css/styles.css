@@ -345,7 +345,11 @@ a {
 /*************
     TABLE
 *************/
-.equipos, .equiposP, .equiposE, .equiposI, .equiposT {
+.equipos,
+.equiposP,
+.equiposE,
+.equiposI,
+.equiposT {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
@@ -410,7 +414,8 @@ a {
 
 .equiposP th:nth-child(3),
 .equiposP td:nth-child(3) {
-    min-width: 175px; /* Ancho mínimo deseado para las columnas */
+    min-width: 175px;
+    /* Ancho mínimo deseado para las columnas */
 }
 
 .equiposE th:nth-child(12),
@@ -923,7 +928,7 @@ textarea {
 .search-container {
     display: flex;
     align-items: center;
-    width: 35%;
+    width: 50%;
     margin: 10px;
     border-radius: 10px;
     position: sticky;
@@ -932,6 +937,39 @@ textarea {
     flex-direction: column;
     background-color: rgb(59, 80, 122);
 }
+
+#print {
+    display: flex;
+    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+    width: 99%;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    position: sticky;
+    top: 10px;
+    z-index: 0;
+    background-color: rgb(59, 80, 122);
+}
+
+#print .busqueda {
+    order: -1; /* Cambia el orden del elemento, lo coloca al principio */
+    margin-bottom: 10px;
+}
+
+#print .checkbox-container {
+    flex-direction: row;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Columnas automáticas con un mínimo de 150px */
+    gap: 10px; /* Espacio entre los elementos */
+}
+
+#print button {
+    margin-top: 10px; /* Espacio sobre el botón */
+}
+
+
+
 
 .busqueda {
     width: 100%;
@@ -943,7 +981,7 @@ textarea {
 }
 
 .busqueda button {
-    width: 40%;
+    width: 20%;
 }
 
 .checkbox-container {
@@ -1071,6 +1109,7 @@ textarea {
 }
 
 .form-group {
+    display: flex;
     margin-bottom: 15px;
 }
 

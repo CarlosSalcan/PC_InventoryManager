@@ -20,7 +20,7 @@
         <nav class="nav container">
             <div class="nav__data">
                 <a href="#" class="nav__logo">
-                    <i class="ri-planet-line"></i> TICS
+                    <i class="ri-planet-line"></i> TICS - REPORTES
                 </a>
                 <div class="nav__toggle" id="nav-toggle">
                     <i class="ri-menu-line nav__burger"></i>
@@ -69,40 +69,49 @@
     <main>
         <br>
         <div class="buttons">
-            <button type="button" class="edit-button" onclick="mostrarReporte('cpuR')">CPU</button>
-            <button type="button" class="edit-button" onclick="mostrarReporte('monitorR')">Laptop</button>
-            <button type="button" class="edit-button" onclick="mostrarReporte('tecladoR')">Impresora</button>
-            <button type="button" class="edit-button" onclick="mostrarReporte('mouseR')">Telefono</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('cpuR')" id="cpuButton">CPU</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('monitorR')"
+                id="laptopButton">Laptop</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('tecladoR')"
+                id="printerButton">Impresora</button>
+            <button type="button" class="edit-button" onclick="mostrarReporte('mouseR')"
+                id="phoneButton">Telefono</button>
         </div>
         <br>
 
         <div id="reportCPU" class="report" style="display: none;">
             <h2>CPU</h2>
-            <div class="search-container">
+            <div class="search-container" id="print">
                 <div class="busqueda">
-                    <input type="text" id="searchQueryPLT" placeholder="Buscar...">
-                    <button type="button" onclick="">Buscar</button>
+                    <button type="button" onclick="imprimirTabla('equiposETable')">Imprimir Tabla</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaCPU" onchange="filtrarEquiposCPU()">Marca</label>
-                    <label><input type="checkbox" id="checkModeloCPU" onchange="filtrarEquiposCPU()">Modelo</label>
-                    <label><input type="checkbox" id="checkTarjetaMadreCPU" onchange="filtrarEquiposCPU()">Mainboard</label>
-                    <label><input type="checkbox" id="checkProcesadorCPU" onchange="filtrarEquiposCPU()">Procesador</label>
-                    <label><input type="checkbox" id="checkVelocidadCPU" onchange="filtrarEquiposCPU()">Velocidad</label>
-                    <label><input type="checkbox" id="checkMemoriaCPU" onchange="filtrarEquipoCPU()">Memoria</label>
-                    <label><input type="checkbox" id="checkAlamcenamientoCPU" onchange="filtrarEquiposCPU()">Almacenamiento</label>
-                    <label><input type="checkbox" id="checkDispositivosOpticosCPU" onchange="filtrarEquiposCPU()">Disp. Opt</label>
+                    <!-- <label><input type="checkbox" id="checkModeloCPU" onchange="filtrarEquiposCPU()">Modelo</label> -->
+                    <label><input type="checkbox" id="checkTarjetaMadreCPU"
+                            onchange="filtrarEquiposCPU()">Mainboard</label>
+                    <label><input type="checkbox" id="checkProcesadorCPU"
+                            onchange="filtrarEquiposCPU()">Procesador</label>
+                    <label><input type="checkbox" id="checkVelocidadCPU"
+                            onchange="filtrarEquiposCPU()">Velocidad</label>
+                    <label><input type="checkbox" id="checkMemoriaCPU" onchange="filtrarEquiposCPU()">Memoria</label>
+                    <label><input type="checkbox" id="checkAlamcenamientoCPU"
+                            onchange="filtrarEquiposCPU()">Almac</label>
+                    <label><input type="checkbox" id="checkDispositivosOpticosCPU" onchange="filtrarEquiposCPU()">Disp.
+                        Opt</label>
                     <label><input type="checkbox" id="checkRedFijaCPU" onchange="filtrarEquiposCPU()">Red Fija</label>
-                    <label><input type="checkbox" id="checkRedInalambricaCPU" onchange="filtrarEquiposCPU()">Red Inalam</label>
-                    <label><input type="checkbox" id="checkBluetoothCPU" onchange="filtrarEquiposCPU()">Bluetooth</label>
-                    <label><input type="checkbox" id="checkLectorTarjetaCPU" onchange="filtrarEquiposCPU()">Lec. tarjeta</label>
-                    <label><input type="checkbox" id="checkSisOpePLT" onchange="filtrarEquiposCPU()">Sis Ope</label>
-                    <label><input type="checkbox" id="checkOfficePLT" onchange="filtrarEquiposCPU()">Office</label>
-                    <label><input type="checkbox" id="checkUsuaIpEquipoPLT" onchange="filtrarEquiposCPU()">Generación</label>
-                    <label><input type="checkbox" id="checkTecnicoPLT" onchange="filtrarEquiposCPU()">Tecnico</label>
+                    <!-- <label><input type="checkbox" id="checkRedInalambricaCPU" onchange="filtrarEquiposCPU()">Red Inalam</label> -->
+                    <!-- <label><input type="checkbox" id="checkBluetoothCPU" onchange="filtrarEquiposCPU()">Bluetooth</label> -->
+                    <label><input type="checkbox" id="checkLectorTarjetaCPU" onchange="filtrarEquiposCPU()">Lec.
+                        tarjeta</label>
+                    <label><input type="checkbox" id="checkSisOpeCPU" onchange="filtrarEquiposCPU()">Sis Ope</label>
+                    <label><input type="checkbox" id="checkOfficeCPU" onchange="filtrarEquiposCPU()">Office</label>
+                    <label><input type="checkbox" id="checkUsuaIpEquipoCPU"
+                            onchange="filtrarEquiposCPU()">Generación</label>
+                    <label><input type="checkbox" id="checkTecnicoCPU" onchange="filtrarEquiposCPU()">Tecnico</label>
                 </div>
             </div>
-            <table class="equiposE">
+            <table class="equiposE" id="equiposETable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -141,10 +150,9 @@
 
         <div id="reportLaptop" class="report" style="display: none;">
             <h2>LAPTOP</h2>
-            <div class="search-container">
+            <div class="search-container" id="print">
                 <div class="busqueda">
-                    <input type="text" id="searchQueryPLT" placeholder="Buscar...">
-                    <button type="button" onclick="">Buscar</button>
+                    <button type="button" onclick="imprimirTabla('equiposPTable')">Imprimir Tabla</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaPLT" onchange="filtrarEquiposPTL()">Marca</label>
@@ -153,14 +161,14 @@
                             onchange="filtrarEquiposPTL()">Procesador</label>
                     <label><input type="checkbox" id="checkMemoriaPLT" onchange="filtrarEquiposPTL()">Memoria</label>
                     <label><input type="checkbox" id="checkAlamcenamientoPLT"
-                            onchange="filtrarEquiposPTL()">Almacenamiento</label>
+                            onchange="filtrarEquiposPTL()">HDD</label>
                     <label><input type="checkbox" id="checkSisOpePLT" onchange="filtrarEquiposPTL()">Sis Ope</label>
                     <label><input type="checkbox" id="checkOfficePLT" onchange="filtrarEquiposPTL()">Office</label>
                     <label><input type="checkbox" id="checkUsuarioPLT" onchange="filtrarEquiposPTL()">Custodio</label>
                     <label><input type="checkbox" id="checkTecnicoPLT" onchange="filtrarEquiposPTL()">Tecnico</label>
                 </div>
             </div>
-            <table class="equiposP">
+            <table class="equiposP" id="equiposPTable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -196,13 +204,11 @@
             </table>
         </div>
 
-
         <div id="reportImp" class="report" style="display: none;">
             <h2>Impresora</h2>
-            <div class="search-container">
+            <div class="search-container" id="print">
                 <div class="busqueda">
-                    <input type="text" id="searchQuery" placeholder="Buscar...">
-                    <button type="button" onclick="">Buscar</button>
+                    <button type="button" onclick="imprimirTabla('equiposITable')">Imprimir Tabla</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaIMP" onchange="filtrarEquiposIMP()">Marca</label>
@@ -212,7 +218,7 @@
                     <label><input type="checkbox" id="checkTecnicoIMP" onchange="filtrarEquiposIMP()">Tecnico</label>
                 </div>
             </div>
-            <table class="equiposI">
+            <table class="equiposI" id="equiposITable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -237,10 +243,9 @@
 
         <div id="reportTlf" class="report" style="display: none;">
             <h2>TELEFONO</h2>
-            <div class="search-container">
+            <div class="search-container" id="print">
                 <div class="busqueda">
-                    <input type="text" id="searchQuery" placeholder="Buscar...">
-                    <button type="button" onclick="">Buscar</button>
+                    <button type="button" onclick="imprimirTabla('equiposTTable')">Imprimir Tabla</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaTLF" onchange="filtrarEquiposTLF()">Marca</label>
@@ -248,7 +253,7 @@
                     <label><input type="checkbox" id="checkTecnicoTLF" onchange="filtrarEquiposTLF()">Tecnico</label>
                 </div>
             </div>
-            <table class="equiposT">
+            <table class="equiposT" id="equiposTTable">
                 <thead>
                     <tr>
                         <th>ID</th>

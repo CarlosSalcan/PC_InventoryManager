@@ -20,7 +20,7 @@
         <nav class="nav container">
             <div class="nav__data">
                 <a href="#" class="nav__logo">
-                    <i class="ri-planet-line"></i> TICS
+                    <i class="ri-planet-line"></i> TICS - ESCRITORIO
                 </a>
                 <div class="nav__toggle" id="nav-toggle">
                     <i class="ri-menu-line nav__burger"></i>
@@ -71,6 +71,7 @@
             <div class="busqueda">
                 <input type="text" id="searchQuery" placeholder="Buscar...">
                 <button type="button" onclick="buscarEquipos('Escritorio','results','modal1')">Buscar</button>
+                <button type="button" onclick="imprimirTabla('EscritorioTable')">Imprimir Tabla</button>
             </div>
             <div class="checkbox-container">
                 <label><input type="checkbox" id="checkFecha" onchange="filtrarEquipos()">Fecha</label>
@@ -81,7 +82,7 @@
             </div>
         </div>
 
-        <table class="equipos">
+        <table class="equipos" id="EscritorioTable">
             <thead>
                 <tr>
                     <th>ID</th>

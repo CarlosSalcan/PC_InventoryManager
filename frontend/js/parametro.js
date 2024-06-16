@@ -153,6 +153,7 @@ async function eliminarParam(tabla, campo, valor, name) {
 function mostrarVentanaEdit(modalId, codigo, nombre, tabla, campo) {
     document.getElementById('codigo').textContent = codigo;
     document.getElementById('nombreActual').textContent = nombre;
+    document.getElementById('newNombre').value = nombre;
     document.getElementById('tablaMostrada').textContent = tabla;
     document.getElementById('campoMostrado').textContent = campo;
     // Mostrar la ventana emergente

@@ -1628,11 +1628,8 @@ function filtrarEquipos() {
     table.innerHTML = `<table>${html}</table>`;
 }
 
-// Función para filtrar y agrupar equipos de la tabla de CPU
 function filtrarEquiposCPU() {
-    // Obtener el estado de los checkboxes
     const mostrarMarca = document.getElementById('checkMarcaCPU').checked;
-    const mostrarModelo = document.getElementById('checkModeloCPU').checked;
     const mostrarTarjetaMadre = document.getElementById('checkTarjetaMadreCPU').checked;
     const mostrarProcesador = document.getElementById('checkProcesadorCPU').checked;
     const mostrarVelocidad = document.getElementById('checkVelocidadCPU').checked;
@@ -1640,134 +1637,136 @@ function filtrarEquiposCPU() {
     const mostrarAlmacenamiento = document.getElementById('checkAlamcenamientoCPU').checked;
     const mostrarDispositivosOpticos = document.getElementById('checkDispositivosOpticosCPU').checked;
     const mostrarRedFija = document.getElementById('checkRedFijaCPU').checked;
-    const mostrarRedInalambrica = document.getElementById('checkRedInalambricaCPU').checked;
-    const mostrarBluetooth = document.getElementById('checkBluetoothCPU').checked;
+    // const mostrarRedInalambrica = document.getElementById('checkRedInalambricaCPU').checked;
+    // const mostrarBluetooth = document.getElementById('checkBluetoothCPU').checked;
     const mostrarLectorTarjeta = document.getElementById('checkLectorTarjetaCPU').checked;
-    const mostrarSisOpe = document.getElementById('checkSisOpePLT').checked;
-    const mostrarOffice = document.getElementById('checkOfficePLT').checked;
-    const mostrarIpEquipo = document.getElementById('checkUsuaIpEquipoPLT').checked;
-    const mostrarTecnico = document.getElementById('checkTecnicoPLT').checked;
+    const mostrarSisOpe = document.getElementById('checkSisOpeCPU').checked;
+    const mostrarOffice = document.getElementById('checkOfficeCPU').checked;
+    const mostrarIpEquipo = document.getElementById('checkUsuaIpEquipoCPU').checked;
+    const mostrarTecnico = document.getElementById('checkTecnicoCPU').checked;
 
-    // Verificar si no hay ningún checkbox seleccionado
-    if (!mostrarMarca && !mostrarModelo && !mostrarTarjetaMadre && !mostrarProcesador &&
-        !mostrarVelocidad && !mostrarMemoria && !mostrarAlmacenamiento && !mostrarDispositivosOpticos &&
-        !mostrarRedFija && !mostrarRedInalambrica && !mostrarBluetooth && !mostrarLectorTarjeta &&
-        !mostrarSisOpe && !mostrarOffice && !mostrarIpEquipo && !mostrarTecnico) {
-        location.reload();// Mostrar todos los equipos si no se selecciona ningún filtro
+    // && !mostrarRedInalambrica && !mostrarBluetoot
+    if (!mostrarMarca && !mostrarTarjetaMadre && !mostrarProcesador && !mostrarVelocidad &&
+        !mostrarMemoria && !mostrarAlmacenamiento && !mostrarDispositivosOpticos && !mostrarRedFija
+        && !mostrarLectorTarjeta && !mostrarSisOpe &&
+        !mostrarOffice && !mostrarIpEquipo && !mostrarTecnico) {
+        location.reload(); // Recargar la página
         return;
     }
 
-    // Obtener la tabla y los equipos
     const table = document.querySelector('.equiposE tbody');
     const equipos = table.querySelectorAll('tr');
 
-    // Crear un objeto para agrupar los equipos
     const equiposAgrupados = {};
 
-    // Iterar sobre los equipos y agruparlos según los checkboxes seleccionados
     equipos.forEach(equipo => {
         let claveGrupo = '';
 
-        // Construir la clave de grupo basada en los checkboxes seleccionados
         if (mostrarMarca) {
             const marcaCell = equipo.querySelector('td:nth-child(4)');
             if (marcaCell && marcaCell.textContent.trim() !== '') {
                 claveGrupo += marcaCell.textContent;
             }
         }
-        if (mostrarModelo) {
-            const modeloCell = equipo.querySelector('td:nth-child(5)');
-            if (modeloCell && modeloCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca ? ` - ${modeloCell.textContent}` : `${modeloCell.textContent}`;
-            }
-        }
+
         if (mostrarTarjetaMadre) {
             const tarjetaMadreCell = equipo.querySelector('td:nth-child(6)');
             if (tarjetaMadreCell && tarjetaMadreCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo ? ` - ${tarjetaMadreCell.textContent}` : `${tarjetaMadreCell.textContent}`;
+                claveGrupo += mostrarMarca ? ` - ${tarjetaMadreCell.textContent}` : `${tarjetaMadreCell.textContent}`;
             }
         }
+
         if (mostrarProcesador) {
             const procesadorCell = equipo.querySelector('td:nth-child(7)');
             if (procesadorCell && procesadorCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre ? ` - ${procesadorCell.textContent}` : `${procesadorCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre ? ` - ${procesadorCell.textContent}` : `${procesadorCell.textContent}`;
             }
         }
+
         if (mostrarVelocidad) {
             const velocidadCell = equipo.querySelector('td:nth-child(8)');
             if (velocidadCell && velocidadCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador ? ` - ${velocidadCell.textContent}` : `${velocidadCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador ? ` - ${velocidadCell.textContent}` : `${velocidadCell.textContent}`;
             }
         }
+
         if (mostrarMemoria) {
             const memoriaCell = equipo.querySelector('td:nth-child(9)');
             if (memoriaCell && memoriaCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad ? ` - ${memoriaCell.textContent}` : `${memoriaCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad ? ` - ${memoriaCell.textContent}` : `${memoriaCell.textContent}`;
             }
         }
+
         if (mostrarAlmacenamiento) {
             const almacenamientoCell = equipo.querySelector('td:nth-child(10)');
             if (almacenamientoCell && almacenamientoCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria ? ` - ${almacenamientoCell.textContent}` : `${almacenamientoCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria ? ` - ${almacenamientoCell.textContent}` : `${almacenamientoCell.textContent}`;
             }
         }
+
         if (mostrarDispositivosOpticos) {
             const dispositivosOpticosCell = equipo.querySelector('td:nth-child(11)');
             if (dispositivosOpticosCell && dispositivosOpticosCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento ? ` - ${dispositivosOpticosCell.textContent}` : `${dispositivosOpticosCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento ? ` - ${dispositivosOpticosCell.textContent}` : `${dispositivosOpticosCell.textContent}`;
             }
         }
+
         if (mostrarRedFija) {
             const redFijaCell = equipo.querySelector('td:nth-child(12)');
             if (redFijaCell && redFijaCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos ? ` - ${redFijaCell.textContent}` : `${redFijaCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos ? ` - ${redFijaCell.textContent}` : `${redFijaCell.textContent}`;
             }
         }
-        if (mostrarRedInalambrica) {
-            const redInalambricaCell = equipo.querySelector('td:nth-child(13)');
-            if (redInalambricaCell && redInalambricaCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija ? ` - ${redInalambricaCell.textContent}` : `${redInalambricaCell.textContent}`;
-            }
-        }
-        if (mostrarBluetooth) {
-            const bluetoothCell = equipo.querySelector('td:nth-child(14)');
-            if (bluetoothCell && bluetoothCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica ? ` - ${bluetoothCell.textContent}` : `${bluetoothCell.textContent}`;
-            }
-        }
+
+        // if (mostrarRedInalambrica) {
+        //     const redInalambricaCell = equipo.querySelector('td:nth-child(13)');
+        //     if (redInalambricaCell && redInalambricaCell.textContent.trim() !== '') {
+        //         claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija ? ` - ${redInalambricaCell.textContent}` : `${redInalambricaCell.textContent}`;
+        //     }
+        // }
+
+        // if (mostrarBluetooth) {
+        //     const bluetoothCell = equipo.querySelector('td:nth-child(14)');
+        //     if (bluetoothCell && bluetoothCell.textContent.trim() !== '') {
+        //         claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica ? ` - ${bluetoothCell.textContent}` : `${bluetoothCell.textContent}`;
+        //     }
+        // }
+
         if (mostrarLectorTarjeta) {
             const lectorTarjetaCell = equipo.querySelector('td:nth-child(15)');
             if (lectorTarjetaCell && lectorTarjetaCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth ? ` - ${lectorTarjetaCell.textContent}` : `${lectorTarjetaCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth ? ` - ${lectorTarjetaCell.textContent}` : `${lectorTarjetaCell.textContent}`;
             }
         }
+
         if (mostrarSisOpe) {
             const sisOpeCell = equipo.querySelector('td:nth-child(16)');
             if (sisOpeCell && sisOpeCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta ? ` - ${sisOpeCell.textContent}` : `${sisOpeCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta ? ` - ${sisOpeCell.textContent}` : `${sisOpeCell.textContent}`;
             }
         }
+
         if (mostrarOffice) {
             const officeCell = equipo.querySelector('td:nth-child(17)');
             if (officeCell && officeCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe ? ` - ${officeCell.textContent}` : `${officeCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe ? ` - ${officeCell.textContent}` : `${officeCell.textContent}`;
             }
         }
+
         if (mostrarIpEquipo) {
             const ipEquipoCell = equipo.querySelector('td:nth-child(23)');
             if (ipEquipoCell && ipEquipoCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe || mostrarOffice ? ` - ${ipEquipoCell.textContent}` : `${ipEquipoCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe || mostrarOffice ? ` - ${ipEquipoCell.textContent}` : `${ipEquipoCell.textContent}`;
             }
         }
 
         if (mostrarTecnico) {
             const tecnicoCell = equipo.querySelector('td:nth-child(27)');
             if (tecnicoCell && tecnicoCell.textContent.trim() !== '') {
-                claveGrupo += mostrarMarca || mostrarModelo || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe || mostrarOffice || mostrarIpEquipo ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
+                claveGrupo += mostrarMarca || mostrarTarjetaMadre || mostrarProcesador || mostrarVelocidad || mostrarMemoria || mostrarAlmacenamiento || mostrarDispositivosOpticos || mostrarRedFija || mostrarRedInalambrica || mostrarBluetooth || mostrarLectorTarjeta || mostrarSisOpe || mostrarOffice || mostrarIpEquipo ? ` - ${tecnicoCell.textContent}` : `${tecnicoCell.textContent}`;
             }
         }
 
-        // Agregar el equipo al grupo correspondiente si hay contenido en la clave del grupo
         if (claveGrupo !== '') {
             if (!equiposAgrupados[claveGrupo]) {
                 equiposAgrupados[claveGrupo] = [];
@@ -1776,16 +1775,14 @@ function filtrarEquiposCPU() {
         }
     });
 
-    // Generar el HTML para mostrar los equipos agrupados en la tabla
     let html = '';
     for (const key in equiposAgrupados) {
-        html += `<tr style="background-color: #38a5d8;"><td colspan="25">${key}</td></tr>`; // Encabezado del grupo
+        html += `<tr style="background-color: #38a5d8;"><td colspan="27">${key}</td></tr>`;
         equiposAgrupados[key].forEach(equipo => {
-            html += equipo; // Agregar cada equipo del grupo
+            html += equipo;
         });
     }
 
-    // Actualizar el contenido de la tabla
     table.innerHTML = html;
 }
 
@@ -1850,7 +1847,7 @@ function filtrarEquiposPTL() {
             }
         }
         if (mostrarSisOpe) {
-            const sisOpeCell = equipo.querySelector('td:nth-child(16)');
+            const sisOpeCell = equipo.querySelector('td:nth-child(17)');
             if (sisOpeCell && sisOpeCell.textContent.trim() !== '') {
                 claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria || mostrarAlmacenamiento ? ` - ${sisOpeCell.textContent}` : `${sisOpeCell.textContent}`;
             }
@@ -1862,7 +1859,7 @@ function filtrarEquiposPTL() {
             }
         }
         if (mostrarUsuario) {
-            const usuarioCell = equipo.querySelector('td:nth-child(22)');
+            const usuarioCell = equipo.querySelector('td:nth-child(21)'); // Ajuste del índice de columna
             if (usuarioCell && usuarioCell.textContent.trim() !== '') {
                 claveGrupo += mostrarMarca || mostrarModelo || mostrarProcesador || mostrarMemoria || mostrarAlmacenamiento || mostrarSisOpe || mostrarOffice ? ` - ${usuarioCell.textContent}` : `${usuarioCell.textContent}`;
             }
@@ -2042,7 +2039,6 @@ function filtrarEquiposTLF() {
     tbody.innerHTML = html;
 }
 
-// Función para mostrar todos los equipos en la tabla de teléfonos
 function mostrarTodosEquiposTLF() {
     const table = document.querySelector('.equiposTLF');
     const tbody = table.querySelector('tbody');
@@ -2055,8 +2051,6 @@ function mostrarTodosEquiposTLF() {
 
     tbody.innerHTML = html;
 }
-
-
 
 //-------------------------------> REPORTES
 async function obtenerYMostrarRegistros(url, idTabla) {
@@ -2108,8 +2102,63 @@ function setUsernameFromURL(spanId) {
     }
 }
 
+//-------------------------------> IMPRIMIR
+function imprimirTabla(tablaId) {
+    // Obtener la tabla y su contenido
+    const tabla = document.getElementById(tablaId);
+    if (!tabla) {
+        console.error(`No se encontró ninguna tabla con el ID '${tablaId}'`);
+        return;
+    }
+    const tablaContenido = tabla.outerHTML;
+
+    // Abrir una nueva ventana para la impresión
+    const ventanaImpresion = window.open('', '_blank');
+    ventanaImpresion.document.open();
+    ventanaImpresion.document.write(`
+        <html>
+        <head>
+            <title>Imprimir Tabla</title>
+            <style>
+                /* Estilos opcionales para la impresión */
+                body {
+                    font-family: Arial, sans-serif;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 20px;
+                }
+                table, th, td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>Tabla de Equipos</h2>
+            ${tablaContenido}
+            <script>
+                // Abrir el diálogo de impresión automáticamente
+                window.onload = function() { window.print(); }
+            </script>
+        </body>
+        </html>
+    `);
+    ventanaImpresion.document.close();
+}
+
+
+
 //-------------------------------> FUNCION PRINCIPAL
 document.addEventListener('DOMContentLoaded', async () => {
+
+
+
     setUsernameFromURL('newTecnico');
     //-------------------------------> INGRESO DE NUEVO EQUIPO
     const setDefaultValue = (elementId, value) => {
