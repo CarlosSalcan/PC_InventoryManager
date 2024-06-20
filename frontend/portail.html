@@ -71,7 +71,8 @@
             <div class="busqueda">
                 <input type="text" id="searchQuery" placeholder="Buscar...">
                 <button type="button" onclick="buscarEquipos('Portatil','resultsPortatil','modal4')">Buscar</button>
-                <button type="button" onclick="imprimirTabla('PortailTable')">Imprimir Tabla</button>
+                <button type="button" onclick="imprimirTabla('PortailTable')">Imprimir</button>
+                <button type="button" onclick="generarExcel('PortailTable')">Exel</button>
             </div>
             <div class="checkbox-container">
                 <label><input type="checkbox" id="checkFecha" onchange="filtrarEquipos()">Fecha</label>
@@ -157,7 +158,8 @@
                     <div class="buttons">
                         <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Equipo</button>
                         <button type="button" class="orange-button" onclick="enviarBodega()">Guardar Bodega</button>
-                        <button type="button" class="green-button" onclick="mostrarFormulario('laptop')">Modificar</button>
+                        <button type="button" class="green-button"
+                            onclick="mostrarFormulario('laptop')">Modificar</button>
                         <!-- <button type="button" class="red-button" onclick="">Eliminar Equipo</button> -->
                     </div>
                 </div>

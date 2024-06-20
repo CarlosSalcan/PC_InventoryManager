@@ -71,7 +71,8 @@
             <div class="busqueda">
                 <input type="text" id="searchQuery" placeholder="Buscar...">
                 <button type="button" onclick="buscarEquipos('Impresora','resultsImpresora','modal5')">Buscar</button>
-                <button type="button" onclick="imprimirTabla('ImpresoraTable')">Imprimir Tabla</button>
+                <button type="button" onclick="imprimirTabla('ImpresoraTable')">Imprimir</button>
+                <button type="button" onclick="generarExcel('ImpresoraTable')">Exel</button>
             </div>
             <div class="checkbox-container">
                 <label><input type="checkbox" id="checkFecha" onchange="filtrarEquipos()">Fecha</label>
@@ -81,7 +82,7 @@
                 <label><input type="checkbox" id="checkTecnico" onchange="filtrarEquipos()">Tecnico</label>
             </div>
         </div>
-        
+
         <table class="equipos" id="ImpresoraTable">
             <thead>
                 <tr>

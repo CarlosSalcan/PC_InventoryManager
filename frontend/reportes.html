@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="./css/styles.css">
     <!--=============== REMIXICONS ===============-->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <!--=============== DOCS ===============-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
     <!--=============== JS ===============-->
     <script src="./js/styles.js" defer></script>
 </head>
@@ -68,8 +70,9 @@
 
     <main>
         <br>
-        <div class="buttons">
-            <button type="button" class="edit-button" onclick="mostrarReporte('cpuR')" id="cpuButton">CPU</button>
+        <div class="buttons" id="btnReport">
+            <button type="button" class="edit-button" onclick="mostrarReporte('cpuR')"
+                id="cpuButton">Escritorio (CPU)</button>
             <button type="button" class="edit-button" onclick="mostrarReporte('monitorR')"
                 id="laptopButton">Laptop</button>
             <button type="button" class="edit-button" onclick="mostrarReporte('tecladoR')"
@@ -80,10 +83,12 @@
         <br>
 
         <div id="reportCPU" class="report" style="display: none;">
-            <h2>CPU</h2>
+            
             <div class="search-container" id="print">
                 <div class="busqueda">
-                    <button type="button" onclick="imprimirTabla('equiposETable')">Imprimir Tabla</button>
+                    <h2>ESCRITORIO (CPU)</h2>
+                    <button type="button" onclick="imprimirTabla('equiposETable')">Imprimir</button>
+                    <button type="button" onclick="generarExcel('equiposETable')">Exel</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaCPU" onchange="filtrarEquiposCPU()">Marca</label>
@@ -149,10 +154,11 @@
         </div>
 
         <div id="reportLaptop" class="report" style="display: none;">
-            <h2>LAPTOP</h2>
             <div class="search-container" id="print">
                 <div class="busqueda">
-                    <button type="button" onclick="imprimirTabla('equiposPTable')">Imprimir Tabla</button>
+                    <h2>LAPTOP</h2>
+                    <button type="button" onclick="imprimirTabla('equiposPTable')">Imprimir</button>
+                    <button type="button" onclick="generarExcel('equiposPTable')">Exel</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaPLT" onchange="filtrarEquiposPTL()">Marca</label>
@@ -160,8 +166,7 @@
                     <label><input type="checkbox" id="checkProcesadorPLT"
                             onchange="filtrarEquiposPTL()">Procesador</label>
                     <label><input type="checkbox" id="checkMemoriaPLT" onchange="filtrarEquiposPTL()">Memoria</label>
-                    <label><input type="checkbox" id="checkAlamcenamientoPLT"
-                            onchange="filtrarEquiposPTL()">HDD</label>
+                    <label><input type="checkbox" id="checkAlamcenamientoPLT" onchange="filtrarEquiposPTL()">HDD</label>
                     <label><input type="checkbox" id="checkSisOpePLT" onchange="filtrarEquiposPTL()">Sis Ope</label>
                     <label><input type="checkbox" id="checkOfficePLT" onchange="filtrarEquiposPTL()">Office</label>
                     <label><input type="checkbox" id="checkUsuarioPLT" onchange="filtrarEquiposPTL()">Custodio</label>
@@ -205,10 +210,11 @@
         </div>
 
         <div id="reportImp" class="report" style="display: none;">
-            <h2>Impresora</h2>
             <div class="search-container" id="print">
                 <div class="busqueda">
-                    <button type="button" onclick="imprimirTabla('equiposITable')">Imprimir Tabla</button>
+                    <h2>IMPRESORA</h2>
+                    <button type="button" onclick="imprimirTabla('equiposITable')">Imprimir</button>
+                    <button type="button" onclick="generarExcel('equiposITable')">Exel</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaIMP" onchange="filtrarEquiposIMP()">Marca</label>
@@ -242,10 +248,11 @@
         </div>
 
         <div id="reportTlf" class="report" style="display: none;">
-            <h2>TELEFONO</h2>
             <div class="search-container" id="print">
                 <div class="busqueda">
-                    <button type="button" onclick="imprimirTabla('equiposTTable')">Imprimir Tabla</button>
+                    <h2>TELEFONO</h2>
+                    <button type="button" onclick="imprimirTabla('equiposTTable')">Imprimir</button>
+                    <button type="button" onclick="generarExcel('equiposTTable')">Exel</button>
                 </div>
                 <div class="checkbox-container">
                     <label><input type="checkbox" id="checkMarcaTLF" onchange="filtrarEquiposTLF()">Marca</label>

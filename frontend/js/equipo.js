@@ -227,7 +227,11 @@ const escritorioMapping = {
     red_fija: 'redFija',
     red_inalam: 'redInalam',
     bluetooth: 'bluetooth',
-    lec_tarjeta: 'lectorTarjeta'
+    lec_tarjeta: 'lectorTarjeta',
+    red_fija: 'redFijaEntrega',
+    red_inalam: 'redInalamEntrega',
+    bluetooth: 'bluetoothEntrega',
+    lec_tarjeta: 'lectorTarjetaEntrega'
 };
 
 function mostrarDatosCPU(cpu) {
@@ -257,6 +261,7 @@ function mostrarDatosCPU(cpu) {
     document.getElementById('sisOperativo').value = cpu.sis_ope;
     document.getElementById('office').value = cpu.office;
 
+    document.getElementById('estado').value = cpu.est_cpu;
     document.getElementById('condicion').value = cpu.con_cpu;
     document.getElementById('observacionTxt').value = cpu.observacion;
 
@@ -1059,7 +1064,7 @@ async function mostrarProximoCodEquipo(tabla, campo) {
         if (data.success) {
             const nextCod = data.nextCod;
             console.log(`Próximo código de ${tabla}: ${nextCod}`)
-            document.getElementById(campo).textContent = nextCod;;
+            document.getElementById(campo).textContent = nextCod;
             // Aquí puedes realizar cualquier acción con el próximo código obtenido
         } else {
             console.error(`No se pudo obtener el próximo código de ${tabla}`);
@@ -2102,7 +2107,7 @@ function setUsernameFromURL(spanId) {
     }
 }
 
-//-------------------------------> IMPRIMIR
+//-------------------------------> IMPRIMIR EXEL ENTREGAR EQUIPO
 function imprimirTabla(tablaId) {
     // Obtener la tabla y su contenido
     const tabla = document.getElementById(tablaId);
@@ -2152,14 +2157,405 @@ function imprimirTabla(tablaId) {
     ventanaImpresion.document.close();
 }
 
+function generarExcel(tablaId) {
+    // Obtener la tabla y su contenido
+    const tabla = document.getElementById(tablaId);
+    if (!tabla) {
+        console.error(`No se encontró ninguna tabla con el ID '${tablaId}'`);
+        return;
+    }
+
+    // Convertir tabla a workbook de Excel
+    const wb = XLSX.utils.table_to_book(tabla);
+
+    // Descargar el archivo Excel
+    XLSX.writeFile(wb, 'equipos.xlsx');
+}
+
+//-------------------------------> ENTREGA
+function mostrarDatosCPUEntrega(cpu) {
+    document.getElementById('nombreHostEntrega').value = cpu.nom_hots;
+    document.getElementById('nomUsuarioEntrega').value = cpu.nom_usuario;
+    document.getElementById('generacionEntrega').value = cpu.ip_equipo;
+
+    document.getElementById('poseeAntivirusEntrega').value = cpu.antivirus;
+    document.getElementById('antivirusEntrega').value = cpu.nom_antivirus;
+    document.getElementById('verAntivirusEntrega').value = cpu.ver_antivirus;
+    actualizarCamposAntivirus();
+
+    document.getElementById('tecEntrega').textContent = cpu.nom_usua;
+    document.getElementById('codigoEntrega').textContent = cpu.cod_cpu;
+    document.getElementById('codigoEqEntrega').value = cpu.cod_equipo;
+    document.getElementById('codigoticsEntrega').value = cpu.cod_tics_cpu;
+    document.getElementById('marcasEntrega').value = cpu.mar_cpu;
+
+    document.getElementById('numSerieEntrega').value = cpu.ser_cpu;
+    document.getElementById('MainboardEntrega').value = cpu.tar_madre;
+    document.getElementById('procesadorEntrega').value = cpu.procesador;
+    document.getElementById('velocidadProceEntrega').value = cpu.velocidad;
+    document.getElementById('ramEntrega').value = cpu.memoria;
+    document.getElementById('hddEntrega').value = cpu.tam_hdd;
+    document.getElementById('disOpticosEntrega').value = cpu.disp_optico;
+
+    document.getElementById('sisOperativoEntrega').value = cpu.sis_ope;
+    document.getElementById('officeEntrega').value = cpu.office;
+
+    document.getElementById('estadoEntrega').value = cpu.est_cpu;
+    document.getElementById('condicionEntrega').value = cpu.con_cpu;
+    document.getElementById('observacionTxtEntrega').value = cpu.observacion;
+
+    marcarCheckBoxes(cpu, escritorioMapping);
+}
+
+function mostrarDatosMTREntrega(mtr) {
+    document.getElementById('codigoMTREntrega').textContent = mtr.cod_monitor;
+    document.getElementById('codigoticsMTREntrega').value = mtr.cod_tics_monitor;
+    document.getElementById('codigoEqMTREntrega').value = mtr.cod_equipo;
+    document.getElementById('tecMTREntrega').textContent = mtr.nom_usua;
+    document.getElementById('marcasMTREntrega').value = mtr.mar_monitor;
+    document.getElementById('modeloMTREntrega').value = mtr.mod_monitor;
+    document.getElementById('tamanoMTREntrega').value = mtr.tam_monitor;
+    document.getElementById('serieMTREntrega').value = mtr.ser_monitor;
+    document.getElementById('condicionMTREntrega').value = mtr.con_monitor;
+    document.getElementById('estadoMTREntrega').value = mtr.est_monitor;
+    document.getElementById('observacionTxtMEntrega').value = mtr.observacion;
+}
+
+function mostrarDatosTCDEntrega(tcd) {
+    document.getElementById('codigoTCDEntrega').textContent = tcd.cod_teclado;
+    document.getElementById('codigoticsTCDEntrega').value = tcd.cod_tics_teclado;
+    document.getElementById('codigoEqTCDEntrega').value = tcd.cod_equipo;
+    document.getElementById('tecTCDEntrega').textContent = tcd.nom_usua;
+    document.getElementById('marcasTCDEntrega').value = tcd.mar_teclado;
+    document.getElementById('puertoTCDEntrega').value = tcd.pue_teclado;
+    document.getElementById('tipoTCDEntrega').value = tcd.tip_teclado;
+    document.getElementById('serieTCDEntrega').value = tcd.ser_teclado;
+    document.getElementById('modeloTCDEntrega').value = tcd.mod_teclado;
+    document.getElementById('condicionTCDEntrega').value = tcd.con_teclado;
+    document.getElementById('estadoTCDEntrega').value = tcd.est_teclado;
+    document.getElementById('observacionTxtTCDEntrega').value = tcd.obs_teclado;
+}
+
+function mostrarDatosMSEntrega(ms) {
+    document.getElementById('codigoMSEntrega').textContent = ms.cod_mouse;
+    document.getElementById('codigoticsMSEntrega').value = ms.cod_tics_mouse;
+    document.getElementById('codigoEqMSEntrega').value = ms.cod_equipo;
+    document.getElementById('tecMSEntrega').textContent = ms.nom_usua;
+    document.getElementById('marcasMSEntrega').value = ms.mar_mouse;
+    document.getElementById('puertoMSEntrega').value = ms.puerto;
+    document.getElementById('tipoMSEntrega').value = ms.tip_mouse;
+    document.getElementById('serieMSEntrega').value = ms.ser_mouse;
+    document.getElementById('modeloMSEntrega').value = ms.mod_mouse;
+    document.getElementById('condicionMSEntrega').value = ms.con_mouse;
+    document.getElementById('estadoMSEntrega').value = ms.est_mouse;
+    document.getElementById('observacionTxtMSEntrega').value = ms.obs_mouse;
+}
+
+function abrirModalYMostrarTodosDatos() {
+    // Obtener el ID del equipo desde el span
+    const idEquipo = document.getElementById('cod').innerText.trim();
+    mostrarVentanaEmergente('modal11');
+    // Llamar a una función para obtener y mostrar todos los datos
+    obtenerDatosEntrega('cpu_equipo', idEquipo);
+    obtenerDatosEntrega('monitor', idEquipo);
+    obtenerDatosEntrega('teclado', idEquipo);
+    obtenerDatosEntrega('mouse', idEquipo);
+    cerrarVentanaEmergente('modal1');
+}
+
+async function obtenerDatosEntrega(tabla, codEquipo) {
+    try {
+        const response = await fetch(`http://localhost:3000/tics/datosTabla/${tabla}/${codEquipo}`);
+        const data = await response.json();
+
+        if (data.success) {
+            const componente = data[tabla]; // Acceder correctamente a los datos del componente
+            console.log("Datos de la tabla:", componente);
+            // Verificar la tabla y llamar a la función correspondiente
+            if (tabla === "cpu_equipo") {
+                mostrarDatosCPUEntrega(componente);
+            } else if (tabla === "monitor") {
+                mostrarDatosMTREntrega(componente);
+            } else if (tabla === "mouse") {
+                mostrarDatosMSEntrega(componente);
+            } else if (tabla === "teclado") {
+                mostrarDatosTCDEntrega(componente);
+                // } else if (tabla === "laptop") {
+                //     mostrarDatosPLT(componente);
+                // } else if (tabla === "impresora") {
+                //     mostrarDatosIMP(componente);
+                // } else if (tabla === "telefono") {
+                //     mostrarDatosTLF(componente);
+            } else {
+                console.error("Tabla desconocida:", tabla);
+            }
+        } else {
+            console.error('Error al obtener datos de la tabla:', data.message);
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de la tablaa:', error);
+    }
+}
+
+function generarPDF() {
+    window.jsPDF = window.jspdf.jsPDF;
+    // Crear un nuevo documento jsPDF
+    const doc = new jsPDF();
+
+    // DATOS EQUIPO
+    const idEquipo = document.getElementById("cod").textContent.trim();
+    const fechaEntrega = document.getElementById("fecha").textContent.trim();
+    const tecnico = document.getElementById("tecnico").textContent.trim();
+    const codAlmacen = document.getElementById("codAlmacen").value.trim();
+    const pisoUbicado = document.getElementById("pisos").value.trim();
+    const titular = document.getElementById("titularEq").value.trim();
+    const departamento = document.getElementById("departamentos").value.trim();
+    const usuario = document.getElementById("titularEq").value.trim();
+    // CPU
+    const marca = document.getElementById('marcasEntrega').value;
+    const tarjeta = document.getElementById('MainboardEntrega').value;
+    const serie = document.getElementById('numSerieEntrega').value;
+    const proces = document.getElementById('procesadorEntrega').value;
+    const velocidad = document.getElementById('velocidadProceEntrega').value;
+    const ram = document.getElementById('ramEntrega').value;
+    const hdd = document.getElementById('hddEntrega').value;
+    const sisOpe = document.getElementById('sisOperativoEntrega').value;
+    const office = document.getElementById('officeEntrega').value;
+    const estado = document.getElementById('condicionEntrega').value;
+    const observacion = document.getElementById("observacionTxtEntrega").value.trim();
+    // MONITOR
+    const marcaM = document.getElementById('marcasMTREntrega').value;
+    const modeloM = document.getElementById('modeloMTREntrega').value;
+    const tamanoM = document.getElementById('tamanoMTREntrega').value;
+    const serieM = document.getElementById('serieMTREntrega').value;
+    const estadoM = document.getElementById('condicionMTREntrega').value;
+    // TECLADO
+    const marcaT = document.getElementById('marcasTCDEntrega').value;
+    const serieT = document.getElementById('serieTCDEntrega').value;
+    const modeloT = document.getElementById('modeloTCDEntrega').value;
+    const estadoT = document.getElementById('condicionTCDEntrega').value;
+    // MOUSE
+    const marcaMS = document.getElementById('marcasMSEntrega').value;
+    const serieMS = document.getElementById('serieMSEntrega').value;
+    const modeloMS = document.getElementById('modeloMSEntrega').value;
+    const estadoMS = document.getElementById('condicionMSEntrega').value;
+
+    doc.setFontSize(8);
+    // Horizontal Vertical
+    doc.setFont("helvetica", "bold");
+    doc.text(`El Equipo se entrega:`, 20, 20);
+    doc.setFont("helvetica", "normal");
+    doc.text(`FUNCIONAL`, 50, 20);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`Código TICS:`, 90, 20);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${codAlmacen}`, 110, 20);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`Custodio:`, 20, 25);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${titular}`, 45, 25);
+
+    // Mostrar "Unidad" en negrita
+    doc.setFont("helvetica", "bold");
+    doc.text(`Unidad:`, 20, 40);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${departamento}`, 40, 40);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`Piso:`, 20, 50);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${pisoUbicado}`, 35, 50);
+
+    // Mostrar "Fecha" en negrita
+    doc.setFont("helvetica", "bold");
+    doc.text(`Fecha:`, 20, 60);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${fechaEntrega}`, 40, 60);
+
+    // Definir los datos a mostrar en la tabla del PDF
+    const tableData = [
+        ['CPU', 'Marca', marca],
+        ['CPU', 'Modelo', tarjeta],
+        ['CPU', 'Núm Serie', serie],
+        ['CPU', 'Procesador', proces],
+        ['CPU', 'Velocidad', velocidad],
+        ['CPU', 'Memoria RAM', ram],
+        ['CPU', 'Almacenamiento', hdd],
+        ['MONITOR', 'Marca', marcaM],
+        ['MONITOR', 'Modelo', modeloM],
+        ['MONITOR', 'Tamaño', tamanoM],
+        ['MONITOR', 'Núm Serie', serieM],
+        ['TECLADO', 'Marca', marcaT],
+        ['TECLADO', 'Núm Serie', serieT],
+        ['TECLADO', 'Modelo', modeloT],
+        ['MOUSE', 'Marca', marcaMS],
+        ['MOUSE', 'Núm Serie', serieMS],
+        ['MOUSE', 'Modelo', modeloMS]
+    ];
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`Sistema Operativo:`, 20, 160);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${sisOpe}`, 50, 160);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`Office:`, 20, 170);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${office}`, 30, 170);
+
+    const tableDataEst = [
+        ['CPU', `${estado}`, 'MONITOR', `${estadoM}`],
+        ['TECLADO', `${estadoT}`, 'MOUSE', `${estadoMS}`]
+    ];
+    // Ancho total de la página
+    const pageWidth = doc.internal.pageSize.getWidth()
+    const tableWidth = pageWidth * 0.75; // 85% del ancho de la página
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`OBSERVACION:`, 20, 205);
+    doc.setFont("helvetica", "normal");
+    const maxWidth = 165; // Ancho máximo para el texto
+    const textYPosition = 210; // Posición vertical inicial del texto
+    const splitObservacion = doc.splitTextToSize(observacion, maxWidth);
+    doc.text(splitObservacion, 20, textYPosition);
+
+    const tableDataFirma = [
+        ['REALIZADO POR:', 'ENTREGADO A:'],
+        ['\n\n\n','\n\n',],
+        [`ANALISTA TICS: ${tecnico}`,`FUNCIONARIO: ${usuario}`]
+    ];
+
+    // Configurar la estructura de la tabla
+    doc.autoTable({
+        startY: 65,
+        body: tableData.map(row => [row[1], row[2]]),
+        columnStyles: {
+            0: { cellWidth: 50 }, // Ancho para la primera columna ('Característica')
+            1: { cellWidth: 60 }, // Ancho para la segunda columna ('Valor')
+        },
+        styles: {
+            fontSize: 8,
+            cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+            valign: 'middle',
+            halign: 'left',
+            textColor: [0, 0, 0], // Color de texto negro
+            lineWidth: 0.1, // Grosor de la línea
+            lineColor: [0, 0, 0] // Color de la línea
+        },
+        theme: 'grid',
+        margin: { left: 75, right: 20 }, // Añadir margen izquierdo y derecho
+        tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+        didDrawCell: function (data) {
+            if (data.section === 'body' && data.column.index === 0) {
+                let cellHeight = 0;
+                let yPos = data.cell.y;
+                let text = '';
+                if (data.row.index === 0) {
+                    cellHeight = data.cell.height * 7;
+                    text = 'CPU';
+                } else if (data.row.index === 7) {
+                    cellHeight = data.cell.height * 4;
+                    text = 'MONITOR';
+                } else if (data.row.index === 11) {
+                    cellHeight = data.cell.height * 3;
+                    text = 'TECLADO';
+                } else if (data.row.index === 14) {
+                    cellHeight = data.cell.height * 3;
+                    text = 'MOUSE';
+                }
+                if (text) {
+                    const cellWidth = data.cell.width;
+                    const xPos = data.cell.x - cellWidth;
+                    doc.setFillColor(255, 255, 255); // Color de fondo blanco
+                    doc.rect(xPos, yPos, cellWidth, cellHeight, 'FD'); // Dibuja un rectángulo blanco con bordes
+                    doc.setFont("helvetica", "bold");
+                    doc.text(text, xPos + cellWidth / 2, yPos + cellHeight / 2, { align: 'center', baseline: 'middle' });
+                }
+            }
+        }
+    });
+
+    doc.autoTable({
+        startY: 180,
+        head: [[{ content: 'ESTADO DEL EQUIPO', colSpan: 4, styles: { halign: 'center', textColor: [255, 255, 255] } }]],
+        body: tableDataEst,
+        styles: {
+            fontSize: 8,
+            cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+            valign: 'middle',
+            halign: 'left',
+            textColor: [0, 0, 0], // Color de texto negro
+            lineWidth: 0.1, // Grosor de la línea
+            lineColor: [0, 0, 0] // Color de la línea
+        },
+        headStyles: {
+            fillColor: [22, 160, 133], // Color de fondo del encabezado (verde)
+            textColor: [255, 255, 255] // Color del texto del encabezado (blanco)
+        },
+        margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 }, // Márgenes para centrar la tabla
+        tableWidth: tableWidth
+    });
+
+    doc.autoTable({
+        startY: 230,
+        head: [tableDataFirma[0]], // Primera fila como encabezado
+        body: [tableDataFirma[1], tableDataFirma[2]],
+        styles: {
+            fontSize: 10,
+            cellPadding: { top: 2, right: 2, bottom: 2, left: 2 }, // Estilos generales
+            valign: 'middle',
+            halign: 'left',
+            textColor: [0, 0, 0], // Color de texto negro
+            lineWidth: 0.1, // Grosor de la línea
+            lineColor: [0, 0, 0] // Color de la línea
+        },
+        rowStyles: {
+            0: { cellPadding: { top: 20, bottom: 20 } } // Aumentar el padding en la segunda fila para aumentar la altura
+        },
+        headStyles: {
+            fillColor: [255, 255, 255], // Sin color de fondo para el encabezado
+            textColor: [0, 0, 0] // Color del texto del encabezado
+        },
+        margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 },
+    });
+
+    
+    // Obtener y agregar datos de los formularios visibles
+    const formContainers = document.querySelectorAll('.form-container[style="display: block;"]');
+    formContainers.forEach(formContainer => {
+        // Obtener todos los elementos input, select, textarea dentro del formulario visible
+        const formData = [];
+        const formElements = formContainer.querySelectorAll('input, select, textarea');
+        formElements.forEach(element => {
+            let fieldName = element.id || element.name;
+            let fieldValue = element.value;
+            // Agregar solo si el campo tiene un valor
+            if (fieldName && fieldValue) {
+                formData.push([element.previousElementSibling.textContent, fieldValue]);
+            }
+        });
+
+        // Agregar los datos del formulario al PDF
+        doc.autoTable({
+            startY: doc.autoTable.previous.finalY + 10, // Posicionar debajo de la tabla anterior
+            head: [['Campo', 'Valor']],
+            body: formData,
+            styles: commonStyles, // Aplicar los estilos comunes a la tabla del formulario
+        });
+    });
+
+    // Guardar el documento PDF
+    doc.save('equipo.pdf');
+}
 
 
 //-------------------------------> FUNCION PRINCIPAL
 document.addEventListener('DOMContentLoaded', async () => {
-
-
-
-    setUsernameFromURL('newTecnico');
+    if (document.getElementById('newTecnico')) {
+        setUsernameFromURL('newTecnico');
+    }
     //-------------------------------> INGRESO DE NUEVO EQUIPO
     const setDefaultValue = (elementId, value) => {
         const element = document.getElementById(elementId);
@@ -2192,7 +2588,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('codigo')) {
         mostrarProximoCodEquipo('cpu_equipo', 'codigo');
     }
-    if (document.getElementById('codigoMTR')) {
+    if (document.getElementById('newCodigoMTR')) {
         mostrarProximoCodEquipo('monitor', 'newCodMTR');
     }
     if (document.getElementById('codigoTCD')) {
@@ -2210,7 +2606,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('codigoTLF')) {
         mostrarProximoCodEquipo('telefono', 'codigoTLF');
     }
-    obtenerUltimosCodAlmacen();
+    if (document.getElementById('ultimosCodAlmacenArea')) {
+        obtenerUltimosCodAlmacen();
+    }
+
     //-------------------------------> Verificar y mostrarContenidoTabla 
     const mostrarTablaIfExists = (tableName, resultId, modalId) => {
         const resultsElement = document.getElementById(resultId);
@@ -2224,67 +2623,105 @@ document.addEventListener('DOMContentLoaded', async () => {
     mostrarTablaIfExists('Teléfono', 'resultsTelefono', 'modal6');
 
     //-------------------------------> Mostrar registros Reporte
-    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/cpu_equipo', 'resultsCPU');
-    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/laptop', 'resultsPTL');
-    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/impresora', 'resultsIMP');
-    obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/telefono', 'resultsTLF');
+    if (document.getElementById('resultsCPU')) {
+        obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/cpu_equipo', 'resultsCPU');
+    }
+
+    if (document.getElementById('resultsPTL')) {
+        obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/laptop', 'resultsPTL');
+    }
+
+    if (document.getElementById('resultsIMP')) {
+        obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/impresora', 'resultsIMP')
+    }
+
+    if (document.getElementById('resultsTLF')) {
+        obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/telefono', 'resultsTLF');
+    }
+    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/cpu_equipo', 'resultsCPU');
+    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/laptop', 'resultsPTL');
+    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/impresora', 'resultsIMP');
+    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/telefono', 'resultsTLF');
 
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
     const optionMappings = [
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMTR' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMTREntrega' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTCD' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTCDEntrega' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMS' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionMSEntrega' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicion' },
+        { table: 'param_condicion', field: 'nom_condicion', id: 'condicionEntrega' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionIMP' },
         { table: 'param_condicion', field: 'nom_condicion', id: 'condicionTLF' },
 
         { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativo' },
+        { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativoEntrega' },
         { table: 'param_sis_ope', field: 'nom_sis_ope', id: 'sisOperativoPTL' },
 
         { table: 'param_procesador', field: 'nom_proce', id: 'procesador' },
+        { table: 'param_procesador', field: 'nom_proce', id: 'procesadorEntrega' },
         { table: 'param_procesador', field: 'nom_proce', id: 'procesadorPTL' },
 
         { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticos' },
+        { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticosEntrega' },
         { table: 'param_dis_opt', field: 'nom_dis_opt', id: 'disOpticosPTL' },
 
         { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hdd' },
+        { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hddEntrega' },
         { table: 'param_tamano_hdd', field: 'nom_tam_hdd', id: 'hddPTL' },
 
         { table: 'param_office', field: 'nom_office', id: 'office' },
+        { table: 'param_office', field: 'nom_office', id: 'officeEntrega' },
         { table: 'param_office', field: 'nom_office', id: 'officePTL' },
 
         { table: 'param_memoria', field: 'nom_memoria', id: 'ram' },
+        { table: 'param_memoria', field: 'nom_memoria', id: 'ramEntrega' },
         { table: 'param_memoria', field: 'nom_memoria', id: 'ramPTL' },
 
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMTR' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMTREntrega' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTCD' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTCDEntrega' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMS' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasMSEntrega' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcas' },
+        { table: 'param_marcas', field: 'nom_marcas', id: 'marcasEntrega' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasPTL' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasIMP' },
         { table: 'param_marcas', field: 'nom_marcas', id: 'marcasTLF' },
 
         { table: 'param_estado', field: 'nom_estado', id: 'estadoMTR' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoMTREntrega' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoTCD' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoTCDEntrega' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoMS' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoMSEntrega' },
         { table: 'param_estado', field: 'nom_estado', id: 'estado' },
+        { table: 'param_estado', field: 'nom_estado', id: 'estadoEntrega' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoPTL' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoIMP' },
         { table: 'param_estado', field: 'nom_estado', id: 'estadoTLF' },
 
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoTCD' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoTCDEntrega' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMS' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMSEntrega' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puerto' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoIMP' },
 
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCD' },
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCDEntrega' },
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMSEntrega' },
 
         { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
+        { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTREntrega' },
         { table: 'param_servicio', field: 'nom_servicio', id: 'departamentos' },
-        // { table: 'param_servicio', field: 'nom_servicio', id: 'newDepartamentos' },
 
         { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirus' },
+        { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirusEntrega' },
         { table: 'param_antivirus', field: 'nom_antivirus', id: 'antivirusPTL' },
 
         { table: 'param_tipo_impresora', field: 'nom_ti', id: 'tipoIMP' },
@@ -2293,7 +2730,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         { table: 'param_tipo_equipo', field: 'nom_te', id: 'newTipoEquipo' },
 
         { table: 'param_piso', field: 'nom_piso', id: 'pisos' }
-        // { table: 'param_piso', field: 'nom_piso', id: 'newPisos' }
     ];
 
     optionMappings.forEach(mapping => {
