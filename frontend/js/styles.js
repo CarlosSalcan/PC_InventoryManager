@@ -139,3 +139,10 @@ function mostrarMensaje(mensaje, duracion) {
     window.location.reload()
   }, duracion);
 }
+
+//-------------------------------> INPUT DE ENCABEZADO Y PIE PAG
+function displayFileName(input) {
+  const fileName = input.files[0].name;
+  const label = input.parentElement.querySelector('.file-name');
+  label.textContent = fileName;
+}

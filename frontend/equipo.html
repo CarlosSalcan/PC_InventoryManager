@@ -16,6 +16,7 @@
     <!--=============== DOC ENTREGA  ===============-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
     <!--=============== JS ===============-->
     <script src="./js/styles.js" defer></script>
@@ -164,9 +165,9 @@
                     <!-- Botones -->
                     <div class="buttons">
                         <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Equipo</button>
-                        <button type="button" class="orange-button" onclick="enviarBodega()">Guardar Bodega</button>
-                        <button type="button" class="green-button" onclick="abrirModalYMostrarTodosDatos()">Entregar
+                        <button type="button" class="orange-button" onclick="abrirModalYMostrarTodosDatos('modal11','modal1')">Entregar
                             Equipo</button>
+                        <button type="button" class="red-button" onclick="enviarBodega()">Guardar en Bodega</button>
                     </div>
                 </div>
 
@@ -197,13 +198,13 @@
                                     <div>
                                         <label for="codigoEq">Cod. Eq:</label>
                                         <input type="text" id="codigoEq" name="codigoEq" class="newData"
-                                            style="width: 75px;">
+                                            style="width: 75px;" readonly>
                                     </div>
                                 </div>
 
                                 <div>
                                     <label for="codigotics">Cod. Tics CPU:</label>
-                                    <input type="text" id="codigotics" name="codigotics" class="newData">
+                                    <input type="text" id="codigotics" name="codigotics" class="newData" readonly>
 
                                     <label for="nombreHost">Host:</label>
                                     <input type="text" id="nombreHost" name="nombreHost" class="newData">
@@ -339,14 +340,14 @@
                                 <div>
                                     <label for="codigoEqMTR">Cod. Eq:</label>
                                     <input type="text" id="codigoEqMTR" name="codigoEqMTR" class="newData"
-                                        style="width: 75px;">
+                                        style="width: 75px;" readonly>
                                 </div>
                             </div>
 
                             <div class="horizontal-container">
                                 <div>
                                     <label for="codigoticsMTR">Cod. Tics Monitor:</label>
-                                    <input type="text" id="codigoticsMTR" name="codigoticsMTR" class="newData">
+                                    <input type="text" id="codigoticsMTR" name="codigoticsMTR" class="newData" readonly>
                                 </div>
                                 <div>
                                     <label for="condicionMTR">Condicion:</label>
@@ -411,7 +412,7 @@
                                     <div>
                                         <label for="codigoEqTCD" style="margin:0;">Cod. Eq:</label>
                                         <input type="text" id="codigoEqTCD" name="codigoEqMTR" class="newData"
-                                            style="width: 75px;">
+                                            style="width: 75px;" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -419,7 +420,7 @@
                             <div class="horizontal-container">
                                 <div>
                                     <label for="codigoticsTCD">Cod. Tics Teclado:</label>
-                                    <input type="text" id="codigoticsTCD" name="codigoticsTCD" class="newData">
+                                    <input type="text" id="codigoticsTCD" name="codigoticsTCD" class="newData" readonly>
                                 </div>
                                 <div>
                                     <label for="condicionTCD">Condicion Teclado:</label>
@@ -490,13 +491,13 @@
                                 <div>
                                     <label for="codigoEqMS">Cod. Eq:</label>
                                     <input type="text" id="codigoEqMS" name="codigoEqMS" class="newData"
-                                        style="width: 75px;">
+                                        style="width: 75px;" readonly>
                                 </div>
                             </div>
                             <div class="horizontal-container">
                                 <div>
                                     <label for="codigoticsMS">Cod. Tics Mouse:</label>
-                                    <input type="text" id="codigoticsMS" name="codigoticsMS" class="newData">
+                                    <input type="text" id="codigoticsMS" name="codigoticsMS" class="newData" readonly>
                                 </div>
                                 <div>
                                     <label for="condicionMS">Condicion Mouse:</label>
@@ -558,138 +559,121 @@
     <div id="modal11" class="modal">
         <div class="modal-content">
             <h2>Entrega de Equipo</h2>
-            <button type="button" onclick="generarPDF()">Imprimir PDF</button>
+            <hr class="lines">
+            <div>
+                <div class="horizontal-container">
+                    <div class="form-section">
+                        <label for="inputUsuario">Encabezado Y Pie de Pagina</label><br><br>
+                        <div>
+                            <label for="inputImage1" class="custom-file-upload">
+                                <input class="inputIMG" type="file" id="inputImage1" accept=".jpg, .jpeg, .png"
+                                    onchange="displayFileName(this)">
+                                <span class="file-name">Subir Encabezado</span>
+                            </label>
+                        </div><br>
+                        <div>
+                            <label for="inputImage2" class="custom-file-upload">
+                                <input class="inputIMG" type="file" id="inputImage2" accept=".jpg, .jpeg, .png"
+                                    onchange="displayFileName(this)">
+                                <span class="file-name">Subir Pie Pagina</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div>
+                            <label for="inputUsuario">Funcionario:</label><br><br>
+                            <input type="text" id="inputUsuario" placeholder="Nombre Funcionario" class="newData">
+                        </div>
+                        <div>
+                            <div class="buttons">
+                                <button type="button" class="green-button"
+                                    onclick="generarPDF(), guardarDato()">Imprimir PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <span class="close" onclick="cerrarVentanaEmergente('modal11')">&times;</span>
+            <h2>Datos de Equipo</h2>
+            <hr class="lines">
             <form id="entregaCPU" class="formulario">
                 <div class="form-section">
                     <div class="horizontal-container">
                         <div>
-                            <div>
-                                <label for="codigoEntrega">Cod. CPU:</label>
-                                <span id="codigoEntrega" name="codigo"></span>
-                            </div><br>
-                            <div>
-                                <label for="tecEntrega">Técnico:</label>
-                                <span id="tecEntrega" name="teEntrega"></span>
-                            </div><br>
-                            <div>
-                                <label for="codigoEqEntrega">Cod. Eq:</label>
-                                <input type="text" id="codigoEqEntrega" name="codigoEqEntrega" class="newData"
-                                    style="width: 75px;">
-                            </div>
+                            <label for="codigoEntrega">Cod. CPU:</label>
+                            <span id="codigoEntrega" name="codigo"></span>
+                        </div><br>
+                        <div>
+                            <label for="tecEntrega">Técnico:</label>
+                            <span id="tecEntrega" name="teEntrega"></span>
                         </div>
-
+                        <div>
+                            <label for="codigoEqEntrega">Cod. Eq:</label><br>
+                            <input type="text" id="codigoEqEntrega" name="codigoEqEntrega" class="newData"
+                                style="width: 80px;">
+                        </div>
                         <div>
                             <label for="codigoticsEntrega">Cod. Tics CPU:</label>
                             <input type="text" id="codigoticsEntrega" name="codigoticsEntrega" class="newData">
-
-                            <label for="nombreHostEntrega">Host:</label>
-                            <input type="text" id="nombreHostEntrega" name="nombreHostEntrega" class="newData">
-                        </div>
-
-                        <div>
-                            <label for="numSerieEntrega">No. Serie CPU:</label>
-                            <input type="text" id="numSerieEntrega" name="numSerieEntrega" class="newData">
-
-                            <label for="nomUsuarioEntrega">Usuario:</label>
-                            <input type="text" id="nomUsuarioEntrega" name="nomUsuarioEntrega" class="newData">
-                        </div>
-
-                        <div>
-                            <div class="horizontal-container" style="margin: 0;">
-                                <div>
-                                    <label for="estadoEntrega">Estado:</label>
-                                    <select id="estadoEntrega" class="options"></select>
-                                </div>
-
-                                <div>
-                                    <label for="condicionEntrega">Condicion:</label>
-                                    <select id="condicionEntrega" class="options"></select>
-                                </div>
-                            </div>
-
-                            <div style="margin-top: -10px;">
-                                <label for="marcasEntrega">Marca CPU:</label>
-                                <select id="marcasEntrega" class="options"></select>
-                            </div>
                         </div>
                     </div>
 
-                    <hr class="line">
                     <div class="horizontal-container">
                         <div>
-                            <div>
-                                <label for="Mainboard">Mainboard:</label>
-                                <input type="text" id="MainboardEntrega" name="MainboardEntrega" class="newData">
-                            </div>
-
-                            <div class="horizontal-container">
-                                <div>
-                                    <label for="ramEntrega">RAM:</label>
-                                    <select id="ramEntrega" class="options"></select>
-
-                                    <input type="checkbox" id="bluetoothEntrega" name="bluetoothEntrega">
-                                    <label for="bluetoothEntrega">Bluetooth</label>
-
-                                    <input type="checkbox" id="redFijaEntrega" name="redFijEntrega">
-                                    <label for="redFijaEntrega">Red Fija</label>
-                                </div>
-
-                                <div>
-                                    <label for="hddEntrega">HDD:</label>
-                                    <select id="hddEntrega" class="options"></select>
-
-                                    <input type="checkbox" id="lectorTarjetaEntrega">
-                                    <label for="lectorTarjetaEntrega">Lector Tar.</label>
-
-                                    <input type="checkbox" id="redInalamEntrega" name="redInalamEntrega">
-                                    <label for="redInalamEntrega">Red Inala.</label>
-                                </div>
-                            </div>
-
+                            <label for="marcasEntrega">Marca CPU:</label>
+                            <select id="marcasEntrega" class="options"></select>
                         </div>
-
+                        <div>
+                            <label for="Mainboard">Mainboard:</label>
+                            <input type="text" id="MainboardEntrega" name="MainboardEntrega" class="newData">
+                        </div>
+                        <div>
+                            <label for="numSerieEntrega">No. Serie CPU:</label>
+                            <input type="text" id="numSerieEntrega" name="numSerieEntrega" class="newData">
+                        </div>
                         <div>
                             <label for="procesadorEntrega">Procesador:</label>
                             <select id="procesadorEntrega" class="options"></select>
-
+                        </div>
+                        <div>
                             <label for="velocidadProceEntrega">Velocidad Procesador:</label>
                             <input type="text" id="velocidadProceEntrega" name="velocidadProceEntrega" class="newData">
-
-                            <label for="generacionEntrega">Generación:</label>
-                            <input type="text" id="generacionEntrega" name="generacionEntrega" class="newData">
                         </div>
-
-                        <div>
-                            <label for="poseeAntivirusEntrega">Posee Antivirus:</label>
-                            <select id="poseeAntivirusEntrega" class="options">
-                                <option value="SI">SI</option>
-                                <option value="NO">NO</option>
-                            </select>
-
-                            <label for="antivirusEntrega">Nombre Antivirus:</label>
-                            <select id="antivirusEntrega" class="options"></select>
-
-                            <label for="verAntivirusEntrega">Versión Antivirus:</label>
-                            <input type="text" id="verAntivirusEntrega" name="verAntivirusEntrega" class="newData">
+                        <div style="display: none;">
+                            <label for="estadoEntrega">Estado:</label>
+                            <select id="estadoEntrega" class="options"></select>
                         </div>
-
-                        <div>
-                            <label for="officeEntrega">Office:</label>
-                            <select id="officeEntrega" class="options"></select>
-
-                            <label for="sisOperativoEntrega">Sistema Operativo:</label>
-                            <select id="sisOperativoEntrega" class="options"></select>
-
-                            <label for="disOpticosEntrega">Dispositivo Optico:</label>
-                            <select id="disOpticosEntrega" class="options"></select>
+                    </div>
+                    <div>
+                        <div class="horizontal-container">
+                            <div>
+                                <label for="ramEntrega">RAM:</label>
+                                <select id="ramEntrega" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="hddEntrega">HDD:</label>
+                                <select id="hddEntrega" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="officeEntrega">Office:</label>
+                                <select id="officeEntrega" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="sisOperativoEntrega">Sistema Operativo:</label>
+                                <select id="sisOperativoEntrega" class="options"></select>
+                            </div>
+                            <div>
+                                <label for="condicionEntrega">Condicion:</label>
+                                <select id="condicionEntrega" class="options"></select>
+                            </div>
                         </div>
                     </div>
 
                     <div class="horizontal-container">
                         <div>
                             <label for="observacionTxtEntrega">Observación:</label>
-                            <textarea id="observacionTxtEntrega" rows="2" cols="68"></textarea>
+                            <textarea id="observacionTxtEntrega" rows="2" cols="60"></textarea>
                         </div>
                     </div>
                 </div>
@@ -698,38 +682,6 @@
             <hr class="lines">
             <form id="entregaMTR" class="formulario">
                 <div class="form-section">
-                    <div class="horizontal-container" style="margin: 0;">
-                        <div>
-                            <label for="codigoMTREntrega">Cod. Monitor:</label>
-                            <span id="codigoMTREntrega" name="codigoMTREntrega"></span>
-                        </div>
-                        <div>
-                            <label for="tecMTREntrega">Tecnico:</label>
-                            <span id="tecMTREntrega" name="tecMTREntrega"></span>
-                        </div>
-                        <div>
-                            <label for="codigoEqMTREntrega">Cod. Eq:</label>
-                            <input type="text" id="codigoEqMTREntrega" name="codigoEqMTREntrega" class="newData"
-                                style="width: 75px;">
-                        </div>
-                    </div>
-
-                    <div class="horizontal-container">
-                        <div>
-                            <label for="codigoticsMTREntrega">Cod. Tics Monitor:</label>
-                            <input type="text" id="codigoticsMTREntrega" name="codigoticsMTREntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="condicionMTREntrega">Condicion:</label>
-                            <select id="condicionMTREntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="estadoMTREntrega">Estado:</label>
-                            <select id="estadoMTREntrega" class="options"></select>
-                        </div>
-                    </div>
-
-                    <hr class="line">
                     <div class="horizontal-container">
                         <div>
                             <label for="marcasMTREntrega">Marca MONITOR:</label>
@@ -747,12 +699,9 @@
                             <label for="serieMTREntrega  ">No. Serie MONITOR:</label>
                             <input type="text" id="serieMTREntrega" name="serieMTR" class="newData">
                         </div>
-                    </div>
-
-                    <div class="horizontal-container">
                         <div>
-                            <label for="observacionTxtMEntrega">Observación:</label>
-                            <textarea id="observacionTxtMEntrega" rows="2" cols="68"></textarea>
+                            <label for="condicionMTREntrega">Condicion:</label>
+                            <select id="condicionMTREntrega" class="options"></select>
                         </div>
                     </div>
                 </div>
@@ -762,57 +711,10 @@
             <form id="entregaTCD" class="formulario">
                 <div class="form-section">
                     <div class="horizontal-container">
-                        <div class="horizontal-container">
-                            <div>
-                                <label for="codigoTCDEntrega">Cod. Teclado:</label>
-                                <span id="codigoTCDEntrega" name="codigoTCDEntrega"></span>
-                            </div>
-                            <div>
-                                <label for="tecTCDEntrega">Tecnico Teclado:</label>
-                                <span id="tecTCDEntrega" name="tecTCDEntrega"></span>
-                            </div>
-                            <div>
-                                <label for="codigoEqTCDEntrega" style="margin:0;">Cod. Eq:</label>
-                                <input type="text" id="codigoEqTCDEntrega" name="codigoTCDEntrega" class="newData"
-                                    style="width: 75px;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="horizontal-container">
                         <div>
-                            <label for="codigoticsTCDEntrega">Cod. Tics Teclado:</label>
-                            <input type="text" id="codigoticsTCDEntrega" name="codigoticsTCDEntrega" class="newData">
+                            <label for="marcasTCDEntrega">Marca Teclado:</label>
+                            <select id="marcasTCDEntrega" class="options"></select>
                         </div>
-                        <div>
-                            <label for="condicionTCDEntrega">Condicion Teclado:</label>
-                            <select id="condicionTCDEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="estadoTCDEntrega">Estado Teclado:</label>
-                            <select id="estadoTCDEntrega" class="options"></select>
-                        </div>
-                    </div>
-
-                    <hr class="line">
-                    <div class="horizontal-container">
-                        <div>
-                            <div>
-                                <label for="marcasTCDEntrega">Marca Teclado:</label>
-                                <select id="marcasTCDEntrega" class="options"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="puertoTCDEntrega">Puerto Teclado:</label>
-                            <select id="puertoTCDEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="tipoTCDEntrega">Tipo Teclado:</label>
-                            <select id="tipoTCDEntrega" class="options"></select>
-                        </div>
-                    </div>
-
-                    <div class="horizontal-container">
                         <div>
                             <label for="serieTCDEntrega">No. Serie Teclado:</label>
                             <input type="text" id="serieTCDEntrega" name="serieTCDEntrega" class="newData">
@@ -822,8 +724,8 @@
                             <input type="text" id="modeloTCDEntrega" name="modeloTCDEntrega" class="newData">
                         </div>
                         <div>
-                            <label for="observacionTxtTCDEntrega">Observación:</label>
-                            <textarea id="observacionTxtTCDEntrega" rows="2" cols="50"></textarea>
+                            <label for="condicionTCDEntrega">Condicion Teclado:</label>
+                            <select id="condicionTCDEntrega" class="options"></select>
                         </div>
                     </div>
                 </div>
@@ -834,53 +736,9 @@
                 <div class="form-section">
                     <div class="horizontal-container">
                         <div>
-                            <label for="codigoMSEntrega">Cod. Mouse:</label>
-                            <span id="codigoMSEntrega" name="codigoMSEntrega"></span>
+                            <label for="marcasMSEntrega">Marca Mouse:</label>
+                            <select id="marcasMSEntrega" class="options"></select>
                         </div>
-                        <div>
-                            <label for="tecMSEntrega">Tecnico Mouse:</label>
-                            <span id="tecMSEntrega" name="tecMSEntrega"></span>
-                        </div>
-                        <div>
-                            <label for="codigoEqMEntrega">Cod. Eq:</label>
-                            <input type="text" id="codigoEqMSEntrega" name="codigoEqMSEntrega" class="newData"
-                                style="width: 75px;">
-                        </div>
-                    </div>
-                    <div class="horizontal-container">
-                        <div>
-                            <label for="codigoticsMSEntrega">Cod. Tics Mouse:</label>
-                            <input type="text" id="codigoticsMSEntrega" name="codigoticsMSEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="condicionMSEntrega">Condicion Mouse:</label>
-                            <select id="condicionMSEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="estadoMSEntrega">Estado Mouse:</label>
-                            <select id="estadoMSEntrega" class="options"></select>
-                        </div>
-                    </div>
-
-                    <hr class="line">
-                    <div class="horizontal-container">
-                        <div>
-                            <div>
-                                <label for="marcasMSEntrega">Marca Mouse:</label>
-                                <select id="marcasMSEntrega" class="options"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="puertoMSEntrega">Puerto Mouse:</label>
-                            <select id="puertoMSEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="tipoMSEntrega">Tipo Mouse:</label>
-                            <select id="tipoMSEntrega" class="options"></select>
-                        </div>
-                    </div>
-
-                    <div class="horizontal-container">
                         <div>
                             <label for="serieMSEntrega">No. Serie Mouse:</label>
                             <input type="text" id="serieMSEntrega" name="serieMSEntrega" class="newData">
@@ -890,8 +748,8 @@
                             <input type="text" id="modeloMSEntrega" name="modeloMSEntrega" class="newData">
                         </div>
                         <div>
-                            <label for="observacionTxtMEntrega">Observación:</label>
-                            <textarea id="observacionTxtMSEntrega" rows="2" cols="50"></textarea>
+                            <label for="condicionMSEntrega">Condicion Mouse:</label>
+                            <select id="condicionMSEntrega" class="options"></select>
                         </div>
                     </div>
                 </div>

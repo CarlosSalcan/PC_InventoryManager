@@ -2172,22 +2172,14 @@ function generarExcel(tablaId) {
     XLSX.writeFile(wb, 'equipos.xlsx');
 }
 
-//-------------------------------> ENTREGA
+//-------------------------------> ENTREGA ESCRITORIO
 function mostrarDatosCPUEntrega(cpu) {
-    document.getElementById('nombreHostEntrega').value = cpu.nom_hots;
-    document.getElementById('nomUsuarioEntrega').value = cpu.nom_usuario;
-    document.getElementById('generacionEntrega').value = cpu.ip_equipo;
-
-    document.getElementById('poseeAntivirusEntrega').value = cpu.antivirus;
-    document.getElementById('antivirusEntrega').value = cpu.nom_antivirus;
-    document.getElementById('verAntivirusEntrega').value = cpu.ver_antivirus;
-    actualizarCamposAntivirus();
+    document.getElementById('marcasEntrega').value = cpu.mar_cpu;
 
     document.getElementById('tecEntrega').textContent = cpu.nom_usua;
     document.getElementById('codigoEntrega').textContent = cpu.cod_cpu;
     document.getElementById('codigoEqEntrega').value = cpu.cod_equipo;
     document.getElementById('codigoticsEntrega').value = cpu.cod_tics_cpu;
-    document.getElementById('marcasEntrega').value = cpu.mar_cpu;
 
     document.getElementById('numSerieEntrega').value = cpu.ser_cpu;
     document.getElementById('MainboardEntrega').value = cpu.tar_madre;
@@ -2195,72 +2187,48 @@ function mostrarDatosCPUEntrega(cpu) {
     document.getElementById('velocidadProceEntrega').value = cpu.velocidad;
     document.getElementById('ramEntrega').value = cpu.memoria;
     document.getElementById('hddEntrega').value = cpu.tam_hdd;
-    document.getElementById('disOpticosEntrega').value = cpu.disp_optico;
 
     document.getElementById('sisOperativoEntrega').value = cpu.sis_ope;
     document.getElementById('officeEntrega').value = cpu.office;
-
     document.getElementById('estadoEntrega').value = cpu.est_cpu;
-    document.getElementById('condicionEntrega').value = cpu.con_cpu;
     document.getElementById('observacionTxtEntrega').value = cpu.observacion;
-
-    marcarCheckBoxes(cpu, escritorioMapping);
 }
 
 function mostrarDatosMTREntrega(mtr) {
-    document.getElementById('codigoMTREntrega').textContent = mtr.cod_monitor;
-    document.getElementById('codigoticsMTREntrega').value = mtr.cod_tics_monitor;
-    document.getElementById('codigoEqMTREntrega').value = mtr.cod_equipo;
-    document.getElementById('tecMTREntrega').textContent = mtr.nom_usua;
     document.getElementById('marcasMTREntrega').value = mtr.mar_monitor;
     document.getElementById('modeloMTREntrega').value = mtr.mod_monitor;
     document.getElementById('tamanoMTREntrega').value = mtr.tam_monitor;
     document.getElementById('serieMTREntrega').value = mtr.ser_monitor;
-    document.getElementById('condicionMTREntrega').value = mtr.con_monitor;
-    document.getElementById('estadoMTREntrega').value = mtr.est_monitor;
-    document.getElementById('observacionTxtMEntrega').value = mtr.observacion;
 }
 
 function mostrarDatosTCDEntrega(tcd) {
-    document.getElementById('codigoTCDEntrega').textContent = tcd.cod_teclado;
-    document.getElementById('codigoticsTCDEntrega').value = tcd.cod_tics_teclado;
-    document.getElementById('codigoEqTCDEntrega').value = tcd.cod_equipo;
-    document.getElementById('tecTCDEntrega').textContent = tcd.nom_usua;
     document.getElementById('marcasTCDEntrega').value = tcd.mar_teclado;
-    document.getElementById('puertoTCDEntrega').value = tcd.pue_teclado;
-    document.getElementById('tipoTCDEntrega').value = tcd.tip_teclado;
     document.getElementById('serieTCDEntrega').value = tcd.ser_teclado;
     document.getElementById('modeloTCDEntrega').value = tcd.mod_teclado;
-    document.getElementById('condicionTCDEntrega').value = tcd.con_teclado;
-    document.getElementById('estadoTCDEntrega').value = tcd.est_teclado;
-    document.getElementById('observacionTxtTCDEntrega').value = tcd.obs_teclado;
 }
 
 function mostrarDatosMSEntrega(ms) {
-    document.getElementById('codigoMSEntrega').textContent = ms.cod_mouse;
-    document.getElementById('codigoticsMSEntrega').value = ms.cod_tics_mouse;
-    document.getElementById('codigoEqMSEntrega').value = ms.cod_equipo;
-    document.getElementById('tecMSEntrega').textContent = ms.nom_usua;
     document.getElementById('marcasMSEntrega').value = ms.mar_mouse;
-    document.getElementById('puertoMSEntrega').value = ms.puerto;
-    document.getElementById('tipoMSEntrega').value = ms.tip_mouse;
     document.getElementById('serieMSEntrega').value = ms.ser_mouse;
     document.getElementById('modeloMSEntrega').value = ms.mod_mouse;
-    document.getElementById('condicionMSEntrega').value = ms.con_mouse;
-    document.getElementById('estadoMSEntrega').value = ms.est_mouse;
-    document.getElementById('observacionTxtMSEntrega').value = ms.obs_mouse;
 }
 
-function abrirModalYMostrarTodosDatos() {
+function abrirModalYMostrarTodosDatos(modalMostrar, modalCerrar) {
     // Obtener el ID del equipo desde el span
     const idEquipo = document.getElementById('cod').innerText.trim();
-    mostrarVentanaEmergente('modal11');
+
+    // Mostrar el modal especificado
+    mostrarVentanaEmergente(modalMostrar);
+
     // Llamar a una función para obtener y mostrar todos los datos
     obtenerDatosEntrega('cpu_equipo', idEquipo);
     obtenerDatosEntrega('monitor', idEquipo);
     obtenerDatosEntrega('teclado', idEquipo);
     obtenerDatosEntrega('mouse', idEquipo);
-    cerrarVentanaEmergente('modal1');
+    obtenerDatosEntrega('laptop', idEquipo);
+
+    // Cerrar el modal especificado
+    cerrarVentanaEmergente(modalCerrar);
 }
 
 async function obtenerDatosEntrega(tabla, codEquipo) {
@@ -2280,37 +2248,52 @@ async function obtenerDatosEntrega(tabla, codEquipo) {
                 mostrarDatosMSEntrega(componente);
             } else if (tabla === "teclado") {
                 mostrarDatosTCDEntrega(componente);
-                // } else if (tabla === "laptop") {
-                //     mostrarDatosPLT(componente);
-                // } else if (tabla === "impresora") {
-                //     mostrarDatosIMP(componente);
-                // } else if (tabla === "telefono") {
-                //     mostrarDatosTLF(componente);
+            } else if (tabla === "laptop") {
+                mostrarDatosPLTEntrega(componente);
             } else {
                 console.error("Tabla desconocida:", tabla);
             }
         } else {
-            console.error('Error al obtener datos de la tabla:', data.message);
+            console.error('Error al obtener datos de la tabla:', tabla, data.message);
         }
     } catch (error) {
-        console.error('Error al obtener datos de la tablaa:', error);
+        console.error('Error al obtener datos de la tablaa:', tabla, error);
     }
 }
 
+//-------------------------------> ENTREGA PORTATIL
+function mostrarDatosPLTEntrega(plt) {
+    document.getElementById('codEntrega').textContent = plt.cod_laptop;
+    document.getElementById('codigoEqEntrega').value = plt.cod_equipo;
+    document.getElementById('codAlmacenEntrega').value = plt.cod_tics_laptop;
+    document.getElementById('tecEntrega').textContent = plt.nom_usua;
+    
+    document.getElementById('marcasEntrega').value = plt.mar_laptop;
+    document.getElementById('modeloEntrega').value = plt.mod_laptop;
+    document.getElementById('numSerieEntrega').value = plt.ser_laptop;
+    document.getElementById('procesadorEntrega').value = plt.pro_laptop;
+    document.getElementById('velocidadProceEntrega').value = plt.vel_laptop;
+    document.getElementById('ramEntrega').value = plt.mem_laptop;
+    document.getElementById('hddEntrega').value = plt.hdd_laptop;
+    document.getElementById('sisOperativoEntrega').value = plt.so_laptop;
+    document.getElementById('officeEntrega').value = plt.off_laptop;
+    document.getElementById('estadoEntrega').value = plt.est_laptop;
+    document.getElementById('observacionTxtEntrega').value = plt.observacion_laptop;
+}
+
+//-------------------------------> GENERAR PDF
 function generarPDF() {
     window.jsPDF = window.jspdf.jsPDF;
     // Crear un nuevo documento jsPDF
     const doc = new jsPDF();
 
     // DATOS EQUIPO
-    const idEquipo = document.getElementById("cod").textContent.trim();
     const fechaEntrega = document.getElementById("fecha").textContent.trim();
     const tecnico = document.getElementById("tecnico").textContent.trim();
     const codAlmacen = document.getElementById("codAlmacen").value.trim();
     const pisoUbicado = document.getElementById("pisos").value.trim();
     const titular = document.getElementById("titularEq").value.trim();
     const departamento = document.getElementById("departamentos").value.trim();
-    const usuario = document.getElementById("titularEq").value.trim();
     // CPU
     const marca = document.getElementById('marcasEntrega').value;
     const tarjeta = document.getElementById('MainboardEntrega').value;
@@ -2340,216 +2323,511 @@ function generarPDF() {
     const modeloMS = document.getElementById('modeloMSEntrega').value;
     const estadoMS = document.getElementById('condicionMSEntrega').value;
 
-    doc.setFontSize(8);
-    // Horizontal Vertical
-    doc.setFont("helvetica", "bold");
-    doc.text(`El Equipo se entrega:`, 20, 20);
-    doc.setFont("helvetica", "normal");
-    doc.text(`FUNCIONAL`, 50, 20);
-
-    doc.setFont("helvetica", "bold");
-    doc.text(`Código TICS:`, 90, 20);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${codAlmacen}`, 110, 20);
-
-    doc.setFont("helvetica", "bold");
-    doc.text(`Custodio:`, 20, 25);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${titular}`, 45, 25);
-
-    // Mostrar "Unidad" en negrita
-    doc.setFont("helvetica", "bold");
-    doc.text(`Unidad:`, 20, 40);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${departamento}`, 40, 40);
-
-    doc.setFont("helvetica", "bold");
-    doc.text(`Piso:`, 20, 50);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${pisoUbicado}`, 35, 50);
-
-    // Mostrar "Fecha" en negrita
-    doc.setFont("helvetica", "bold");
-    doc.text(`Fecha:`, 20, 60);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${fechaEntrega}`, 40, 60);
-
-    // Definir los datos a mostrar en la tabla del PDF
-    const tableData = [
-        ['CPU', 'Marca', marca],
-        ['CPU', 'Modelo', tarjeta],
-        ['CPU', 'Núm Serie', serie],
-        ['CPU', 'Procesador', proces],
-        ['CPU', 'Velocidad', velocidad],
-        ['CPU', 'Memoria RAM', ram],
-        ['CPU', 'Almacenamiento', hdd],
-        ['MONITOR', 'Marca', marcaM],
-        ['MONITOR', 'Modelo', modeloM],
-        ['MONITOR', 'Tamaño', tamanoM],
-        ['MONITOR', 'Núm Serie', serieM],
-        ['TECLADO', 'Marca', marcaT],
-        ['TECLADO', 'Núm Serie', serieT],
-        ['TECLADO', 'Modelo', modeloT],
-        ['MOUSE', 'Marca', marcaMS],
-        ['MOUSE', 'Núm Serie', serieMS],
-        ['MOUSE', 'Modelo', modeloMS]
-    ];
-
-    doc.setFont("helvetica", "bold");
-    doc.text(`Sistema Operativo:`, 20, 160);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${sisOpe}`, 50, 160);
-
-    doc.setFont("helvetica", "bold");
-    doc.text(`Office:`, 20, 170);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${office}`, 30, 170);
-
-    const tableDataEst = [
-        ['CPU', `${estado}`, 'MONITOR', `${estadoM}`],
-        ['TECLADO', `${estadoT}`, 'MOUSE', `${estadoMS}`]
-    ];
-    // Ancho total de la página
-    const pageWidth = doc.internal.pageSize.getWidth()
-    const tableWidth = pageWidth * 0.75; // 85% del ancho de la página
-
-    doc.setFont("helvetica", "bold");
-    doc.text(`OBSERVACION:`, 20, 205);
-    doc.setFont("helvetica", "normal");
-    const maxWidth = 165; // Ancho máximo para el texto
-    const textYPosition = 210; // Posición vertical inicial del texto
-    const splitObservacion = doc.splitTextToSize(observacion, maxWidth);
-    doc.text(splitObservacion, 20, textYPosition);
-
-    const tableDataFirma = [
-        ['REALIZADO POR:', 'ENTREGADO A:'],
-        ['\n\n\n','\n\n',],
-        [`ANALISTA TICS: ${tecnico}`,`FUNCIONARIO: ${usuario}`]
-    ];
-
-    // Configurar la estructura de la tabla
-    doc.autoTable({
-        startY: 65,
-        body: tableData.map(row => [row[1], row[2]]),
-        columnStyles: {
-            0: { cellWidth: 50 }, // Ancho para la primera columna ('Característica')
-            1: { cellWidth: 60 }, // Ancho para la segunda columna ('Valor')
-        },
-        styles: {
-            fontSize: 8,
-            cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
-            valign: 'middle',
-            halign: 'left',
-            textColor: [0, 0, 0], // Color de texto negro
-            lineWidth: 0.1, // Grosor de la línea
-            lineColor: [0, 0, 0] // Color de la línea
-        },
-        theme: 'grid',
-        margin: { left: 75, right: 20 }, // Añadir margen izquierdo y derecho
-        tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
-        didDrawCell: function (data) {
-            if (data.section === 'body' && data.column.index === 0) {
-                let cellHeight = 0;
-                let yPos = data.cell.y;
-                let text = '';
-                if (data.row.index === 0) {
-                    cellHeight = data.cell.height * 7;
-                    text = 'CPU';
-                } else if (data.row.index === 7) {
-                    cellHeight = data.cell.height * 4;
-                    text = 'MONITOR';
-                } else if (data.row.index === 11) {
-                    cellHeight = data.cell.height * 3;
-                    text = 'TECLADO';
-                } else if (data.row.index === 14) {
-                    cellHeight = data.cell.height * 3;
-                    text = 'MOUSE';
-                }
-                if (text) {
-                    const cellWidth = data.cell.width;
-                    const xPos = data.cell.x - cellWidth;
-                    doc.setFillColor(255, 255, 255); // Color de fondo blanco
-                    doc.rect(xPos, yPos, cellWidth, cellHeight, 'FD'); // Dibuja un rectángulo blanco con bordes
-                    doc.setFont("helvetica", "bold");
-                    doc.text(text, xPos + cellWidth / 2, yPos + cellHeight / 2, { align: 'center', baseline: 'middle' });
-                }
-            }
+    // Funcion pasar img a toBase64
+    function toBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            callback(reader.result);
         }
-    });
+        reader.readAsDataURL(file);
+    }
 
-    doc.autoTable({
-        startY: 180,
-        head: [[{ content: 'ESTADO DEL EQUIPO', colSpan: 4, styles: { halign: 'center', textColor: [255, 255, 255] } }]],
-        body: tableDataEst,
-        styles: {
-            fontSize: 8,
-            cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
-            valign: 'middle',
-            halign: 'left',
-            textColor: [0, 0, 0], // Color de texto negro
-            lineWidth: 0.1, // Grosor de la línea
-            lineColor: [0, 0, 0] // Color de la línea
-        },
-        headStyles: {
-            fillColor: [22, 160, 133], // Color de fondo del encabezado (verde)
-            textColor: [255, 255, 255] // Color del texto del encabezado (blanco)
-        },
-        margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 }, // Márgenes para centrar la tabla
-        tableWidth: tableWidth
-    });
+    // Obtener los archivos de imagen desde los inputs
+    const inputImage1 = document.getElementById('inputImage1').files[0];
+    const inputImage2 = document.getElementById('inputImage2').files[0];
+    const usuario = document.getElementById('inputUsuario').value.trim();
 
-    doc.autoTable({
-        startY: 230,
-        head: [tableDataFirma[0]], // Primera fila como encabezado
-        body: [tableDataFirma[1], tableDataFirma[2]],
-        styles: {
-            fontSize: 10,
-            cellPadding: { top: 2, right: 2, bottom: 2, left: 2 }, // Estilos generales
-            valign: 'middle',
-            halign: 'left',
-            textColor: [0, 0, 0], // Color de texto negro
-            lineWidth: 0.1, // Grosor de la línea
-            lineColor: [0, 0, 0] // Color de la línea
-        },
-        rowStyles: {
-            0: { cellPadding: { top: 20, bottom: 20 } } // Aumentar el padding en la segunda fila para aumentar la altura
-        },
-        headStyles: {
-            fillColor: [255, 255, 255], // Sin color de fondo para el encabezado
-            textColor: [0, 0, 0] // Color del texto del encabezado
-        },
-        margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 },
-    });
+    if (!inputImage1 || !inputImage2 || !usuario) {
+        alert('Por favor llenar los campos de IMG y Funcionario.');
+        return;
+    }
 
-    
-    // Obtener y agregar datos de los formularios visibles
-    const formContainers = document.querySelectorAll('.form-container[style="display: block;"]');
-    formContainers.forEach(formContainer => {
-        // Obtener todos los elementos input, select, textarea dentro del formulario visible
-        const formData = [];
-        const formElements = formContainer.querySelectorAll('input, select, textarea');
-        formElements.forEach(element => {
-            let fieldName = element.id || element.name;
-            let fieldValue = element.value;
-            // Agregar solo si el campo tiene un valor
-            if (fieldName && fieldValue) {
-                formData.push([element.previousElementSibling.textContent, fieldValue]);
+    // Cargar y agregar la imagen desde la carpeta assets
+    toBase64(inputImage1, function (base64Img) {
+        doc.addImage(base64Img, 'JPEG', 15, 5, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario
+
+        doc.setFontSize(10);
+        // Horizontal Vertical
+        doc.setFont("helvetica", "bold");
+        doc.text(`Dirección Zonal de Tecnologias de la Información y Comunicaciones\n
+            Detalle de Entrega - Descargo de Equipos Informaticos`.toUpperCase(), 35, 30
+        );
+
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "bold");
+        doc.text(`El Equipo se entrega:`.toUpperCase(), 20, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`FUNCIONAL`, 60, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Código TICS:`.toUpperCase(), 115, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${codAlmacen}`, 140, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Custodio:`.toUpperCase(), 20, 50);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${titular}`, 60, 50);
+
+        // Mostrar "Unidad" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Unidad:`.toUpperCase(), 20, 55);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${departamento}`, 60, 55);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Piso:`.toUpperCase(), 20, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${pisoUbicado}`, 60, 60);
+
+        // Mostrar "Fecha" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Fecha:`.toUpperCase(), 115, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${fechaEntrega}`, 130, 60);
+
+        // Definir los datos a mostrar en la tabla del PDF
+        const tableData = [
+            ['CPU', 'Marca', marca],
+            ['CPU', 'Modelo', tarjeta],
+            ['CPU', 'Núm Serie', serie],
+            ['CPU', 'Procesador', proces],
+            ['CPU', 'Velocidad', velocidad],
+            ['CPU', 'Memoria RAM', ram],
+            ['CPU', 'Almacenamiento', hdd],
+            ['MONITOR', 'Marca', marcaM],
+            ['MONITOR', 'Modelo', modeloM],
+            ['MONITOR', 'Tamaño', tamanoM],
+            ['MONITOR', 'Núm Serie', serieM],
+            ['TECLADO', 'Marca', marcaT],
+            ['TECLADO', 'Núm Serie', serieT],
+            ['TECLADO', 'Modelo', modeloT],
+            ['MOUSE', 'Marca', marcaMS],
+            ['MOUSE', 'Núm Serie', serieMS],
+            ['MOUSE', 'Modelo', modeloMS]
+        ];
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Sistema Operativo:`.toUpperCase(), 20, 160);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${sisOpe}`, 60, 160);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Office:`.toUpperCase(), 20, 165);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${office}`, 60, 165);
+
+        const tableDataEst = [
+            ['CPU', `${estado}`, 'MONITOR', `${estadoM}`],
+            ['TECLADO', `${estadoT}`, 'MOUSE', `${estadoMS}`]
+        ];
+        // Ancho total de la página
+        const pageWidth = doc.internal.pageSize.getWidth()
+        const tableWidth = pageWidth * 0.75; // 85% del ancho de la página
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`OBSERVACION:`.toUpperCase(), 20, 193);
+        doc.setFont("helvetica", "normal");
+        const maxWidth = 165; // Ancho máximo para el texto
+        const textYPosition = 197; // Posición vertical inicial del texto
+        const splitObservacion = doc.splitTextToSize(observacion, maxWidth);
+        doc.text(splitObservacion, 20, textYPosition);
+
+        const tableDataFirma = [
+            ['REALIZADO POR:', 'ENTREGADO A:'],
+            ['\n\n\n', '\n\n',],
+            [`ANALISTA TICS: ${tecnico}`, `FUNCIONARIO: ${usuario}`]
+        ];
+
+        // Configurar la estructura de la tabla
+        doc.autoTable({
+            startY: 65,
+            body: tableData.map(row => [row[1], row[2]]),
+            columnStyles: {
+                0: { cellWidth: 50 }, // Ancho para la primera columna ('Característica')
+                1: { cellWidth: 60 }, // Ancho para la segunda columna ('Valor')
+            },
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            theme: 'grid',
+            margin: { left: 75, right: 20 }, // Añadir margen izquierdo y derecho
+            tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+            didDrawCell: function (data) {
+                if (data.section === 'body' && data.column.index === 0) {
+                    let cellHeight = 0;
+                    let yPos = data.cell.y;
+                    let text = '';
+                    if (data.row.index === 0) {
+                        cellHeight = data.cell.height * 7;
+                        text = 'CPU';
+                    } else if (data.row.index === 7) {
+                        cellHeight = data.cell.height * 4;
+                        text = 'MONITOR';
+                    } else if (data.row.index === 11) {
+                        cellHeight = data.cell.height * 3;
+                        text = 'TECLADO';
+                    } else if (data.row.index === 14) {
+                        cellHeight = data.cell.height * 3;
+                        text = 'MOUSE';
+                    }
+                    if (text) {
+                        const cellWidth = data.cell.width;
+                        const xPos = data.cell.x - cellWidth;
+                        doc.setFillColor(255, 255, 255); // Color de fondo blanco
+                        doc.rect(xPos, yPos, cellWidth, cellHeight, 'FD'); // Dibuja un rectángulo blanco con bordes
+                        doc.setFont("helvetica", "bold");
+                        doc.text(text, xPos + cellWidth / 2, yPos + cellHeight / 2, { align: 'center', baseline: 'middle' });
+                    }
+                }
             }
         });
 
-        // Agregar los datos del formulario al PDF
         doc.autoTable({
-            startY: doc.autoTable.previous.finalY + 10, // Posicionar debajo de la tabla anterior
-            head: [['Campo', 'Valor']],
-            body: formData,
-            styles: commonStyles, // Aplicar los estilos comunes a la tabla del formulario
+            startY: 170,
+            head: [[{ content: 'ESTADO DEL EQUIPO', colSpan: 4, styles: { halign: 'center', textColor: [255, 255, 255] } }]],
+            body: tableDataEst,
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            headStyles: {
+                fillColor: [22, 160, 133], // Color de fondo del encabezado (verde)
+                textColor: [255, 255, 255] // Color del texto del encabezado (blanco)
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 }, // Márgenes para centrar la tabla
+            tableWidth: tableWidth
+        });
+
+        doc.autoTable({
+            startY: 225,
+            head: [tableDataFirma[0]], // Primera fila como encabezado
+            body: [tableDataFirma[1], tableDataFirma[2]],
+            styles: {
+                fontSize: 10,
+                cellPadding: { top: 2, right: 2, bottom: 2, left: 2 }, // Estilos generales
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            rowStyles: {
+                0: { cellPadding: { top: 20, bottom: 20 } } // Aumentar el padding en la segunda fila para aumentar la altura
+            },
+            headStyles: {
+                fillColor: [255, 255, 255], // Sin color de fondo para el encabezado
+                textColor: [0, 0, 0] // Color del texto del encabezado
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 },
+        });
+
+        // Obtener y agregar datos de los formularios visibles
+        const formContainers = document.querySelectorAll('.form-container[style="display: block;"]');
+        formContainers.forEach(formContainer => {
+            // Obtener todos los elementos input, select, textarea dentro del formulario visible
+            const formData = [];
+            const formElements = formContainer.querySelectorAll('input, select, textarea');
+            formElements.forEach(element => {
+                let fieldName = element.id || element.name;
+                let fieldValue = element.value;
+                // Agregar solo si el campo tiene un valor
+                if (fieldName && fieldValue) {
+                    formData.push([element.previousElementSibling.textContent, fieldValue]);
+                }
+            });
+
+            // Agregar los datos del formulario al PDF
+            doc.autoTable({
+                startY: doc.autoTable.previous.finalY + 10, // Posicionar debajo de la tabla anterior
+                head: [['Campo', 'Valor']],
+                body: formData,
+                styles: commonStyles, // Aplicar los estilos comunes a la tabla del formulario
+            });
+        });
+
+        toBase64(inputImage2, function (base64Img2) {
+            doc.addImage(base64Img2, 'JPEG', 15, 265, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario para la segunda imagen
+            // Guardar el documento PDF
+            doc.save('equipos.pdf');
         });
     });
-
-    // Guardar el documento PDF
-    doc.save('equipo.pdf');
 }
 
+function generarPTL() {
+    window.jsPDF = window.jspdf.jsPDF;
+    // Crear un nuevo documento jsPDF
+    const doc = new jsPDF();
+
+    // DATOS EQUIPO
+    const fechaEntrega = document.getElementById("fecha").textContent.trim();
+    const tecnico = document.getElementById("tecnico").textContent.trim();
+    const codAlmacen = document.getElementById("codAlmacen").value.trim();
+    const pisoUbicado = document.getElementById("pisos").value.trim();
+    const titular = document.getElementById("titularEq").value.trim();
+    const departamento = document.getElementById("departamentos").value.trim();
+    // PARAMETROS
+    const marca = document.getElementById('marcasEntrega').value;
+    const tarjeta = document.getElementById('modeloEntrega').value;
+    const serie = document.getElementById('numSerieEntrega').value;
+    const proces = document.getElementById('procesadorEntrega').value;
+    const velocidad = document.getElementById('velocidadProceEntrega').value;
+    const ram = document.getElementById('ramEntrega').value;
+    const hdd = document.getElementById('hddEntrega').value;
+    const sisOpe = document.getElementById('sisOperativoEntrega').value;
+    const office = document.getElementById('officeEntrega').value;
+    const estado = document.getElementById('estadoEntrega').value;
+    const observacion = document.getElementById("observacionTxtEntrega").value.trim();
+
+    // Funcion pasar img a toBase64
+    function toBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    // Obtener los archivos de imagen desde los inputs
+    const inputImage1 = document.getElementById('inputImage1').files[0];
+    const inputImage2 = document.getElementById('inputImage2').files[0];
+    const usuario = document.getElementById('inputUsuario').value.trim();
+
+    if (!inputImage1 || !inputImage2 || !usuario) {
+        alert('Por favor llenar los campos de IMG y Funcionario.');
+        return;
+    }
+
+    // Cargar y agregar la imagen desde la carpeta assets
+    toBase64(inputImage1, function (base64Img) {
+        doc.addImage(base64Img, 'JPEG', 15, 5, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario
+
+        doc.setFontSize(10);
+        // Horizontal Vertical
+        doc.setFont("helvetica", "bold");
+        doc.text(`Dirección Zonal de Tecnologias de la Información y Comunicaciones\n
+            Detalle de Entrega - Descargo de Equipos Informaticos`.toUpperCase(), 35, 30
+        );
+
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "bold");
+        doc.text(`El Equipo se entrega:`.toUpperCase(), 20, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`FUNCIONAL`, 60, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Código TICS:`.toUpperCase(), 115, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${codAlmacen}`, 140, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Custodio:`.toUpperCase(), 20, 50);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${titular}`, 60, 50);
+
+        // Mostrar "Unidad" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Unidad:`.toUpperCase(), 20, 55);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${departamento}`, 60, 55);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Piso:`.toUpperCase(), 20, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${pisoUbicado}`, 60, 60);
+
+        // Mostrar "Fecha" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Fecha:`.toUpperCase(), 115, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${fechaEntrega}`, 130, 60);
+
+        // Definir los datos a mostrar en la tabla del PDF
+        const tableData = [
+            ['LAPTOP' , 'Marca', marca],
+            ['LAPTOP' , 'Modelo', tarjeta],
+            ['LAPTOP' , 'Núm Serie', serie],
+            ['LAPTOP' , 'Procesador', proces],
+            ['LAPTOP' , 'Velocidad', velocidad],
+            ['LAPTOP' , 'Memoria RAM', ram],
+            ['LAPTOP' , 'Almacenamiento', hdd]
+        ];
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Sistema Operativo:`.toUpperCase(), 20, 110);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${sisOpe}`, 60, 110);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Office:`.toUpperCase(), 20, 115);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${office}`, 60, 115);
+
+        const tableDataEst = [
+            ['ESTADO DE EQUIPO', `${estado}`]
+        ];
+        // Ancho total de la página
+        const pageWidth = doc.internal.pageSize.getWidth()
+        const tableWidth = pageWidth * 0.75; // 85% del ancho de la página
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`OBSERVACION:`.toUpperCase(), 20, 140);
+        doc.setFont("helvetica", "normal");
+        const maxWidth = 165; // Ancho máximo para el texto
+        const textYPosition = 147; // Posición vertical inicial del texto
+        const splitObservacion = doc.splitTextToSize(observacion, maxWidth);
+        doc.text(splitObservacion, 20, textYPosition);
+
+        const tableDataFirma = [
+            ['REALIZADO POR:', 'ENTREGADO A:'],
+            ['\n\n\n', '\n\n',],
+            [`ANALISTA TICS: ${tecnico}`, `FUNCIONARIO: ${usuario}`]
+        ];
+
+        // Configurar la estructura de la tabla
+        doc.autoTable({
+            startY: 65,
+            body: tableData.map(row => [row[1], row[2]]),
+            columnStyles: {
+                0: { cellWidth: 50 }, // Ancho para la primera columna ('Característica')
+                1: { cellWidth: 60 }, // Ancho para la segunda columna ('Valor')
+            },
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            theme: 'grid',
+            margin: { left: 75, right: 20 }, // Añadir margen izquierdo y derecho
+            tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+            didDrawCell: function (data) {
+                if (data.section === 'body' && data.column.index === 0) {
+                    let cellHeight = 0;
+                    let yPos = data.cell.y;
+                    let text = '';
+                    if (data.row.index === 0) {
+                        cellHeight = data.cell.height * 7;
+                        text = 'LAPTOP';
+                    } else if (data.row.index === 7) {
+                        cellHeight = data.cell.height * 4;
+                        text = 'MONITOR';
+                    } else if (data.row.index === 11) {
+                        cellHeight = data.cell.height * 3;
+                        text = 'TECLADO';
+                    } else if (data.row.index === 14) {
+                        cellHeight = data.cell.height * 3;
+                        text = 'MOUSE';
+                    }
+                    if (text) {
+                        const cellWidth = data.cell.width;
+                        const xPos = data.cell.x - cellWidth;
+                        doc.setFillColor(255, 255, 255); // Color de fondo blanco
+                        doc.rect(xPos, yPos, cellWidth, cellHeight, 'FD'); // Dibuja un rectángulo blanco con bordes
+                        doc.setFont("helvetica", "bold");
+                        doc.text(text, xPos + cellWidth / 2, yPos + cellHeight / 2, { align: 'center', baseline: 'middle' });
+                    }
+                }
+            }
+        });
+
+        doc.autoTable({
+            startY: 120,
+            head: [[{ content: 'ESTADO DEL EQUIPO', colSpan: 2, styles: { halign: 'center', textColor: [255, 255, 255] } }]],
+            body: tableDataEst,
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            headStyles: {
+                fillColor: [22, 160, 133], // Color de fondo del encabezado (verde)
+                textColor: [255, 255, 255] // Color del texto del encabezado (blanco)
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 }, // Márgenes para centrar la tabla
+            tableWidth: tableWidth
+        });
+
+        doc.autoTable({
+            startY: 190,
+            head: [tableDataFirma[0]], // Primera fila como encabezado
+            body: [tableDataFirma[1], tableDataFirma[2]],
+            styles: {
+                fontSize: 10,
+                cellPadding: { top: 2, right: 2, bottom: 2, left: 2 }, // Estilos generales
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            rowStyles: {
+                0: { cellPadding: { top: 20, bottom: 20 } } // Aumentar el padding en la segunda fila para aumentar la altura
+            },
+            headStyles: {
+                fillColor: [255, 255, 255], // Sin color de fondo para el encabezado
+                textColor: [0, 0, 0] // Color del texto del encabezado
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 },
+        });
+
+        // Obtener y agregar datos de los formularios visibles
+        const formContainers = document.querySelectorAll('.form-container[style="display: block;"]');
+        formContainers.forEach(formContainer => {
+            // Obtener todos los elementos input, select, textarea dentro del formulario visible
+            const formData = [];
+            const formElements = formContainer.querySelectorAll('input, select, textarea');
+            formElements.forEach(element => {
+                let fieldName = element.id || element.name;
+                let fieldValue = element.value;
+                // Agregar solo si el campo tiene un valor
+                if (fieldName && fieldValue) {
+                    formData.push([element.previousElementSibling.textContent, fieldValue]);
+                }
+            });
+
+            // Agregar los datos del formulario al PDF
+            doc.autoTable({
+                startY: doc.autoTable.previous.finalY + 10, // Posicionar debajo de la tabla anterior
+                head: [['Campo', 'Valor']],
+                body: formData,
+                styles: commonStyles, // Aplicar los estilos comunes a la tabla del formulario
+            });
+        });
+
+        toBase64(inputImage2, function (base64Img2) {
+            doc.addImage(base64Img2, 'JPEG', 15, 265, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario para la segunda imagen
+            // Guardar el documento PDF
+            doc.save('equipos.pdf');
+        });
+    });
+}
+
+//-------------------------------> GUARDAR DATO EN LOCALSTORAGE
+function guardarDato() {
+    const inputValor = document.getElementById('inputUsuario').value;
+    localStorage.setItem('datoGuardado', inputValor);
+    console.log(
+        'Dato guardado en localStorage');
+}
 
 //-------------------------------> FUNCION PRINCIPAL
 document.addEventListener('DOMContentLoaded', async () => {
@@ -2638,10 +2916,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('resultsTLF')) {
         obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/telefono', 'resultsTLF');
     }
-    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/cpu_equipo', 'resultsCPU');
-    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/laptop', 'resultsPTL');
-    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/impresora', 'resultsIMP');
-    //obtenerYMostrarRegistros('http://localhost:3000/tics/reporte/telefono', 'resultsTLF');
+
+    //-------------------------------> Guardar Funcionario en localStorage
+    const datoGuardado = localStorage.getItem('datoGuardado');
+    if (datoGuardado) {
+        document.getElementById('inputUsuario').value = datoGuardado;
+    }
 
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
     const optionMappings = [

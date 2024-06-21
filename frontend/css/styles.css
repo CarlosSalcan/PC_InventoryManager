@@ -928,7 +928,7 @@ textarea {
 .search-container {
     display: flex;
     align-items: center;
-    width:55%;
+    width: 55%;
     margin: 10px;
     border-radius: 10px;
     position: sticky;
@@ -940,7 +940,8 @@ textarea {
 
 #print {
     display: flex;
-    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+    align-items: flex-start;
+    /* Alinea los elementos al inicio verticalmente */
     width: 60%;
     margin: 10px;
     padding: 15px;
@@ -956,7 +957,8 @@ textarea {
     align-items: center;
     justify-content: space-between;
     width: 60%;
-    order: -1; /* Cambia el orden del elemento, lo coloca al principio */
+    order: -1;
+    /* Cambia el orden del elemento, lo coloca al principio */
     margin-bottom: 10px;
     flex-direction: row;
     color: white;
@@ -966,12 +968,15 @@ textarea {
     flex-direction: row;
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Columnas automáticas con un mínimo de 150px */
-    gap: 10px; /* Espacio entre los elementos */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    /* Columnas automáticas con un mínimo de 150px */
+    gap: 10px;
+    /* Espacio entre los elementos */
 }
 
 #print button {
-    margin-top: 10px; /* Espacio sobre el botón */
+    margin-top: 10px;
+    /* Espacio sobre el botón */
 }
 
 
@@ -1170,4 +1175,37 @@ textarea {
 .login-btn:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+
+
+
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    width: 200px;
+}
+
+.inputIMG {
+    height: 35px;
+}
+
+.file-name {
+    display: block;
+    height: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
 }
