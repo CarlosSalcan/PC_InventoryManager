@@ -4,20 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tics - Escritorio</title>
+    <title>Tics - Registro</title>
     <!--=============== ICON ===============-->
     <link rel="icon" type="image/png" href="assets/tics.ico">
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="./css/styles.css">
     <!--=============== REMIXICONS ===============-->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-    <!--=============== EXEL ===============-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
-    <!--=============== DOC ENTREGA  ===============-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
     <!--=============== JS ===============-->
     <script src="./js/styles.js" defer></script>
 </head>
@@ -28,8 +21,7 @@
             <div class="nav__data">
                 <button onclick="redirectToLogin()" class="salir">Salir</button>
                 <a href="#" class="nav__logo">
-                    <span id="userActive"></span>
-                    <i class="ri-planet-line"></i> TICS - ESCRITORIO
+                    <i class="ri-planet-line"></i> TICS - REGISTRO
                 </a>
                 <div class="nav__toggle" id="nav-toggle">
                     <i class="ri-menu-line nav__burger"></i>
@@ -75,115 +67,101 @@
         </nav>
     </header>
 
-    <main>
-        <div class="search-container">
-            <div class="busqueda">
-                <input type="text" id="searchQuery" placeholder="Buscar...">
-                <button type="button" onclick="buscarEquipos('Escritorio','results','modal1')">Buscar</button>
-                <button type="button" onclick="imprimirTabla('EscritorioTable')">Imprimir</button>
-                <button type="button" onclick="generarExcel('EscritorioTable')">Exel</button>
+    <main class="main-container">
+        <form id="nuevoParametroForm" class="registro">
+            <h2>Ingreso de Nuevo Parámetro</h2>
+            <div class="form-section">
+                <div>
+                    <label for="nombreParametro">Nombre del Parámetro:</label>
+                    <input type="text" id="nombreParametro" name="nombreParametro" class="newData">
+                </div>
+                <div>
+                    <label for="tablas">Tabla:</label>
+                    <select id="tablas" name="tablas" class="options">
+                        <option value="" disabled selected>Selecciona una opción</option>
+                        <option value="param_antivirus">Antivirus</option>
+                        <option value="param_marcas">Marcas</option>
+                        <option value="param_memoria">Memoria RAM</option>
+                        <option value="param_office">Office</option>
+                        <option value="param_procesador">Procesador</option>
+                        <option value="param_servicio">Servicio / Departamento</option>
+                        <option value="param_sis_ope">Sistema Operativo</option>
+                        <option value="param_tamano_hdd">Almacenamiento</option>
+                    </select>
+                </div>
+            </div><br>
+            <div class="buttons">
+                <button type="submit" class="green-button" onclick="guardarNuevoParametro()">Guardar Nuevo
+                    Parámetro</button>
             </div>
-            <div class="checkbox-container">
-                <label><input type="checkbox" id="checkFecha" onchange="filtrarEquipos()">Fecha</label>
-                <label><input type="checkbox" id="checkPisos" onchange="filtrarEquipos()">Pisos</label>
-                <label><input type="checkbox" id="checkDepartamentos" onchange="filtrarEquipos()">Departamento</label>
-                <label><input type="checkbox" id="checkCustodio" onchange="filtrarEquipos()">Custodio</label>
-                <label><input type="checkbox" id="checkTecnico" onchange="filtrarEquipos()">Tecnico</label>
-            </div>
-        </div>
+        </form>
 
-        <table class="equipos" id="EscritorioTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Fecha</th>
-                    <th>Cod. Almacén</th>
-                    <th>Tipo Eq.</th>
-                    <th>Piso Ubic.</th>
-                    <th>Dep. / Serv.</th>
-                    <th>Titular</th>
-                    <th>Técnico</th>
-                    <th>Editar</th>
-                </tr>
-            </thead>
-            <tbody id="results">
-            </tbody>
-        </table>
+        <form id="nuevoEquipoForm" class="registroEq">
+            <h2>Ingreso de Nuevo Equipo</h2>
+            <div class="horizontal-container">
+                <div>
+                    <div>
+                        <label for="newCod">ID Equipo:</label>
+                        <span id="newCod"></span>
+                    </div><br>
+                    <div>
+                        <label for="newFecha">Fch. Entrega:</label>
+                        <span id="newFecha"></span>
+                    </div><br>
+                    <div>
+                        <label for="newTecnico">Técnico:</label>
+                        <span id="newTecnico"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <label for="newCodAlmacen">Nuevo Cod Almacén:</label>
+                        <input type="text" id="newCodAlmacen" name="newCodAlmacen" class="newData" required>
+                    </div>
+                    <div>
+                        <label for="pisos">Piso Destinado:</label>
+                        <select id="pisos" class="options"></select>
+                    </div>
+                </div>
+
+                <div colspan="2">
+                    <div>
+                        <label for="newTitularEq">Nombre de Custodio:</label>
+                        <input type="text" id="newTitularEq" name="newTitularEq" class="newData">
+                    </div>
+                    <div>
+                        <label for="departamentos">Dep./Serv:</label>
+                        <select id="departamentos" class="options"></select>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <label for="newTipoEquipo">Tipo de Equipo:</label>
+                        <select id="newTipoEquipo" class="options"></select>
+                    </div>
+                    <div>
+                        <label for="ultimosCodAlmacenArea">Ultimos Cod Ingresados:</label>
+                        <textarea id="ultimosCodAlmacenArea" rows="5" cols="29" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="horizontal-container">
+                <div class="buttons">
+                    <button type="button" class="green-button" onclick="enviarDatosEquipo()">Ingresar Nuevo
+                        Equipo</button>
+                </div>
+            </div>
+        </form>
     </main>
 
-    <div id="modal1" class="modal">
+    <div id="modal7" class="modal">
         <div class="modal-content">
             <form id="editarEquipo" class="formulario">
-                <h2>Edición de Equipo</h2>
-                <span class="close" onclick="cerrarVentanaEmergente('modal1')">&times;</span>
-                <div class="horizontal-container">
-                    <div>
-                        <div>
-                            <label for="cod">ID Equipo:</label>
-                            <span id="cod"></span>
-                        </div><br>
-                        <div>
-                            <label for="fecha">Fch. Entrega:</label>
-                            <span id="fecha"></span>
-                        </div><br>
-                        <div>
-                            <label for="tecnico">Técnico:</label>
-                            <span id="tecnico"></span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div>
-                            <label for="codAlmacen">Código Almacén:</label>
-                            <input type="text" id="codAlmacen" name="codAlmacen" class="newData" readonly>
-                        </div>
-                        <div>
-                            <label for="pisos">Piso Ubicado:</label>
-                            <select id="pisos" class="options"></select>
-                        </div>
-                    </div>
-
-                    <div colspan="2">
-                        <div>
-                            <label for="titularEq">Titular:</label>
-                            <input type="text" id="titularEq" name="titularEq" class="newData">
-                        </div>
-                        <div>
-                            <label for="departamentos">Dep./Serv.:</label>
-                            <select id="departamentos" class="options"></select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div>
-                            <label for="tipoEquipo">Tipo de Equipo:</label>
-                            <select id="tipoEquipo" class="options" disabled></select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="horizontal-container">
-                    <!-- Botones -->
-                    <div class="buttons">
-                        <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Equipo</button>
-                        <button type="button" class="orange-button" onclick="abrirModalYMostrarTodosDatos('modal11','modal1','escritorio')">Entregar
-                            Equipo</button>
-                        <button type="button" class="red-button" onclick="enviarBodega()">Guardar en Bodega</button>
-                    </div>
-                </div>
-
-                <hr class="lines">
-                <!-- Menu Componentes -->
-                <div class="buttons">
-                    <button type="button" class="edit-button" onclick="mostrarFormulario('cpu')">CPU</button>
-                    <button type="button" class="edit-button" onclick="mostrarFormulario('monitor')">Monitor</button>
-                    <button type="button" class="edit-button" onclick="mostrarFormulario('teclado')">Teclado</button>
-                    <button type="button" class="edit-button" onclick="mostrarFormulario('mouse')">Mouse</button>
-                </div>
-
-                <!-- Mostrar Menu Componentes -->
-                <div id="formCPU" class="form-container" style="display: none;">
-                    <h2>Edición de CPU</h2>
+                <div id="formCPU" class="form-container">
+                    <h2>Ingreso Nuevo CPU</h2>
                     <form id="editarCPU" class="formulario">
                         <div class="form-section">
                             <div class="horizontal-container">
@@ -193,8 +171,8 @@
                                         <span id="codigo" name="codigo"></span>
                                     </div><br>
                                     <div>
-                                        <label for="tec">Técnico:</label>
-                                        <span id="tec" name="tec"></span>
+                                        <label for="tecCPU">Técnico:</label>
+                                        <span id="tecCPU" name="tecCPU"></span>
                                     </div><br>
                                     <div>
                                         <label for="codigoEq">Cod. Eq:</label>
@@ -216,7 +194,7 @@
                                     <input type="text" id="numSerie" name="numSerie" class="newData">
 
                                     <label for="nomUsuario">Usuario:</label>
-                                    <input type="text" id="nomUsuario" name="nomUsuario" class="newData">
+                                    <input type="text" id="nomUsuario" name="nomUsuario" class="newData" readonly>
                                 </div>
 
                                 <div>
@@ -316,9 +294,8 @@
                                     <textarea id="observacionTxt" rows="2" cols="68"></textarea>
                                 </div>
                                 <div class="buttons">
-                                    <button type="button" class="green-button" onclick="guardarCambiosCPU()">Guardar
-                                        Cambios CPU</button>
-                                    <!-- <button type="button" class="red-button" onclick="">Eliminar CPU</button> -->
+                                    <button type="button" class="green-button"
+                                        onclick="guardarCPU(),mostrarRegistro('monitor')">Guardar CPU</button>
                                 </div>
                             </div>
                         </div>
@@ -326,21 +303,21 @@
                 </div>
 
                 <div id="formMonitor" class="form-container" style="display: none;">
-                    <h2>Edición de Monitor</h2>
+                    <h2>Ingreso Nuevo Monitor</h2>
                     <form id="editarMTR" class="formulario">
                         <div class="form-section">
                             <div class="horizontal-container" style="margin: 0;">
                                 <div>
-                                    <label for="codigoMTR">Cod. Monitor:</label>
-                                    <span id="codigoMTR" name="codigoMTR"></span>
+                                    <label for="newCodMTR">Cod. Monitor:</label>
+                                    <span id="newCodMTR" name="newCodMTR"></span>
                                 </div>
                                 <div>
                                     <label for="tecMTR">Tecnico:</label>
                                     <span id="tecMTR" name="tecMTR"></span>
                                 </div>
                                 <div>
-                                    <label for="codigoEqMTR">Cod. Eq:</label>
-                                    <input type="text" id="codigoEqMTR" name="codigoEqMTR" class="newData"
+                                    <label for="newCodEqMTR">Cod. Eq:</label>
+                                    <input type="text" id="newCodEqMTR" name="newCodEqMTR" class="newData"
                                         style="width: 75px;" readonly>
                                 </div>
                             </div>
@@ -348,7 +325,7 @@
                             <div class="horizontal-container">
                                 <div>
                                     <label for="codigoticsMTR">Cod. Tics Monitor:</label>
-                                    <input type="text" id="codigoticsMTR" name="codigoticsMTR" class="newData" readonly>
+                                    <input type="text" id="codigoticsMTR" name="codigoticsMTR" class="newData">
                                 </div>
                                 <div>
                                     <label for="condicionMTR">Condicion:</label>
@@ -386,10 +363,10 @@
                                     <textarea id="observacionTxtM" rows="2" cols="68"></textarea>
                                 </div>
                                 <div class="buttons">
-                                    <button type="button" class="green-button" onclick="guardarCambiosMTR()">
-                                        Guardar Cambios Monitor
+                                    <button type="button" class="green-button"
+                                        onclick="guardarMTR(),mostrarRegistro('teclado')">
+                                        Guardar Monitor
                                     </button>
-                                    <!-- <button type="button" class="red-button" onclick="">Eliminar Monitor</button> -->
                                 </div>
                             </div>
                         </div>
@@ -397,7 +374,7 @@
                 </div>
 
                 <div id="formTeclado" class="form-container" style="display: none;">
-                    <h2>Edición de Teclado</h2>
+                    <h2>Ingreso Nuevo Teclado</h2>
                     <form id="editarTCD" class="formulario">
                         <div class="form-section">
                             <div class="horizontal-container">
@@ -411,8 +388,8 @@
                                         <span id="tecTCD" name="tecTCD"></span>
                                     </div>
                                     <div>
-                                        <label for="codigoEqTCD" style="margin:0;">Cod. Eq:</label>
-                                        <input type="text" id="codigoEqTCD" name="codigoEqMTR" class="newData"
+                                        <label for="newCodEqTCD" style="margin:0;">Cod. Eq:</label>
+                                        <input type="text" id="newCodEqTCD" name="newCodEqTCD" class="newData"
                                             style="width: 75px;" readonly>
                                     </div>
                                 </div>
@@ -421,7 +398,7 @@
                             <div class="horizontal-container">
                                 <div>
                                     <label for="codigoticsTCD">Cod. Tics Teclado:</label>
-                                    <input type="text" id="codigoticsTCD" name="codigoticsTCD" class="newData" readonly>
+                                    <input type="text" id="codigoticsTCD" name="codigoticsTCD" class="newData">
                                 </div>
                                 <div>
                                     <label for="condicionTCD">Condicion Teclado:</label>
@@ -467,8 +444,9 @@
                             </div>
                             <div class="horizontal-container">
                                 <div class="buttons">
-                                    <button type="button" class="green-button" onclick="guardarCambiosTCD()">
-                                        Guardar Cambios
+                                    <button type="button" class="green-button"
+                                        onclick="guardarTCL(),mostrarRegistro('mouse')">
+                                        Guardar Tecaldo
                                     </button>
                                 </div>
                             </div>
@@ -477,7 +455,7 @@
                 </div>
 
                 <div id="formMouse" class="form-container" style="display: none;">
-                    <h2>Edición de Mouse</h2>
+                    <h2>Edición Ingreso Nuevo Mouse</h2>
                     <form id="editarMS" class="formulario">
                         <div class="form-section">
                             <div class="horizontal-container">
@@ -498,7 +476,7 @@
                             <div class="horizontal-container">
                                 <div>
                                     <label for="codigoticsMS">Cod. Tics Mouse:</label>
-                                    <input type="text" id="codigoticsMS" name="codigoticsMS" class="newData" readonly>
+                                    <input type="text" id="codigoticsMS" name="codigoticsMS" class="newData">
                                 </div>
                                 <div>
                                     <label for="condicionMS">Condicion Mouse:</label>
@@ -545,8 +523,8 @@
 
                             <div class="horizontal-container">
                                 <div class="buttons">
-                                    <button type="button" class="green-button" onclick="guardarCambiosMS()">
-                                        Guardar Cambios
+                                    <button type="button" class="green-button" onclick="guardarMS()">
+                                        Guardar Mouse
                                     </button>
                                 </div>
                             </div>
@@ -557,200 +535,132 @@
         </div>
     </div>
 
-    <div id="modal11" class="modal">
+    <div id="modal8" class="modal">
         <div class="modal-content">
-            <h2>Entrega de Equipo</h2>
-            <hr class="lines">
-            <div>
-                <div class="horizontal-container">
-                    <div class="form-section">
-                        <label for="inputUsuario">Encabezado Y Pie de Pagina</label><br><br>
-                        <div>
-                            <label for="inputImage1" class="custom-file-upload">
-                                <input class="inputIMG" type="file" id="inputImage1" accept=".jpg, .jpeg, .png"
-                                    onchange="displayFileName(this)">
-                                <span class="file-name">Subir Encabezado</span>
-                            </label>
-                        </div><br>
-                        <div>
-                            <label for="inputImage2" class="custom-file-upload">
-                                <input class="inputIMG" type="file" id="inputImage2" accept=".jpg, .jpeg, .png"
-                                    onchange="displayFileName(this)">
-                                <span class="file-name">Subir Pie Pagina</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <div>
-                            <label for="inputUsuario">Funcionario:</label><br><br>
-                            <input type="text" id="inputUsuario" placeholder="Nombre Funcionario" class="newData">
-                        </div>
-                        <div>
-                            <div class="buttons">
-                                <button type="button" class="green-button"
-                                    onclick="generarPDF(), guardarDato()">Imprimir PDF</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <span class="close" onclick="cerrarVentanaEmergente('modal11')">&times;</span>
-            <h2>Datos de Equipo</h2>
-            <hr class="lines">
-            <form id="entregaCPU" class="formulario">
+            <form id="editarLaptop" class="formulario">
+                <h2>Ingreso de Nuevo Portatil</h2>
                 <div class="form-section">
                     <div class="horizontal-container">
                         <div>
-                            <label for="codigoEntrega">Cod. CPU:</label>
-                            <span id="codigoEntrega" name="codigo"></span>
-                        </div><br>
-                        <div>
-                            <label for="tecEntrega">Técnico:</label>
-                            <span id="tecEntrega" name="teEntrega"></span>
+                            <div>
+                                <label for="codigoPTL">Cod. Laptop:</label>
+                                <span id="codigoPTL" name="codigoPTL"></span>
+                            </div><br>
+                            <div>
+                                <label for="tecPTL">Técnico:</label>
+                                <span id="tecPTL" name="tecPTL"></span>
+                            </div><br>
+                            <div>
+                                <label for="codigoEqPTL">Cod. Eq:</label>
+                                <input type="text" id="codigoEqPTL" name="codigoEqPTL" class="newData"
+                                    style="width: 75px;" readonly>
+                            </div>
                         </div>
+
                         <div>
-                            <label for="codigoEqEntrega">Cod. Eq:</label><br>
-                            <input type="text" id="codigoEqEntrega" name="codigoEqEntrega" class="newData"
-                                style="width: 80px;">
+                            <label for="codigoticsPTL">Cod. Tics :</label>
+                            <input type="text" id="codigoticsPTL" name="codigoticsPTL" class="newData" readonly>
+
+                            <label for="nombreHostPTL">Host:</label>
+                            <input type="text" id="nombreHostPTL" name="nombreHostPTL" class="newData">
                         </div>
+
                         <div>
-                            <label for="codigoticsEntrega">Cod. Tics CPU:</label>
-                            <input type="text" id="codigoticsEntrega" name="codigoticsEntrega" class="newData">
+                            <label for="numSeriePTL">No. Serie Laptop:</label>
+                            <input type="text" id="numSeriePTL" name="numSeriePTL" class="newData">
+
+                            <label for="nomUsuarioPTL">Usuario:</label>
+                            <input type="text" id="nomUsuarioPTL" name="nomUsuarioPTL" class="newData" readonly>
+                        </div>
+
+                        <div>
+                            <div>
+                                <label for="estadoPTL">Estado:</label>
+                                <select id="estadoPTL" class="options"></select>
+                            </div>
+
+                            <div style="margin-top: -10px;">
+                                <label for="marcasPTL">Marca Laptop:</label>
+                                <select id="marcasPTL" class="options"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <div>
+                                <label for="modeloPTL">Modelo:</label>
+                                <input type="text" id="modeloPTL" name="modeloPTL" class="newData">
+                            </div>
+
+                            <div class="horizontal-container">
+                                <div>
+                                    <label for="ramPTL">RAM:</label>
+                                    <select id="ramPTL" class="options"></select>
+
+                                    <input type="checkbox" id="bluetoothPTL" name="bluetoothPTL">
+                                    <label for="bluetoothPTL">Bluetooth</label>
+
+                                    <input type="checkbox" id="redFijaPTL" name="redFijaPTL">
+                                    <label for="redFijaPTL">Red Fija</label>
+                                </div>
+
+                                <div>
+                                    <label for="hddPTL">HDD:</label>
+                                    <select id="hddPTL" class="options"></select>
+
+                                    <input type="checkbox" id="lectorTarjetaPTL">
+                                    <label for="lectorTarjetaPTL">Lector Tar.</label>
+
+                                    <input type="checkbox" id="redInalamPTL" name="redInalamPTL">
+                                    <label for="redInalamPTL">Red Inala.</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <label for="procesadorPTL">Procesador:</label>
+                            <select id="procesadorPTL" class="options"></select>
+
+                            <label for="velocidadProcePTL">Velocidad Procesador:</label>
+                            <input type="text" id="velocidadProcePTL" name="velocidadProcePTL" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="poseeAntivirusPTL">Posee Antivirus:</label>
+                            <select id="poseeAntivirusPTL" class="options">
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+
+                            <label for="antivirusPTL">Nombre Antivirus:</label>
+                            <select id="antivirusPTL" class="options"></select>
+
+                            <label for="verAntivirusPTL">Versión Antivirus:</label>
+                            <input type="text" id="verAntivirusPTL" name="verAntivirusPTL" class="newData">
+                        </div>
+
+                        <div>
+                            <label for="officePTL">Office:</label>
+                            <select id="officePTL" class="options"></select>
+
+                            <label for="sisOperativoPTL">Sistema Operativo:</label>
+                            <select id="sisOperativoPTL" class="options"></select>
+
+                            <label for="disOpticosPTL">Dispositivo Optico:</label>
+                            <select id="disOpticosPTL" class="options"></select>
                         </div>
                     </div>
 
                     <div class="horizontal-container">
                         <div>
-                            <label for="marcasEntrega">Marca CPU:</label>
-                            <select id="marcasEntrega" class="options"></select>
+                            <label for="observacionTxtPTL">Observación:</label>
+                            <textarea id="observacionTxtPTL" rows="2" cols="68"></textarea>
                         </div>
-                        <div>
-                            <label for="Mainboard">Mainboard:</label>
-                            <input type="text" id="MainboardEntrega" name="MainboardEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="numSerieEntrega">No. Serie CPU:</label>
-                            <input type="text" id="numSerieEntrega" name="numSerieEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="procesadorEntrega">Procesador:</label>
-                            <select id="procesadorEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="velocidadProceEntrega">Velocidad Procesador:</label>
-                            <input type="text" id="velocidadProceEntrega" name="velocidadProceEntrega" class="newData">
-                        </div>
-                        <div style="display: none;">
-                            <label for="estadoEntrega">Estado:</label>
-                            <select id="estadoEntrega" class="options"></select>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="horizontal-container">
-                            <div>
-                                <label for="ramEntrega">RAM:</label>
-                                <select id="ramEntrega" class="options"></select>
-                            </div>
-                            <div>
-                                <label for="hddEntrega">HDD:</label>
-                                <select id="hddEntrega" class="options"></select>
-                            </div>
-                            <div>
-                                <label for="officeEntrega">Office:</label>
-                                <select id="officeEntrega" class="options"></select>
-                            </div>
-                            <div>
-                                <label for="sisOperativoEntrega">Sistema Operativo:</label>
-                                <select id="sisOperativoEntrega" class="options"></select>
-                            </div>
-                            <div>
-                                <label for="condicionEntrega">Condicion:</label>
-                                <select id="condicionEntrega" class="options"></select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="horizontal-container">
-                        <div>
-                            <label for="observacionTxtEntrega">Observación:</label>
-                            <textarea id="observacionTxtEntrega" rows="2" cols="60"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <hr class="lines">
-            <form id="entregaMTR" class="formulario">
-                <div class="form-section">
-                    <div class="horizontal-container">
-                        <div>
-                            <label for="marcasMTREntrega">Marca MONITOR:</label>
-                            <select id="marcasMTREntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="modeloMTREntrega">Modelo MONITOR:</label>
-                            <input type="text" id="modeloMTREntrega" name="modeloMTREntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="tamanoMTREntrega">Tamaño MONITOR:</label>
-                            <select id="tamanoMTREntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="serieMTREntrega  ">No. Serie MONITOR:</label>
-                            <input type="text" id="serieMTREntrega" name="serieMTR" class="newData">
-                        </div>
-                        <div>
-                            <label for="condicionMTREntrega">Condicion:</label>
-                            <select id="condicionMTREntrega" class="options"></select>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <hr class="lines">
-            <form id="entregaTCD" class="formulario">
-                <div class="form-section">
-                    <div class="horizontal-container">
-                        <div>
-                            <label for="marcasTCDEntrega">Marca Teclado:</label>
-                            <select id="marcasTCDEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="serieTCDEntrega">No. Serie Teclado:</label>
-                            <input type="text" id="serieTCDEntrega" name="serieTCDEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="modeloTCDEntrega">Modelo Teclado:</label>
-                            <input type="text" id="modeloTCDEntrega" name="modeloTCDEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="condicionTCDEntrega">Condicion Teclado:</label>
-                            <select id="condicionTCDEntrega" class="options"></select>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <hr class="lines">
-            <form id="entregaMS" class="formulario">
-                <div class="form-section">
-                    <div class="horizontal-container">
-                        <div>
-                            <label for="marcasMSEntrega">Marca Mouse:</label>
-                            <select id="marcasMSEntrega" class="options"></select>
-                        </div>
-                        <div>
-                            <label for="serieMSEntrega">No. Serie Mouse:</label>
-                            <input type="text" id="serieMSEntrega" name="serieMSEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="modeloMS">Modelo Mouse:</label>
-                            <input type="text" id="modeloMSEntrega" name="modeloMSEntrega" class="newData">
-                        </div>
-                        <div>
-                            <label for="condicionMSEntrega">Condicion Mouse:</label>
-                            <select id="condicionMSEntrega" class="options"></select>
+                        <div class="buttons">
+                            <button type="button" class="green-button" onclick="guardarPTL()">Guardar Nuevo PTL</button>
                         </div>
                     </div>
                 </div>
@@ -758,16 +668,168 @@
         </div>
     </div>
 
+    <div id="modal9" class="modal">
+        <div class="modal-content">
+            <h2>Ingreso Nueva Impresora</h2>
+            <form id="editarImpresora" class="formulario">
+                <div class="form-section">
+                    <div class="horizontal-container">
+                        <div>
+                            <div>
+                                <label for="codigoIMP">Cod. Impresora:</label>
+                                <span id="codigoIMP" name="codigoIMP"></span>
+                            </div><br>
+                            <div>
+                                <label for="tecIMP">Técnico:</label>
+                                <span id="tecIMP" name="tecIMP"></span>
+                            </div><br>
+                            <div>
+                                <label for="codigoEqIMP">Cod. Eq:</label>
+                                <input type="text" id="codigoEqIMP" name="codigoEqIMP" class="newData"
+                                    style="width: 75px;" readonly>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="codigoticsIMP">Cod. Tics :</label>
+                            <input type="text" id="codigoticsIMP" name="codigoticsIMP" class="newData" readonly>
+                        </div>
+
+                        <div>
+                            <label for="numSerieIMP">No. Serie Impresora:</label>
+                            <input type="text" id="numSerieIMP" name="numSerieIMP" class="newData">
+                        </div>
+
+                        <div>
+                            <div class="horizontal-container" style="margin: 0;">
+                                <div>
+                                    <label for="condicionIMP">Condicion:</label>
+                                    <select id="condicionIMP" class="options"></select>
+                                </div>
+
+                                <div>
+                                    <label for="estadoIMP">Estado:</label>
+                                    <select id="estadoIMP" class="options"></select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="tipoIMP">Tipo:</label>
+                                <select id="tipoIMP" class="options"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="line">
+                    <div class="horizontal-container">
+                        <div>
+                            <label for="modeloIMP">Modelo:</label>
+                            <input type="text" id="modeloIMP" name="modeloIMP" class="newData">
+                        </div>
+                        <div>
+                            <label for="marcasIMP">Marca Impresora:</label>
+                            <select id="marcasIMP" class="options"></select>
+                        </div>
+                        <div>
+                            <label for="puertoIMP">Puerto Impresora:</label>
+                            <select id="puertoIMP" class="options"></select>
+                        </div>
+                        <div>
+                            <label for="ipIMP">IP:</label>
+                            <input type="text" id="ipIMP" name="ipIMP" class="newData">
+                        </div>
+                    </div>
+
+                    <div class="horizontal-container">
+                        <div style="margin: 0;">
+                            <label for="observacionTxtIMP">Observación:</label>
+                            <textarea id="observacionTxtIMP" rows="2" cols="68"></textarea>
+                        </div>
+                        <div class="buttons" style="margin: 0;">
+                            <button type="button" class="green-button" onclick="guardarIMP()">Guardar Impresora</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="modal10" class="modal">
+        <div class="modal-content">
+            <h2>Ingreso Nuevo TELEFONO</h2>
+            <div id="formTelefono" class="form-container">
+                <form id="editarTelefono" class="formulario">
+                    <div class="form-section">
+                        <div class="horizontal-container">
+                            <div>
+                                <div class="horizontal-container" style="margin: 0;">
+                                    <div>
+                                        <label for="codigoTLF">Cod. Telefono:</label>
+                                        <span id="codigoTLF" name="codigoTLF"></span>
+                                    </div>
+                                    <div>
+                                        <label for="tecTLF">Técnico:</label>
+                                        <span id="tecTLF" name="tecTLF"></span>
+                                    </div>
+                                    <div>
+                                        <label for="codigoEqTLF">Cod. Eq:</label>
+                                        <input type="text" id="codigoEqTLF" name="codigoEqTLF" class="newData"
+                                            style="width: 100px;" readonly>
+                                    </div>
+                                </div>
+                                <div class="horizontal-container" style="margin: 0;">
+                                    <div>
+                                        <label for="condicionTLF">Condicion:</label>
+                                        <select id="condicionTLF" class="options"></select>
+                                    </div>
+
+                                    <div>
+                                        <label for="estadoTLF">Estado:</label>
+                                        <select id="estadoTLF" class="options"></select>
+                                    </div>
+                                    <div>
+                                        <label for="codigoticsTLF">Cod. Tics :</label>
+                                        <input type="text" id="codigoticsTLF" name="codigoticsTLF" class="newData"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="line">
+                        <div class="horizontal-container">
+                            <div>
+                                <label for="numSerieTLF">No. Serie Telefono:</label>
+                                <input type="text" id="numSerieTLF" name="numSerieTLF" class="newData">
+                            </div>
+                            <div>
+                                <label for="modeloTLF">Modelo:</label>
+                                <input type="text" id="modeloTLF" name="modeloTLF" class="newData">
+                            </div>
+                            <div>
+                                <label for="marcasTLF">Marca Telefono:</label>
+                                <select id="marcasTLF" class="options"></select>
+                            </div>
+                        </div>
+
+                        <div class="horizontal-container">
+                            <div style="margin: 0;">
+                                <label for="observacionTxtTLF">Observación:</label>
+                                <textarea id="observacionTxtTLF" rows="2" cols="68"></textarea>
+                            </div>
+                            <div class="buttons" style="margin: 0;">
+                                <button type="button" class="green-button" onclick="guardarTLF()">Guardar
+                                    Cambios IMP</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="./js/equipo.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Recuperar el nombre de usuario de localStorage
-            const username = localStorage.getItem('username');
-            if (username) {
-                document.getElementById('userActive').textContent = username;
-            }
-        });
-    </script>
+    <script src="./js/parametro.js"></script>
     <script>
         function redirectToLogin() {
             // Redireccionar a login.html

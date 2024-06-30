@@ -26,6 +26,7 @@
     <header class="header">
         <nav class="nav container">
             <div class="nav__data">
+                <button onclick="redirectToLogin()" class="salir">Salir</button>
                 <a href="#" class="nav__logo">
                     <i class="ri-planet-line"></i> TICS - PORTATIL
                 </a>
@@ -37,7 +38,7 @@
             <!--=============== NAV MENU ===============-->
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                    <li><a href="index.html" class="nav__link">Registro</a></li>
+                    <li><a href="registro.html" class="nav__link">Registro</a></li>
                     <!--=============== DROPDOWN 1 ===============-->
                     <li class="dropdown__item">
                         <div class="nav__link">
@@ -165,7 +166,7 @@
                     <div class="buttons">
                         <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Equipo</button>
                         <button type="button" class="orange-button"
-                            onclick="abrirModalYMostrarTodosDatos('modal12','modal4')">Entregar
+                            onclick="abrirModalYMostrarTodosDatos('modal12','modal4','portatil')">Entregar
                             Equipo</button>
                         <button type="button" class="red-button" onclick="enviarBodega()">Guardar Bodega</button>
                         <button type="button" class="edit-button"
@@ -423,6 +424,12 @@
     </div>
 
     <script src="./js/equipo.js"></script>
+    <script>
+        function redirectToLogin() {
+            // Redireccionar a login.html
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 
 </html>

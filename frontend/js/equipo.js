@@ -148,58 +148,53 @@ function guardarCambiosEq() {
         });
 }
 
-function guardarCambiosEq() {
-    const codEquipo = document.getElementById('cod').textContent;
-    const newCodAlmacen = document.getElementById('codAlmacen').value;
-    const newTipoEquipo = document.getElementById('tipoEquipo').value;
-    const newPiso = document.getElementById('pisos').value;
-    const newDepartamento = document.getElementById('departamentos').value;
-    const newTitular = document.getElementById('titularEq').value;
+async function enviarBodega() {
+    const codEquipo = document.getElementById('cod').innerText;
+    try {
+        // Obtener información del equipo
+        const equipoResponse = await fetch(`http://localhost:3000/tics/equipoB/${codEquipo}`);
+        const equipoData = await equipoResponse.json();
 
-    // Mostrar ventana de confirmación al usuario
-    const confirmacion = confirm(`¿Estás seguro de guardar los siguientes cambios?
-        Código de Equipo: ${codEquipo}
-        Código de Almacén: ${newCodAlmacen}
-        Tipo de Equipo: ${newTipoEquipo}
-        Piso: ${newPiso}
-        Departamento: ${newDepartamento}
-        Titular: ${newTitular}`
-    );
+        // Mostrar ventana de confirmación al usuario
+        const confirmacion = confirm(`¿Estás seguro de enviar a bodega el siguiente equipo?
+            Código: ${equipoData.equipo.cod_equipo}
+            Ubicación Actual: ${equipoData.equipo.piso_ubic}
+            Serv/Depar Actual: ${equipoData.equipo.serv_depar}
+            Custodio Actual: ${equipoData.equipo.nom_custodio}
 
-    if (!confirmacion) {
-        // Cerrar la ventana emergente si el usuario cancela
-        window.location.reload();
-        return; // Si el usuario cancela, no hacemos nada
-    }
+            El equipo será modificado a:
+            Nueva Ubicación: SUBSUELO
+            Serv/Depar Nuevo: BODEGA / ACTIVOS FIJOS
+            Nuevo Custodio: LIBRE`
+        );
+        if (!confirmacion) {
+            return; // Si el usuario cancela, no hacemos nada
+        }
 
-    fetch(`http://localhost:3000/tics/editEquipos/${codEquipo}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            codEquipo: codEquipo,
-            nuevoCodAlmacen: newCodAlmacen,
-            nuevoTipoEquipo: newTipoEquipo,
-            nuevoPiso: newPiso,
-            nuevoDepartamento: newDepartamento,
-            nuevoTitular: newTitular
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al guardar cambios en el equipo');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data.message);
-            mostrarMensaje('Equipo Modificado Correctamente', 3000);
-            cerrarVentanaEmergente(modalId); // Cerrar la ventana emergente después de guardar los cambios
-        })
-        .catch(error => {
-            console.error('Error:', error);
+        // Actualizar información del equipo
+        const response = await fetch(`http://localhost:3000/tics/enviarBodega/${codEquipo}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                piso_ubic: 'SUBSUELO',
+                serv_depar: 'BODEGA / ACTIVOS FIJOS',
+                nom_custodio: 'LIBRE'
+            })
         });
+
+        const data = await response.json();
+        if (data.success) {
+            //console.log('Equipo Guardado en Bodega Correctamente');
+            mostrarMensaje('Equipo Guardado en Bodega Correctamente', 3000);
+        } else {
+            mostrarMensaje('Error al Guardar en Bodega Correctamente', 3000);
+            //console.error('Error al editar equipo:', data.message);
+        }
+    } catch (error) {
+        console.error('Error al Gar en Bodega el equipo:', error);
+    }
 }
 
 function marcarCheckBoxes(data, mapping) {
@@ -319,7 +314,7 @@ async function obtenerDatosTabla(tabla, codEquipo) {
 
         if (data.success) {
             const componente = data[tabla]; // Acceder correctamente a los datos del componente
-            console.log("Datos de la tabla:", componente);
+            //console.log("Datos de la tabla:", componente);
             // Verificar la tabla y llamar a la función correspondiente
             if (tabla === "cpu_equipo") {
                 mostrarDatosCPU(componente);
@@ -447,9 +442,11 @@ async function guardarCambiosCPU() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
+            mostrarMensaje2('Cambios CPU guardados correctamente', 3000);
+            //console.log('Cambios guardados correctamente');
         } else {
-            console.error('Error al guardar los cambios:', data.message);
+            mostrarMensaje('Error al guardar los cambios CPU', 3000);
+            //console.error('Error al guardar los cambios:', data.message);
         }
     } catch (error) {
         console.error('Error al guardar los cambios:', error);
@@ -506,11 +503,11 @@ async function guardarCambiosMTR() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
-            console.log('CONSULTA EJECUTA VER:', data);
+            mostrarMensaje2('Cambios de MONITOR guardados', 3000);
+            //console.log('Cambios guardados correctamente');
         } else {
-            console.error('Error al guardar los cambios MTR:', data.message);
-            console.log('CONSULTA EJECUTA VER:', data);
+            mostrarMensaje('Error al guardar los cambios MONITOR', 3000);
+            //console.error('Error al guardar los cambios MTR', data.message);
         }
     } catch (error) {
         console.error('Error al guardar los cambios mtr:', error);
@@ -569,9 +566,11 @@ async function guardarCambiosTCD() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
+            mostrarMensaje2('Cambios de TECLADO guardados', 3000);
+            //console.log('Cambios guardados correctamente');
         } else {
-            console.error('Error al guardar los cambios:', data.message);
+            mostrarMensaje('Error al guardar los cambios TECLADO', 3000);
+            //console.error('Error al guardar los cambios:', data.message);
         }
     } catch (error) {
         console.error('Error al guardar los cambios:', error);
@@ -630,9 +629,11 @@ async function guardarCambiosMS() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
+            mostrarMensaje2('Cambios de MOUSE guardados', 3000);
+            //console.log('Cambios guardados correctamente');
         } else {
-            console.error('Error al guardar los cambios:', data.message);
+            mostrarMensaje('Error al guardar los cambios MOUSE', 3000);
+            //console.error('Error al guardar los cambios:', data.message);
         }
     } catch (error) {
         console.error('Error al guardar los cambios:', error);
@@ -756,9 +757,12 @@ async function guardarCambiosPTL() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
+            //console.log('Cambios guardados correctamente');
+            mostrarMensaje2('Cambios de PORTATIL guardados', 3000);
+            cerrarVentanaEmergente('modal4');
         } else {
-            console.error('Error al guardar los cambios PTL:', data.message);
+            //console.error('Error al guardar los cambios PTL:', data.message);
+            mostrarMensaje('Error al guardar los cambios PORTATIL', 3000);
         }
     } catch (error) {
         console.error('Error al guardar los cambios PTL:', error);
@@ -826,9 +830,11 @@ async function guardarCambiosIMP() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
+            //console.log('Cambios guardados correctamente');
+            mostrarMensaje2('Cambios de IMPRESORA guardados', 3000);
+            cerrarVentanaEmergente('modal5');
         } else {
-            console.error('Error al guardar los cambios IMP:', data.message);
+            mostrarMensaje('Error al guardar los cambios IMPRESORA', 3000);
         }
     } catch (error) {
         console.error('Error al guardar los cambios IMP:', error);
@@ -889,9 +895,12 @@ async function guardarCambiosTLF() {
         // Maneja la respuesta del servidor aquí
         const data = await response.json();
         if (data.success) {
-            console.log('Cambios guardados correctamente');
+            //console.log('Cambios guardados correctamente');
+            mostrarMensaje2('Cambios de TELFONO guardados', 3000);
+            cerrarVentanaEmergente('modal6');
         } else {
-            console.error('Error al guardar los cambios TLF:', data.message);
+            //console.error('Error al guardar los cambios TLF:', data.message);
+            mostrarMensaje('Error al guardar los cambios TELFONO', 3000);
         }
     } catch (error) {
         console.error('Error al guardar los cambios TLF:', error);
@@ -1002,8 +1011,7 @@ async function enviarDatosEquipo() {
         });
         const data = await response.json();
         if (data.success) {
-            alert('Equipo ingresado correctamente');
-            //mostrarVentanaEmergente('modal7');
+            mostrarMensaje2('Equipo ingresado correctamente', 3000);
             mostrarNewRegistro();
             //-------------------------------> Enviar a los demas Form Cod Alamcen
             setearDatoEnElemento(cod_almacen, 'codigotics', 'input');
@@ -1184,7 +1192,6 @@ async function guardarCPU() {
         );
 
         if (!confirmacion) {
-            window.location.reload();
             return;
         }
 
@@ -1202,16 +1209,16 @@ async function guardarCPU() {
 
         const result = await response.json();
         if (result.success) {
-            alert('CPU guardado correctamente');
-            //mostrarMensaje('CPU guardado correctamente', 3000);
+            //alert('CPU guardado correctamente');
+            mostrarMensaje2('CPU guardado correctamente', 3000);
         } else {
-            alert('Error al guardar el CPU: ' + result.message);
-            //mostrarMensaje('Error al guardar el CPU: ' + result.message, 4000);
+            //alert('Error al guardar el CPU: ' + result.message);
+            mostrarMensaje('Error al guardar el CPU: ', 4000);
         }
     } catch (error) {
         console.error('Error al enviar los datos del CPU:', error);
-        alert('Error al enviar los datos del CPU');
-        //mostrarMensaje('Error al enviar los datos del CPU', 4000);
+        //alert('Error al enviar los datos del CPU');
+        mostrarMensaje('Error al enviar los datos del CPU', 4000);
     }
 }
 
@@ -1253,11 +1260,11 @@ async function guardarMTR() {
 
         const result = await response.json();
         if (result.success) {
-            alert('MTR guardado correctamente');
-            //mostrarMensaje('MTR guardado correctamente', 3000);
+            //alert('MTR guardado correctamente');
+            mostrarMensaje2('MONITOR guardado correctamente', 3000);
         } else {
-            alert('Error al guardar el MTR: ' + result.message);
-            //mostrarMensaje('Error al guardar el MTR: '+ result.message, 4000);
+            //alert('Error al guardar el MTR: ' + result.message);
+            mostrarMensaje('Error al guardar el MTR: ' + result.message, 4000);
         }
     } catch (error) {
         console.error('Error al guardar los cambios mtrs:', error);
@@ -1304,11 +1311,11 @@ async function guardarTCL() {
 
         const result = await response.json();
         if (result.success) {
-            alert('TCL guardado correctamente');
-            //mostrarMensaje('TCL guardado correctamente', 3000);
+            //alert('TCL guardado correctamente');
+            mostrarMensaje2('TECLADO guardado correctamente', 3000);
         } else {
-            alert('Error al guardar el TCL: ' + result.message);
-            //mostrarMensaje('Error al guardar el TCL: ' + result.message, 4000);
+            //alert('Error al guardar el TCL: ' + result.message);
+            mostrarMensaje('Error al guardar el TCL: ' + result.message, 4000);
         }
     } catch (error) {
         console.error('Error al guardar los cambios mtrs:', error);
@@ -1355,12 +1362,13 @@ async function guardarMS() {
 
         const result = await response.json();
         if (result.success) {
-            alert('TCL guardado correctamente');
-            cerrarVentanaEmergente('modal7')
-            //mostrarMensaje('TCL guardado correctamente', 3000);
+            //alert('TCL guardado correctamente');
+            mostrarMensaje2('EQUIPO DE ESCRITORIO guardado correctamente', 3000);
+            cerrarVentanaEmergente('modal7');
+            window.location.reload();
         } else {
-            alert('Error al guardar el MSs: ' + result.message);
-            //mostrarMensaje('Error al guardar el MSs: ' + result.message, 4000);
+            //alert('Error al guardar el MSs: ' + result.message);
+            mostrarMensaje('Error al guardar el MS: ' + result.message, 4000);
         }
     } catch (error) {
         console.error('Error al guardar los cambios MSs:', error);
@@ -1438,11 +1446,13 @@ async function guardarPTL() {
 
         const result = await response.json();
         if (result.success) {
-            alert('LAPTOP guardado correctamente');
-            //mostrarMensaje('CPU guardado correctamente', 3000);
+            //alert('LAPTOP guardado correctamente');
+            mostrarMensaje2('PORTATIL guardado correctamente', 3000);
+            cerrarVentanaEmergente('modal8');
+            window.location.reload();
         } else {
-            alert('Error al guardar el LAPTOP: ' + result.message);
-            //mostrarMensaje('Error al guardar el CPU: ' + result.message, 4000);
+            //alert('Error al guardar el LAPTOP: ' + result.message);
+            mostrarMensaje('Error al guardar el PORTATIL: ' + result.message, 4000);
         }
     } catch (error) {
         console.error('Error al enviar los datos del LAPTOP:', error);
@@ -1492,11 +1502,12 @@ async function guardarIMP() {
 
         const result = await response.json();
         if (result.success) {
-            alert('TCL guardado correctamente');
-            cerrarVentanaEmergente('modal9')
-            //mostrarMensaje('TCL guardado correctamente', 3000);
+            mostrarMensaje2('IMPRESORA Guardada Correctamente', 3000);
+            cerrarVentanaEmergente('modal9');
+            window.location.reload();
         } else {
-            alert('Error al guardar el MSs: ' + result.message);
+            mostrarMensaje('Error al guardar IMPRESORA', 3000);
+            //alert('Error al guardar el MSs: ' + result.message);
             //mostrarMensaje('Error al guardar el MSs: ' + result.message, 4000);
         }
     } catch (error) {
@@ -1541,12 +1552,13 @@ async function guardarTLF() {
 
         const result = await response.json();
         if (result.success) {
-            alert('TLF guardado correctamente');
-            cerrarVentanaEmergente('modal10')
-            //mostrarMensaje('TCL guardado correctamente', 3000);
+            //alert('TLF guardado correctamente');
+            mostrarMensaje2('TELEFONO guardado correctamente', 3000);
+            cerrarVentanaEmergente('modal10');
+            window.location.reload();
         } else {
-            alert('Error al guardar el TLF: ' + result.message);
-            //mostrarMensaje('Error al guardar el MSs: ' + result.message, 4000);
+            mostrarMensaje('Error al guardar el MSs: ', 4000);
+            //alert('Error al guardar el TLF: ' + result.message);
         }
     } catch (error) {
         console.error('Error al guardar los cambios TLF:', error);
@@ -2213,20 +2225,28 @@ function mostrarDatosMSEntrega(ms) {
     document.getElementById('modeloMSEntrega').value = ms.mod_mouse;
 }
 
-function abrirModalYMostrarTodosDatos(modalMostrar, modalCerrar) {
+function abrirModalYMostrarTodosDatos(modalMostrar, modalCerrar, tipoEquipo) {
     // Obtener el ID del equipo desde el span
     const idEquipo = document.getElementById('cod').innerText.trim();
 
     // Mostrar el modal especificado
     mostrarVentanaEmergente(modalMostrar);
 
-    // Llamar a una función para obtener y mostrar todos los datos
-    obtenerDatosEntrega('cpu_equipo', idEquipo);
-    obtenerDatosEntrega('monitor', idEquipo);
-    obtenerDatosEntrega('teclado', idEquipo);
-    obtenerDatosEntrega('mouse', idEquipo);
-    obtenerDatosEntrega('laptop', idEquipo);
-
+    // Llamar a una función para obtener y mostrar los datos específicos según el tipo de equipo
+    if (tipoEquipo === 'escritorio') {
+        obtenerDatosEntrega('cpu_equipo', idEquipo);
+        obtenerDatosEntrega('monitor', idEquipo);
+        obtenerDatosEntrega('teclado', idEquipo);
+        obtenerDatosEntrega('mouse', idEquipo);
+    } else if (tipoEquipo === 'portatil') {
+        obtenerDatosEntrega('laptop', idEquipo);
+    } else if (tipoEquipo === 'impresora') {
+        obtenerDatosEntrega('impresora', idEquipo);
+    } else if (tipoEquipo === 'telefono') {
+        obtenerDatosEntrega('telefono', idEquipo);
+    } else {
+        console.error('Tipo de equipo desconocido:', tipoEquipo);
+    }
     // Cerrar el modal especificado
     cerrarVentanaEmergente(modalCerrar);
 }
@@ -2238,7 +2258,7 @@ async function obtenerDatosEntrega(tabla, codEquipo) {
 
         if (data.success) {
             const componente = data[tabla]; // Acceder correctamente a los datos del componente
-            console.log("Datos de la tabla:", componente);
+            //console.log("Datos de la tabla:", componente);
             // Verificar la tabla y llamar a la función correspondiente
             if (tabla === "cpu_equipo") {
                 mostrarDatosCPUEntrega(componente);
@@ -2250,6 +2270,10 @@ async function obtenerDatosEntrega(tabla, codEquipo) {
                 mostrarDatosTCDEntrega(componente);
             } else if (tabla === "laptop") {
                 mostrarDatosPLTEntrega(componente);
+            } else if (tabla === "impresora") {
+                mostrarDatosIMPEntrega(componente);
+            } else if (tabla === "telefono") {
+                mostrarDatosTLFEntrega(componente);
             } else {
                 console.error("Tabla desconocida:", tabla);
             }
@@ -2267,7 +2291,7 @@ function mostrarDatosPLTEntrega(plt) {
     document.getElementById('codigoEqEntrega').value = plt.cod_equipo;
     document.getElementById('codAlmacenEntrega').value = plt.cod_tics_laptop;
     document.getElementById('tecEntrega').textContent = plt.nom_usua;
-    
+
     document.getElementById('marcasEntrega').value = plt.mar_laptop;
     document.getElementById('modeloEntrega').value = plt.mod_laptop;
     document.getElementById('numSerieEntrega').value = plt.ser_laptop;
@@ -2279,6 +2303,34 @@ function mostrarDatosPLTEntrega(plt) {
     document.getElementById('officeEntrega').value = plt.off_laptop;
     document.getElementById('estadoEntrega').value = plt.est_laptop;
     document.getElementById('observacionTxtEntrega').value = plt.observacion_laptop;
+}
+
+//-------------------------------> ENTREGA IMPRESORA
+function mostrarDatosIMPEntrega(imp) {
+    document.getElementById('codigoEntrega').textContent = imp.cod_impresora;
+    document.getElementById('tecEntrega').textContent = imp.nom_usua;
+    document.getElementById('codigoEqEntrega').value = imp.cod_equipo;
+    document.getElementById('codAlmacenEntrega').value = imp.cod_tics_impresora;
+    document.getElementById('marcasEntrega').value = imp.mar_imp;
+    document.getElementById('modeloEntrega').value = imp.mod_imp;
+    document.getElementById('numSerieEntrega').value = imp.ser_imp;
+    document.getElementById('tipoIMPEntrega').value = imp.tip_imp;
+    document.getElementById('puertoEntrega').value = imp.pue_imp;
+    document.getElementById('condicionEntrega').value = imp.con_imp;
+    document.getElementById('observacionTxtEntrega').value = imp.obs_imp;
+}
+
+//-------------------------------> ENTREGA TELEFONO
+function mostrarDatosTLFEntrega(imp) {
+    document.getElementById('codEntrega').textContent = imp.cod_telf;
+    document.getElementById('tecEntrega').textContent = imp.nom_usua;
+    document.getElementById('codAlmacenEntrega').value = imp.cod_tics_telf;
+    document.getElementById('codigoEqEntrega').value = imp.cod_equipo;
+    document.getElementById('marcasEntrega').value = imp.mar_telf;
+    document.getElementById('modeloEntrega').value = imp.mod_telf;
+    document.getElementById('numSerieEntrega').value = imp.ser_telf;
+    document.getElementById('condicionEntrega').value = imp.con_telf;
+    document.getElementById('observacionTxtEntrega').value = imp.obs_telf;
 }
 
 //-------------------------------> GENERAR PDF
@@ -2560,7 +2612,7 @@ function generarPDF() {
         toBase64(inputImage2, function (base64Img2) {
             doc.addImage(base64Img2, 'JPEG', 15, 265, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario para la segunda imagen
             // Guardar el documento PDF
-            doc.save('equipos.pdf');
+            doc.save('equipo_' + codAlmacen + '.pdf');
         });
     });
 }
@@ -2655,13 +2707,13 @@ function generarPTL() {
 
         // Definir los datos a mostrar en la tabla del PDF
         const tableData = [
-            ['LAPTOP' , 'Marca', marca],
-            ['LAPTOP' , 'Modelo', tarjeta],
-            ['LAPTOP' , 'Núm Serie', serie],
-            ['LAPTOP' , 'Procesador', proces],
-            ['LAPTOP' , 'Velocidad', velocidad],
-            ['LAPTOP' , 'Memoria RAM', ram],
-            ['LAPTOP' , 'Almacenamiento', hdd]
+            ['LAPTOP', 'Marca', marca],
+            ['LAPTOP', 'Modelo', tarjeta],
+            ['LAPTOP', 'Núm Serie', serie],
+            ['LAPTOP', 'Procesador', proces],
+            ['LAPTOP', 'Velocidad', velocidad],
+            ['LAPTOP', 'Memoria RAM', ram],
+            ['LAPTOP', 'Almacenamiento', hdd]
         ];
 
         doc.setFont("helvetica", "bold");
@@ -2816,17 +2868,487 @@ function generarPTL() {
         toBase64(inputImage2, function (base64Img2) {
             doc.addImage(base64Img2, 'JPEG', 15, 265, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario para la segunda imagen
             // Guardar el documento PDF
-            doc.save('equipos.pdf');
+            doc.save('equipo_' + codAlmacen + '.pdf');
+        });
+    });
+}
+
+function generarIMP() {
+    window.jsPDF = window.jspdf.jsPDF;
+    // Crear un nuevo documento jsPDF
+    const doc = new jsPDF();
+
+    // DATOS EQUIPO
+    const fechaEntrega = document.getElementById("fecha").textContent.trim();
+    const tecnico = document.getElementById("tecnico").textContent.trim();
+    const codAlmacen = document.getElementById("codAlmacen").value.trim();
+    const pisoUbicado = document.getElementById("pisos").value.trim();
+    const titular = document.getElementById("titularEq").value.trim();
+    const departamento = document.getElementById("departamentos").value.trim();
+    // PARAMETROS
+    const marca = document.getElementById('marcasEntrega').value;
+    const modelo = document.getElementById('modeloEntrega').value;
+    const serie = document.getElementById('numSerieEntrega').value;
+    const tipo = document.getElementById('tipoIMPEntrega').value;
+    const puerto = document.getElementById('puertoEntrega').value;
+    const estado = document.getElementById('condicionEntrega').value;
+    const observacion = document.getElementById("observacionTxtEntrega").value.trim();
+
+    // Funcion pasar img a toBase64
+    function toBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    // Obtener los archivos de imagen desde los inputs
+    const inputImage1 = document.getElementById('inputImage1').files[0];
+    const inputImage2 = document.getElementById('inputImage2').files[0];
+    const usuario = document.getElementById('inputUsuario').value.trim();
+
+    if (!inputImage1 || !inputImage2 || !usuario) {
+        alert('Por favor llenar los campos de IMG y Funcionario.');
+        return;
+    }
+
+    // Cargar y agregar la imagen desde la carpeta assets
+    toBase64(inputImage1, function (base64Img) {
+        doc.addImage(base64Img, 'JPEG', 15, 5, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario
+
+        doc.setFontSize(10);
+        // Horizontal Vertical
+        doc.setFont("helvetica", "bold");
+        doc.text(`Dirección Zonal de Tecnologias de la Información y Comunicaciones\n
+            Detalle de Entrega - Descargo de Equipos Informaticos`.toUpperCase(), 35, 30
+        );
+
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "bold");
+        doc.text(`El Equipo se entrega:`.toUpperCase(), 20, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`FUNCIONAL`, 60, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Código TICS:`.toUpperCase(), 115, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${codAlmacen}`, 140, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Custodio:`.toUpperCase(), 20, 50);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${titular}`, 60, 50);
+
+        // Mostrar "Unidad" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Unidad:`.toUpperCase(), 20, 55);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${departamento}`, 60, 55);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Piso:`.toUpperCase(), 20, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${pisoUbicado}`, 60, 60);
+
+        // Mostrar "Fecha" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Fecha:`.toUpperCase(), 115, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${fechaEntrega}`, 130, 60);
+
+        // Definir los datos a mostrar en la tabla del PDF
+        const tableData = [
+            ['IMPRESORA', 'Marca', marca],
+            ['IMPRESORA', 'Modelo', modelo],
+            ['IMPRESORA', 'Num Serie', serie],
+            ['IMPRESORA', 'Tipo', tipo],
+            ['IMPRESORA', 'Puerto', puerto],
+            ['IMPRESORA', 'estado', estado]
+        ];
+
+        const tableDataEst = [
+            ['ESTADO DE EQUIPO', `${estado}`]
+        ];
+        // Ancho total de la página
+        const pageWidth = doc.internal.pageSize.getWidth()
+        const tableWidth = pageWidth * 0.75; // 85% del ancho de la página
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`OBSERVACION:`.toUpperCase(), 20, 125);
+        doc.setFont("helvetica", "normal");
+        const maxWidth = 165; // Ancho máximo para el texto
+        const textYPosition = 135; // Posición vertical inicial del texto
+        const splitObservacion = doc.splitTextToSize(observacion, maxWidth);
+        doc.text(splitObservacion, 20, textYPosition);
+
+        const tableDataFirma = [
+            ['REALIZADO POR:', 'ENTREGADO A:'],
+            ['\n\n\n', '\n\n',],
+            [`ANALISTA TICS: ${tecnico}`, `FUNCIONARIO: ${usuario}`]
+        ];
+
+        // Configurar la estructura de la tabla
+        doc.autoTable({
+            startY: 65,
+            body: tableData.map(row => [row[1], row[2]]),
+            columnStyles: {
+                0: { cellWidth: 50 }, // Ancho para la primera columna ('Característica')
+                1: { cellWidth: 60 }, // Ancho para la segunda columna ('Valor')
+            },
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            theme: 'grid',
+            margin: { left: 75, right: 20 }, // Añadir margen izquierdo y derecho
+            tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+            didDrawCell: function (data) {
+                if (data.section === 'body' && data.column.index === 0) {
+                    let cellHeight = 0;
+                    let yPos = data.cell.y;
+                    let text = '';
+                    if (data.row.index === 0) {
+                        cellHeight = data.cell.height * 6;
+                        text = 'IMPRESORA';
+                    } else if (data.row.index === 7) {
+                        cellHeight = data.cell.height * 4;
+                        text = 'MONITOR';
+                    } else if (data.row.index === 11) {
+                        cellHeight = data.cell.height * 3;
+                        text = 'TECLADO';
+                    } else if (data.row.index === 14) {
+                        cellHeight = data.cell.height * 3;
+                        text = 'MOUSE';
+                    }
+                    if (text) {
+                        const cellWidth = data.cell.width;
+                        const xPos = data.cell.x - cellWidth;
+                        doc.setFillColor(255, 255, 255); // Color de fondo blanco
+                        doc.rect(xPos, yPos, cellWidth, cellHeight, 'FD'); // Dibuja un rectángulo blanco con bordes
+                        doc.setFont("helvetica", "bold");
+                        doc.text(text, xPos + cellWidth / 2, yPos + cellHeight / 2, { align: 'center', baseline: 'middle' });
+                    }
+                }
+            }
+        });
+
+        doc.autoTable({
+            startY: 105,
+            head: [[{ content: 'ESTADO DEL EQUIPO', colSpan: 2, styles: { halign: 'center', textColor: [255, 255, 255] } }]],
+            body: tableDataEst,
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            headStyles: {
+                fillColor: [22, 160, 133], // Color de fondo del encabezado (verde)
+                textColor: [255, 255, 255] // Color del texto del encabezado (blanco)
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 }, // Márgenes para centrar la tabla
+            tableWidth: tableWidth
+        });
+
+        doc.autoTable({
+            startY: 190,
+            head: [tableDataFirma[0]], // Primera fila como encabezado
+            body: [tableDataFirma[1], tableDataFirma[2]],
+            styles: {
+                fontSize: 10,
+                cellPadding: { top: 2, right: 2, bottom: 2, left: 2 }, // Estilos generales
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            rowStyles: {
+                0: { cellPadding: { top: 20, bottom: 20 } } // Aumentar el padding en la segunda fila para aumentar la altura
+            },
+            headStyles: {
+                fillColor: [255, 255, 255], // Sin color de fondo para el encabezado
+                textColor: [0, 0, 0] // Color del texto del encabezado
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 },
+        });
+
+        // Obtener y agregar datos de los formularios visibles
+        const formContainers = document.querySelectorAll('.form-container[style="display: block;"]');
+        formContainers.forEach(formContainer => {
+            // Obtener todos los elementos input, select, textarea dentro del formulario visible
+            const formData = [];
+            const formElements = formContainer.querySelectorAll('input, select, textarea');
+            formElements.forEach(element => {
+                let fieldName = element.id || element.name;
+                let fieldValue = element.value;
+                // Agregar solo si el campo tiene un valor
+                if (fieldName && fieldValue) {
+                    formData.push([element.previousElementSibling.textContent, fieldValue]);
+                }
+            });
+
+            // Agregar los datos del formulario al PDF
+            doc.autoTable({
+                startY: doc.autoTable.previous.finalY + 10, // Posicionar debajo de la tabla anterior
+                head: [['Campo', 'Valor']],
+                body: formData,
+                styles: commonStyles, // Aplicar los estilos comunes a la tabla del formulario
+            });
+        });
+
+        toBase64(inputImage2, function (base64Img2) {
+            doc.addImage(base64Img2, 'JPEG', 15, 265, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario para la segunda imagen
+            // Guardar el documento PDF
+            doc.save('equipo_' + codAlmacen + '.pdf');
+        });
+    });
+}
+
+function generarTLF() {
+    window.jsPDF = window.jspdf.jsPDF;
+    // Crear un nuevo documento jsPDF
+    const doc = new jsPDF();
+
+    // DATOS EQUIPO
+    const fechaEntrega = document.getElementById("fecha").textContent.trim();
+    const tecnico = document.getElementById("tecnico").textContent.trim();
+    const codAlmacen = document.getElementById("codAlmacen").value.trim();
+    const pisoUbicado = document.getElementById("pisos").value.trim();
+    const titular = document.getElementById("titularEq").value.trim();
+    const departamento = document.getElementById("departamentos").value.trim();
+    // PARAMETROS
+    const marca = document.getElementById('marcasEntrega').value;
+    const modelo = document.getElementById('modeloEntrega').value;
+    const serie = document.getElementById('numSerieEntrega').value;
+    const estado = document.getElementById('condicionEntrega').value;
+    const observacion = document.getElementById("observacionTxtEntrega").value.trim();
+
+    // Funcion pasar img a toBase64
+    function toBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    // Obtener los archivos de imagen desde los inputs
+    const inputImage1 = document.getElementById('inputImage1').files[0];
+    const inputImage2 = document.getElementById('inputImage2').files[0];
+    const usuario = document.getElementById('inputUsuario').value.trim();
+
+    if (!inputImage1 || !inputImage2 || !usuario) {
+        alert('Por favor llenar los campos de IMG y Funcionario.');
+        return;
+    }
+
+    // Cargar y agregar la imagen desde la carpeta assets
+    toBase64(inputImage1, function (base64Img) {
+        doc.addImage(base64Img, 'JPEG', 15, 5, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario
+
+        doc.setFontSize(10);
+        // Horizontal Vertical
+        doc.setFont("helvetica", "bold");
+        doc.text(`Dirección Zonal de Tecnologias de la Información y Comunicaciones\n
+            Detalle de Entrega - Descargo de Equipos Informaticos`.toUpperCase(), 35, 30
+        );
+
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "bold");
+        doc.text(`El Equipo se entrega:`.toUpperCase(), 20, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`FUNCIONAL`, 60, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Código TICS:`.toUpperCase(), 115, 45);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${codAlmacen}`, 140, 45);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Custodio:`.toUpperCase(), 20, 50);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${titular}`, 60, 50);
+
+        // Mostrar "Unidad" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Unidad:`.toUpperCase(), 20, 55);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${departamento}`, 60, 55);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`Piso:`.toUpperCase(), 20, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${pisoUbicado}`, 60, 60);
+
+        // Mostrar "Fecha" en negrita
+        doc.setFont("helvetica", "bold");
+        doc.text(`Fecha:`.toUpperCase(), 115, 60);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${fechaEntrega}`, 130, 60);
+
+        // Definir los datos a mostrar en la tabla del PDF
+        const tableData = [
+            ['IMPRESORA', 'Marca', marca],
+            ['IMPRESORA', 'Modelo', modelo],
+            ['IMPRESORA', 'Num Serie', serie]
+        ];
+
+        const tableDataEst = [
+            ['ESTADO DE EQUIPO', `${estado}`]
+        ];
+        // Ancho total de la página
+        const pageWidth = doc.internal.pageSize.getWidth()
+        const tableWidth = pageWidth * 0.75; // 85% del ancho de la página
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`OBSERVACION:`.toUpperCase(), 20, 105);
+        doc.setFont("helvetica", "normal");
+        const maxWidth = 165; // Ancho máximo para el texto
+        const textYPosition = 130; // Posición vertical inicial del texto
+        const splitObservacion = doc.splitTextToSize(observacion, maxWidth);
+        doc.text(splitObservacion, 20, textYPosition);
+
+        const tableDataFirma = [
+            ['REALIZADO POR:', 'ENTREGADO A:'],
+            ['\n\n\n', '\n\n',],
+            [`ANALISTA TICS: ${tecnico}`, `FUNCIONARIO: ${usuario}`]
+        ];
+
+        // Configurar la estructura de la tabla
+        doc.autoTable({
+            startY: 65,
+            body: tableData.map(row => [row[1], row[2]]),
+            columnStyles: {
+                0: { cellWidth: 50 }, // Ancho para la primera columna ('Característica')
+                1: { cellWidth: 60 }, // Ancho para la segunda columna ('Valor')
+            },
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            theme: 'grid',
+            margin: { left: 75, right: 20 }, // Añadir margen izquierdo y derecho
+            tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+            didDrawCell: function (data) {
+                if (data.section === 'body' && data.column.index === 0) {
+                    let cellHeight = 0;
+                    let yPos = data.cell.y;
+                    let text = '';
+                    if (data.row.index === 0) {
+                        cellHeight = data.cell.height * 3
+                        text = 'IMPRESORA';
+                    }
+                    if (text) {
+                        const cellWidth = data.cell.width;
+                        const xPos = data.cell.x - cellWidth;
+                        doc.setFillColor(255, 255, 255); // Color de fondo blanco
+                        doc.rect(xPos, yPos, cellWidth, cellHeight, 'FD'); // Dibuja un rectángulo blanco con bordes
+                        doc.setFont("helvetica", "bold");
+                        doc.text(text, xPos + cellWidth / 2, yPos + cellHeight / 2, { align: 'center', baseline: 'middle' });
+                    }
+                }
+            }
+        });
+
+        doc.autoTable({
+            startY: 90,
+            head: [[{ content: 'ESTADO DEL EQUIPO', colSpan: 2, styles: { halign: 'center', textColor: [255, 255, 255] } }]],
+            body: tableDataEst,
+            styles: {
+                fontSize: 8,
+                cellPadding: { top: 1, right: 2, bottom: 1, left: 2 }, // Reducir el cellPadding para disminuir la altura de las filas
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            headStyles: {
+                fillColor: [22, 160, 133], // Color de fondo del encabezado (verde)
+                textColor: [255, 255, 255] // Color del texto del encabezado (blanco)
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 }, // Márgenes para centrar la tabla
+            tableWidth: tableWidth
+        });
+
+        doc.autoTable({
+            startY: 190,
+            head: [tableDataFirma[0]], // Primera fila como encabezado
+            body: [tableDataFirma[1], tableDataFirma[2]],
+            styles: {
+                fontSize: 10,
+                cellPadding: { top: 2, right: 2, bottom: 2, left: 2 }, // Estilos generales
+                valign: 'middle',
+                halign: 'left',
+                textColor: [0, 0, 0], // Color de texto negro
+                lineWidth: 0.1, // Grosor de la línea
+                lineColor: [0, 0, 0] // Color de la línea
+            },
+            rowStyles: {
+                0: { cellPadding: { top: 20, bottom: 20 } } // Aumentar el padding en la segunda fila para aumentar la altura
+            },
+            headStyles: {
+                fillColor: [255, 255, 255], // Sin color de fondo para el encabezado
+                textColor: [0, 0, 0] // Color del texto del encabezado
+            },
+            margin: { left: (pageWidth - tableWidth) / 2, right: (pageWidth - tableWidth) / 2 },
+        });
+
+        // Obtener y agregar datos de los formularios visibles
+        const formContainers = document.querySelectorAll('.form-container[style="display: block;"]');
+        formContainers.forEach(formContainer => {
+            // Obtener todos los elementos input, select, textarea dentro del formulario visible
+            const formData = [];
+            const formElements = formContainer.querySelectorAll('input, select, textarea');
+            formElements.forEach(element => {
+                let fieldName = element.id || element.name;
+                let fieldValue = element.value;
+                // Agregar solo si el campo tiene un valor
+                if (fieldName && fieldValue) {
+                    formData.push([element.previousElementSibling.textContent, fieldValue]);
+                }
+            });
+
+            // Agregar los datos del formulario al PDF
+            doc.autoTable({
+                startY: doc.autoTable.previous.finalY + 10, // Posicionar debajo de la tabla anterior
+                head: [['Campo', 'Valor']],
+                body: formData,
+                styles: commonStyles, // Aplicar los estilos comunes a la tabla del formulario
+            });
+        });
+
+        toBase64(inputImage2, function (base64Img2) {
+            doc.addImage(base64Img2, 'JPEG', 15, 265, 180, 20); // Ajustar las coordenadas y el tamaño según sea necesario para la segunda imagen
+            // Guardar el documento PDF
+            doc.save('equipo_' + codAlmacen + '.pdf');
         });
     });
 }
 
 //-------------------------------> GUARDAR DATO EN LOCALSTORAGE
-function guardarDato() {
-    const inputValor = document.getElementById('inputUsuario').value;
-    localStorage.setItem('datoGuardado', inputValor);
-    console.log(
-        'Dato guardado en localStorage');
+function guardarDato(inputId) {
+    const inputElement = document.getElementById(inputId);
+    if (inputElement) {
+        const inputValor = inputElement.value;
+        localStorage.setItem('datoGuardado', inputValor);
+        console.log('Dato guardado en localStorage');
+    }
 }
 
 //-------------------------------> FUNCION PRINCIPAL
@@ -2918,9 +3440,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     //-------------------------------> Guardar Funcionario en localStorage
+    const inputId = 'inputUsuario'; // Especifica aquí el ID de tu input
     const datoGuardado = localStorage.getItem('datoGuardado');
     if (datoGuardado) {
-        document.getElementById('inputUsuario').value = datoGuardado;
+        const inputElement = document.getElementById(inputId);
+        if (inputElement) {
+            inputElement.value = datoGuardado;
+        }
     }
 
     //-------------------------------> Verificar y llamar a getOptionsFrom solo si el elemento existe
@@ -2989,12 +3515,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMS' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoMSEntrega' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puerto' },
+        { table: 'param_puertos', field: 'nom_puerto', id: 'puertoEntrega' },
         { table: 'param_puertos', field: 'nom_puerto', id: 'puertoIMP' },
 
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCD' },
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoTCDEntrega' },
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMS' },
         { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoMSEntrega' },
+        { table: 'param_tipo_mt', field: 'nom_tmt', id: 'tipoIMPEntrega' },
 
         { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTR' },
         { table: 'param_tamano_monitor', field: 'nom_tam_mon', id: 'tamanoMTREntrega' },

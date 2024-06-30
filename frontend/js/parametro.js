@@ -168,13 +168,13 @@ async function modificarNombre(tabla, campo, valor, nuevoNombre) {
         const data = await response.json();
 
         if (data.success) {
-            console.log('Nombre del registro modificado correctamente');
-            window.location.reload()
+            //console.log('Nombre del registro modificado correctamente');
+            mostrarMensaje('Nombre de PARAMETRO modificado Correctamente',3000);
         } else {
             console.error('Error al modificar el nombre del registro:', data.message);
             if (data.message === 'El nombre ingresado ya existe en la tabla') {
                 alert('El nombre ingresado YA EXISTE en la tabla'); // Mostrar mensaje al usuario
-                window.location.reload()
+                window.location.reload();
             }
         }
     } catch (error) {
@@ -199,14 +199,17 @@ async function guardarNuevoParametro() {
 
         const data = await response.json();
         if (data.success) {
-            console.log('Nuevo parámetro guardado correctamente');
+            mostrarMensaje('Nuevo parámetro guardado correctamente',3000);
+            //console.log('Nuevo parámetro guardado correctamente');
             // Aquí puedes realizar alguna acción adicional si el guardado es exitoso
         } else {
-            console.error('Error al guardar el nuevo parámetro:', data.message);
+            mostrarMensaje('Error al guardar el nuevo parámetro:',3000);
+            //console.error('Error al guardar el nuevo parámetro:', data.message);
             // Aquí puedes manejar el caso en que ocurra un error durante el guardado
         }
     } catch (error) {
-        console.error('Error al enviar datos al servidor:', error);
+        mostrarMensaje('Error al enviar datos al servidor:',3000);
+        //console.error('Error al enviar datos al servidor:', error);
         // Aquí puedes manejar el caso en que ocurra un error al enviar datos al servidor
     }
 }

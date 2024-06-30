@@ -136,7 +136,26 @@ function mostrarMensaje(mensaje, duracion) {
 
   setTimeout(() => {
     div.remove();
-    window.location.reload()
+    window.location.reload();
+  }, duracion);
+}
+
+function mostrarMensaje2(mensaje, duracion) {
+  const div = document.createElement('div');
+  div.textContent = mensaje;
+  div.style.position = 'fixed';
+  div.style.top = '50%';
+  div.style.left = '50%';
+  div.style.transform = 'translate(-50%, -50%)';
+  div.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  div.style.color = 'white';
+  div.style.padding = '20px';
+  div.style.borderRadius = '10px';
+  div.style.zIndex = '9999';
+  document.body.appendChild(div);
+
+  setTimeout(() => {
+    div.remove();
   }, duracion);
 }
 

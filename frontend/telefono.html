@@ -26,6 +26,7 @@
     <header class="header">
         <nav class="nav container">
             <div class="nav__data">
+                <button onclick="redirectToLogin()" class="salir">Salir</button>
                 <a href="#" class="nav__logo">
                     <i class="ri-planet-line"></i> TICS - TELEFONO
                 </a>
@@ -37,7 +38,7 @@
             <!--=============== NAV MENU ===============-->
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
-                    <li><a href="index.html" class="nav__link">Registro</a></li>
+                    <li><a href="registro.html" class="nav__link">Registro</a></li>
                     <!--=============== DROPDOWN 1 ===============-->
                     <li class="dropdown__item">
                         <div class="nav__link">
@@ -165,7 +166,7 @@
                     <div class="buttons">
                         <button type="button" class="green-button" onclick="guardarCambiosEq()">Guardar Equipo</button>
                         <button type="button" class="orange-button"
-                            onclick="abrirModalYMostrarTodosDatos('modal14','modal6')">Entregar
+                            onclick="abrirModalYMostrarTodosDatos('modal14','modal6','telefono')">Entregar
                             Equipo</button>
                         <button type="button" class="red-button" onclick="enviarBodega()">Guardar Bodega</button>
                         <button type="button" class="edit-button"
@@ -249,7 +250,7 @@
 
     <div id="modal14" class="modal">
         <div class="modal-content">
-            <h2>Entrega Equipo Impresora</h2>
+            <h2>Entrega Equipo Telefono</h2>
             <hr class="lines">
             <div>
                 <div class="horizontal-container">
@@ -278,39 +279,71 @@
                         <div>
                             <div class="buttons">
                                 <button type="button" class="green-button"
-                                    onclick="generarPTL(), guardarDato()">Imprimir PDF</button>
+                                    onclick="generarTLF(), guardarDato()">Imprimir PDF</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <span class="close" onclick="cerrarVentanaEmergente('modal14')">&times;</span>
+            <h2>Datos de Equipo</h2>
+            <hr class="lines">
             <div class="horizontal-container">
                 <div>
-                    <label for="cod">ID Equipo:</label>
-                    <span id="cod"></span>
-                </div><br>
-                <div>
-                    <label for="fecha">Fch. Entrega:</label>
-                    <span id="fecha"></span>
-                </div><br>
-                <div>
-                    <label for="tecnico">Técnico:</label>
-                    <span id="tecnico"></span>
+                    <label for="codEntrega">ID Equipo:</label>
+                    <span id="codEntrega"></span>
                 </div>
                 <div>
-                    <label for="codAlmacen">Código Almacén:</label>
-                    <input type="text" id="codAlmacen" name="codAlmacen" class="newData" readonly>
+                    <label for="tecEntrega">Técnico:</label>
+                    <span id="tecEntrega"></span>
                 </div>
                 <div>
-                    <label for="departamentos">Dep./Serv.:</label>
-                    <select id="departamentos" class="options" disabled></select>
+                    <label for="codAlmacenEntrega">Código Almacén:</label>
+                    <input type="text" id="codAlmacenEntrega" name="codAlmacenEntrega" class="newData" readonly>
+                </div>
+                <div>
+                    <label for="codigoEqEntrega">Cod. Eq:</label>
+                    <input type="text" id="codigoEqEntrega" name="codigoEqEntrega" class="newData" style="width: 100px;"
+                        readonly>
+                </div>
+            </div>
+
+            <div class="horizontal-container">
+                <div>
+                    <label for="marcasEntrega">Marca Telefono:</label>
+                    <select id="marcasEntrega" class="options"></select>
+                </div>
+                <div>
+                    <label for="modeloEntrega">Modelo:</label>
+                    <input type="text" id="modeloEntrega" name="modeloEntrega" class="newData">
+                </div>
+
+                <div>
+                    <label for="numSerieEntrega">No. Serie Telefono:</label>
+                    <input type="text" id="numSerieEntrega" name="numSeEntrega" class="newData">
+                </div>
+            </div>
+
+            <div class="horizontal-container">
+                <div>
+                    <label for="condicionEntrega">Condicion:</label>
+                    <select id="condicionEntrega" class="options"></select>
+                </div>
+                <div style="margin: 0;">
+                    <label for="observacionTxtEntrega">Observación:</label>
+                    <textarea id="observacionTxtEntrega" rows="2" cols="68"></textarea>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="./js/equipo.js"></script>
+    <script>
+        function redirectToLogin() {
+            // Redireccionar a login.html
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 
 </html>
